@@ -1,0 +1,16 @@
+model CompanyRoles {
+  id          Int       @id @default(autoincrement())
+  name        String
+  companyId   Int
+  minWages    Float     @default(0.0)
+  maxWages    Float     @default(0.0)
+  isProtected Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  deletedAt   DateTime?
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  usersRoles         UserRoles[]
+  companyPermissions CompanyPermissions[]
+}

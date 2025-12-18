@@ -1,0 +1,52 @@
+type Company {
+  id: Int!
+  name: String!
+  website: String!
+  offices: [Office]
+  users: [User]
+  roles: [CompanyRole]
+}
+
+type CompanyResponse {
+  company: Company
+  status: Int
+}
+
+type CompanyResponsePaginated {
+  companies: [Company]
+  totalCount: Int
+}
+
+input SignupCompanyInput {
+  name: String
+  website: String
+}
+
+input CompanyInput {
+  name: String!
+  website: String!
+  userIds: Int
+}
+
+enum CurrencyEnum {
+  EUR
+  USD
+  GBP
+  JPY
+  AUD
+  CAD
+  CHF
+  CNY
+  SEK
+  NZD
+}
+
+type Query {
+  getCompany(id: Int!): Company
+  listCompanies: CompanyResponsePaginated
+}
+
+type Mutation {
+  updateCompany(id: Int!, input: CompanyInput!): CompanyResponse
+  deleteCompany(id: Int!): CompanyResponse
+}

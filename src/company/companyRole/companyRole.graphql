@@ -1,0 +1,36 @@
+type CompanyRole {
+  id: Int!
+  name: String!
+  minWages: Float
+  maxWages: Float
+  employeeCount: Int
+  #permissions: [CompanyPermission]
+}
+
+input CompanyRoleInput {
+  name: String!
+  minWages: Float!
+  maxWages: Float!
+  companyId: Int!
+}
+
+input UpdateCompanyRoleInput {
+  name: String!
+  minWages: Float!
+  maxWages: Float!
+}
+
+type CompanyRolesResponsePaginated {
+  roles: [CompanyRole]
+  totalCount: Int
+}
+
+type Query {
+  listCompanyRoles(companyId: Int!): CompanyRolesResponsePaginated
+}
+
+type Mutation {
+  createCompanyRole(input: CompanyRoleInput!): CompanyRole
+  updateCompanyRole(id: Int!, input: UpdateCompanyRoleInput!): CompanyRole
+  deleteCompanyRole(id: Int!): String
+}

@@ -1,0 +1,66 @@
+type User {
+  id: Int!
+  firstName: String
+  lastName: String
+  userName: String
+  isActive: Boolean
+  address: String
+  type: String
+  city: String
+  state: String
+  country: String
+  zipCode: String
+  employeeNr: Int
+  companyId: Int!
+  company: Company
+  contacts: [UserContact]
+  #role: UserRole
+}
+
+input UserInput {
+  firstName: String!
+  lastName: String!
+  userName: String!
+  password: String!
+  address: String
+  city: String
+  state: String
+  country: String
+  zipCode: String
+  companyId: Int!
+}
+
+input ListUsers {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type UserResponsePaginated {
+  users: [User]
+  totalCount: Int
+}
+
+type UserResponse {
+  user: User
+  status: Int
+}
+
+type Query {
+  getUser(id: Int!): User
+  listUsers(input: ListUsers): UserResponsePaginated
+}
+
+type Mutation {
+  createUser(input: UserInput!): UserResponse!
+  updateUser(id: Int!, input: UserInput): UserResponse
+  removeUser(id: Int!, forceDelete: Boolean): String
+  restoreUser(id: Int!): String
+  changeUserActiveStatus(id: Int!, status: Boolean!): UserResponse
+}
+
+type Subscription {
+  userStatusChanged: UserResponse
+}

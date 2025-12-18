@@ -1,0 +1,28 @@
+model CompanyClientRole {
+    id        Int       @id @default(autoincrement())
+    companyId Int
+    name      String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @default(now()) @updatedAt
+    deletedAt DateTime?
+
+    company Company @relation(fields: [companyId], references: [id])
+
+    clients  Client[]
+    discount CompanyClientDiscount[]
+}
+
+model CompanyClientDiscount {
+    id                  Int       @id @default(autoincrement())
+    companyClientRoleId Int
+    percentage          Float
+    categoryId          Int
+    productTypeId       Int
+    createdAt           DateTime  @default(now())
+    updatedAt           DateTime  @default(now()) @updatedAt
+    deletedAt           DateTime?
+
+    role        CompanyClientRole @relation(fields: [companyClientRoleId], references: [id])
+    cagetogy    Category          @relation(fields: [categoryId], references: [id])
+    productType ProductType       @relation(fields: [productTypeId], references: [id])
+}

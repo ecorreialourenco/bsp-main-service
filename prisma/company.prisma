@@ -1,0 +1,37 @@
+model Company {
+  id        Int       @id @default(autoincrement())
+  name      String
+  website   String
+  currency  String    @default("EUR")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  categories   Category[]
+  productTypes ProductType[]
+  offices      Office[]
+  roles        CompanyRoles[]
+  users        User[]
+  clients      Client[]
+  provider     Provider[]
+  products     Products[]
+  languages    CompanyLanguages[]
+  clientRoles  CompanyClientRole[]
+}
+
+model CompanyLanguages {
+  id         Int       @id @default(autoincrement())
+  companyId  Int
+  languageId Int
+  isDefault  Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  company  Company  @relation(fields: [companyId], references: [id])
+  language Language @relation(fields: [languageId], references: [id])
+
+  products   ProductLanguage[]
+  categories CategoryName[]
+  types      ProductTypeName[]
+}

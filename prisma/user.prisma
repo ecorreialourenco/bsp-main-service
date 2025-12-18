@@ -1,0 +1,43 @@
+model User {
+  id         Int       @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  userName   String    @unique
+  password   String
+  address    String?
+  city       String?
+  state      String?
+  country    String?
+  zipCode    String?
+  companyId  Int
+  employeeNr Int       @default(1)
+  isAdmin    Boolean   @default(false)
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  UserContacts UserContacts[]
+  userHistory  UserRoles[]
+}
+
+model UserContacts {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  type      ContactType
+  contact   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum ContactType {
+  Email
+  Phone
+  Mobile
+  Fax
+}

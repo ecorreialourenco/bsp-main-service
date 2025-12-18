@@ -1,0 +1,39 @@
+model Client {
+  id                  Int        @id @default(autoincrement())
+  name                String
+  type                ClientType
+  address             String
+  city                String
+  state               String
+  country             String
+  zipCode             String
+  clientNr            Int        @default(1)
+  companyId           Int
+  companyClientRoleId Int
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @default(now()) @updatedAt
+  deletedAt           DateTime?
+
+  company Company           @relation(fields: [companyId], references: [id])
+  role    CompanyClientRole @relation(fields: [companyClientRoleId], references: [id])
+
+  ClientContacts ClientContacts[]
+}
+
+model ClientContacts {
+  id        Int         @id @default(autoincrement())
+  name      String?
+  clientId  Int
+  type      ContactType
+  contact   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+enum ClientType {
+  Personal
+  Company
+}

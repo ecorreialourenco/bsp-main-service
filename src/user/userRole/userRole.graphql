@@ -1,0 +1,18 @@
+type UserRole {
+  id: Int!
+  userId: Int
+  companyRoleId: Int
+}
+
+input NewUserRole {
+  userId: Int!
+  companyRoleId: Int!
+}
+
+type Query {
+  getUserRole(userId: Int!): UserRole
+}
+
+type Mutation {
+  createUserRole(input: NewUserRole!): UserRole!
+}

@@ -1,0 +1,26 @@
+model Menu {
+  id        Int       @id @default(autoincrement())
+  slug      String    @unique
+  name      String
+  onlyAdmin Boolean   @default(false)
+  isVisible Boolean   @default(false)
+  order     Int       @default(0)
+  icon      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  companyPermissions CompanyPermissions[]
+}
+
+model Language {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique
+  name        String
+  isAvailable Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  deletedAt   DateTime?
+
+  company CompanyLanguages[]
+}

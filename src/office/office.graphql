@@ -1,0 +1,52 @@
+type Office {
+  id: Int
+  name: String
+  address: String
+  city: String
+  state: String
+  country: String
+  zipCode: String
+  company: Company
+  #stock: [ProductStock]
+}
+
+input OfficeInput {
+  name: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  companyId: Int!
+}
+
+input OfficeListInput {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type OfficeResponse {
+  office: Office
+  status: Int
+}
+
+type OfficeResponsePaginated {
+  offices: [Office]
+  totalCount: Int
+}
+
+type Query {
+  getOffice(Id: Int): Office
+  listOffices(input: OfficeListInput): OfficeResponsePaginated
+}
+
+type Mutation {
+  createOffice(input: OfficeInput): OfficeResponse
+  updateOffice(id: Int, input: OfficeInput): OfficeResponse
+  deleteOffice(id: Int, forceDelete: Boolean): String
+  restoreOffice(id: Int): String
+}

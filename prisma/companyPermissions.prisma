@@ -1,0 +1,16 @@
+model CompanyPermissions {
+  id            Int       @id @default(autoincrement())
+  read          Boolean   @default(false)
+  createUpdate  Boolean   @default(false)
+  delete        Boolean   @default(false)
+  companyRoleId Int
+  menuId        Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  deletedAt     DateTime?
+
+  companyRoles CompanyRoles @relation(fields: [companyRoleId], references: [id])
+  Menu         Menu         @relation(fields: [menuId], references: [id])
+
+  @@unique([menuId, companyRoleId])
+}

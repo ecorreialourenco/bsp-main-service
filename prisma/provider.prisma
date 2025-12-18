@@ -1,0 +1,33 @@
+model Provider {
+  id         Int       @id @default(autoincrement())
+  name       String
+  website    String
+  address    String
+  city       String
+  state      String
+  country    String
+  zipCode    String
+  providerNr Int       @default(1)
+  companyId  Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  contacts ProviderContacts[]
+  products ProductProvider[]
+}
+
+model ProviderContacts {
+  id         Int         @id @default(autoincrement())
+  name       String
+  providerId Int
+  type       ContactType
+  contact    String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  provider Provider @relation(fields: [providerId], references: [id])
+}

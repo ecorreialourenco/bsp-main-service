@@ -1,0 +1,55 @@
+type UsernameValidationResponse {
+  isValid: Boolean
+  status: Int
+}
+
+type LoginResponse {
+  token: String
+  status: Int
+}
+
+type SignupResponse {
+  user: User
+  status: Int
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+input SignupUserInput {
+  firstName: String!
+  lastName: String!
+  userName: String!
+  password: String!
+}
+
+input SignupCompanyInput {
+  name: String!
+  website: String!
+}
+
+input SignupOfficeInput {
+  name: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+}
+
+input SignupInput {
+  user: SignupUserInput!
+  company: SignupCompanyInput!
+  office: SignupOfficeInput!
+}
+
+type Query {
+  checkUsername(username: String): UsernameValidationResponse
+}
+
+type Mutation {
+  login(input: LoginInput): LoginResponse
+  signup(input: SignupInput): SignupResponse
+}

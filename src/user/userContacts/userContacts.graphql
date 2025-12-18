@@ -1,0 +1,34 @@
+type UserContact {
+  id: Int!
+  contact: String!
+  user: User
+  type: ContactType!
+}
+
+input UserContactInput {
+  contact: String!
+  type: ContactType!
+  userId: Int!
+}
+
+type UserContactResponse {
+  contact: UserContact!
+  status: Int!
+}
+
+enum ContactType {
+  Email
+  Fax
+  Mobile
+  Phone
+}
+
+type Query {
+  listContactTypes: [String]
+}
+
+type Mutation {
+  createUserContact(input: UserContactInput!): UserContactResponse
+  updateUserContact(id: Int!, input: UserContactInput!): UserContactResponse
+  removeUserContact(id: Int!): String
+}

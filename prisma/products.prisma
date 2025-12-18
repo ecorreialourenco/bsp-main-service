@@ -1,0 +1,155 @@
+model Products {
+  id            Int       @id @default(autoincrement())
+  ref           String
+  companyId     Int
+  productTypeId Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  deletedAt     DateTime?
+
+  company Company     @relation(fields: [companyId], references: [id])
+  type    ProductType @relation(fields: [productTypeId], references: [id])
+
+  languages  ProductLanguage[]
+  providers  ProductProvider[]
+  prices     ProductPrice[]
+  stocks     ProductStock[]
+  categories ProductCategory[]
+}
+
+model ProductLanguage {
+  id                Int       @id @default(autoincrement())
+  productId         Int
+  companyLanguageId Int
+  title             String
+  description       String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  deletedAt         DateTime?
+
+  product  Products         @relation(fields: [productId], references: [id])
+  language CompanyLanguages @relation(fields: [companyLanguageId], references: [id])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  companyId Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  names     CategoryName[]
+  products  ProductCategory[]
+  discounts CompanyClientDiscount[]
+}
+
+model CategoryName {
+  id                Int       @id @default(autoincrement())
+  categoryId        Int
+  companyLanguageId Int
+  ref               String
+  name              String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  deletedAt         DateTime?
+
+  category Category         @relation(fields: [categoryId], references: [id])
+  language CompanyLanguages @relation(fields: [companyLanguageId], references: [id])
+}
+
+model ProductCategory {
+  id         Int       @id @default(autoincrement())
+  productId  Int
+  categoryId Int
+  reatedAt   DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  product  Products @relation(fields: [productId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+}
+
+model ProductType {
+  id        Int       @id @default(autoincrement())
+  companyId Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  names     ProductTypeName[]
+  products  Products[]
+  discounts CompanyClientDiscount[]
+}
+
+model ProductTypeName {
+  id                Int       @id @default(autoincrement())
+  productTypeId     Int
+  companyLanguageId Int
+  ref               String
+  name              String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  deletedAt         DateTime?
+
+  type     ProductType      @relation(fields: [productTypeId], references: [id])
+  language CompanyLanguages @relation(fields: [companyLanguageId], references: [id])
+}
+
+model ProductProvider {
+  id         Int       @id @default(autoincrement())
+  productId  Int
+  providerId Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  product  Products                @relation(fields: [productId], references: [id])
+  provider Provider                @relation(fields: [providerId], references: [id])
+  prices   ProductProviderPrices[]
+}
+
+/**
+ * Selling price
+ */
+model ProductPrice {
+  id        Int       @id @default(autoincrement())
+  productId Int
+  price     Float
+  currency  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  product Products @relation(fields: [productId], references: [id])
+}
+
+/**
+ * Purchase price
+ */
+model ProductProviderPrices {
+  id                Int       @id @default(autoincrement())
+  productProviderId Int
+  price             Int
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  deletedAt         DateTime?
+
+  providers ProductProvider @relation(fields: [productProviderId], references: [id])
+}
+
+model ProductStock {
+  id        Int       @id @default(autoincrement())
+  productId Int
+  officeId  Int
+  quantity  Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  product Products @relation(fields: [productId], references: [id])
+  office  Office   @relation(fields: [officeId], references: [id])
+}
