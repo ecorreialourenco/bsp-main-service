@@ -15,7 +15,7 @@ type User {
   companyId: Int!
   company: Company
   contacts: [UserContact]
-  #role: UserRole
+  role: UserRole
 }
 
 input UserInput {

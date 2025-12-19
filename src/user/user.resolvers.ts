@@ -19,6 +19,7 @@ import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
 import { CompanyService } from 'src/company/company.service';
 
 import { UserContactsService } from './userContacts/userContacts.service';
+import { UserRoleService } from './userRole/userRole.service';
 import { UserService } from './user.service';
 
 @Resolver('User')
@@ -28,6 +29,7 @@ export class UserResolvers {
     private readonly userService: UserService,
     private readonly companyService: CompanyService,
     private readonly userContactsService: UserContactsService,
+    private readonly userRoleService: UserRoleService,
   ) {}
 
   @CheckPermission('users', 'read')
@@ -100,5 +102,10 @@ export class UserResolvers {
   @ResolveField('contacts')
   async getContacts(@Parent() user: User) {
     return await this.userContactsService.findByUserId({ userId: user.id });
+  }
+
+  @ResolveField('role')
+  async getRole(@Parent() user: User) {
+    return await this.userRoleService.findByUserId({ userId: user.id });
   }
 }

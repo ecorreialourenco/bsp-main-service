@@ -340,6 +340,7 @@ export class CompanyRole {
     minWages?: Nullable<number>;
     maxWages?: Nullable<number>;
     employeeCount?: Nullable<number>;
+    permissions?: Nullable<Nullable<CompanyPermission>[]>;
 }
 
 export class CompanyRolesResponsePaginated {
@@ -385,6 +386,7 @@ export class User {
     companyId: number;
     company?: Nullable<Company>;
     contacts?: Nullable<Nullable<UserContact>[]>;
+    role?: Nullable<UserRole>;
 }
 
 export class UserResponsePaginated {

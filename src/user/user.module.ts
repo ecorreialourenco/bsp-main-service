@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 
 import { PrismaModule } from '../prisma/prisma.module';
 import { UserContactsModule } from './userContacts/userContacts.module';
+import { UserRoleModule } from './userRole/userRole.module';
 import { UserResolvers } from './user.resolvers';
 import { UserService } from './user.service';
 
@@ -18,6 +19,12 @@ import { UserService } from './user.service';
       useValue: new PubSub(),
     },
   ],
-  imports: [PrismaModule, AuthModule, CompanyModule, UserContactsModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    CompanyModule,
+    UserContactsModule,
+    UserRoleModule,
+  ],
 })
 export class UserModule {}
