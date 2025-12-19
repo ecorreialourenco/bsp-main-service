@@ -5,6 +5,7 @@ export const menuStub = (): Menu => ({
   name: 'Dashboard',
   slug: 'dashboard',
   order: 1,
+  parentId: null,
   icon: 'some-icon',
   onlyAdmin: false,
   isVisible: true,

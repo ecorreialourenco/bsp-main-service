@@ -1,10 +1,5 @@
-import {
-  LoginResponse,
-  SignupInput,
-  SignupResponse,
-  UsernameValidationResponse,
-} from 'src/graphql.schema';
 import { compareSync, genSaltSync, hashSync } from 'bcrypt';
+import { SignupInput, User } from 'src/graphql.schema';
 
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
@@ -18,26 +13,26 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async findUsername(userName: string): Promise<UsernameValidationResponse> {
+  async findUsername(userName: string): Promise<boolean> {
     const user = await this.prisma.user.findUnique({ where: { userName } });
 
-    return { isValid: !user, status: 200 };
+    return !user;
   }
 
-  async login(userName: string, password: string): Promise<LoginResponse> {
+  async login(userName: string, password: string): Promise<string> {
     const searchByUsername = await this.prisma.user.findUnique({
       where: { userName },
     });
 
     if (!searchByUsername) {
-      return { status: 401, token: '' };
+      return '';
     }
 
     const userPassword: string = searchByUsername.password;
     const checkPassword = compareSync(password, userPassword);
 
     if (!checkPassword) {
-      return { status: 401, token: '' };
+      return '';
     }
 
     const userData = await this.prisma.user.findUnique({
@@ -52,10 +47,10 @@ export class AuthService {
       },
     });
 
-    return { token: this.jwtService.sign(userData!), status: 200 };
+    return this.jwtService.sign(userData!);
   }
 
-  async signup(input: SignupInput): Promise<SignupResponse> {
+  async signup(input: SignupInput): Promise<User | null> {
     const { company, office, user } = input;
 
     const newCompany = await this.prisma.company.create({ data: company });
@@ -108,7 +103,7 @@ export class AuthService {
       data: { userRoleId: userRole.id },
     });
 
-    const userData = await this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: { id: newUser.id },
       select: {
         id: true,
@@ -120,7 +115,5 @@ export class AuthService {
         employeeNr: true,
       },
     });
-
-    return { user: userData, status: 200 };
   }
 }

@@ -5,9 +5,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
 import { PermissionsGuard } from './auth/guards/permissions.guard';
+import { CompanyPermissionsModule } from './company/companyPermissions/companyPermissions.model';
+import { CompanyRoleModule } from './company/companyRole/companyRole.model';
+import { AdminModule } from './admin/admin.model';
 import { AuthModule } from './auth/auth.module';
 import { CompanyModule } from './company/company.model';
 import { OfficeModule } from './office/office.model';
@@ -16,8 +20,11 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    AdminModule,
     AuthModule,
     CompanyModule,
+    CompanyPermissionsModule,
+    CompanyRoleModule,
     OfficeModule,
     UserModule,
     PrismaModule,
@@ -46,8 +53,10 @@ import { UserModule } from './user/user.module';
           },
         },
       },
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       formatError: (error: GraphQLFormattedError) => {
-        const originalError = error.extensions?.originalError as {
+        const originalError = error?.extensions?.originalError as {
           message: string;
           statusCode: number;
         };
@@ -55,7 +64,7 @@ import { UserModule } from './user/user.module';
         return {
           message: error.message,
           code: error.extensions?.code || 'INTERNAL_SERVER_ERROR',
-          status: originalError.statusCode || 500,
+          status: originalError?.statusCode || 500,
         };
       },
       context: ({ req, extra }) => {

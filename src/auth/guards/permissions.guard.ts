@@ -11,6 +11,7 @@ import { Reflector } from '@nestjs/core';
 
 import { PermissionAction } from '../decorators/permissions.decorator';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { Role, ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -29,26 +30,49 @@ export class PermissionsGuard implements CanActivate {
       return true;
     }
 
-    const required = this.reflector.get<{
-      menuSlug: string;
-      action: PermissionAction;
-    }>('permission', context.getHandler());
-
-    if (!required) return true;
-
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().req.user;
     if (!user) {
       throw new ForbiddenException();
     }
 
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    console.log(
+      '🚀 ~ PermissionsGuard ~ canActivate ~ requiredRoles:',
+      requiredRoles,
+    );
+
+    const dbUser = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      select: { isAdmin: true },
+    });
+
+    if (requiredRoles?.includes(Role.ADMIN) && !dbUser?.isAdmin) {
+      throw new ForbiddenException();
+    }
+
+    if (dbUser?.isAdmin) return true;
+
     const userRole = await this.prisma.userRoles.findFirst({
       where: { userId: user.id },
     });
 
+    const required = this.reflector.get<{
+      menuSlug: string;
+      action: PermissionAction;
+    }>('permission', context.getHandler());
+    console.log('🚀 ~ PermissionsGuard ~ canActivate ~ required:', required);
+
+    if (!required) return true;
+    console.log('🚀 ~ PermissionsGuard ~ canActivate ~ userRole:', userRole);
+
     const menu = await this.prisma.menu.findUnique({
       where: { slug: required.menuSlug },
     });
+    console.log('🚀 ~ PermissionsGuard ~ canActivate ~ menu:', menu);
 
     if (!userRole || !menu) {
       throw new ForbiddenException();

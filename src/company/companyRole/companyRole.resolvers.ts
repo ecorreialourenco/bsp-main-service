@@ -3,15 +3,25 @@ import {
   CompanyRoleInput,
   CompanyRolesResponsePaginated,
 } from 'src/graphql.schema';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
 
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-
+import { CompanyPermissionsService } from '../companyPermissions/companyPermissions.service';
 import { CompanyRoleService } from './companyRole.service';
 
 @Resolver('CompanyRole')
 export class CompanyRoleResolvers {
-  constructor(private readonly companyRoleService: CompanyRoleService) {}
+  constructor(
+    private readonly companyRoleService: CompanyRoleService,
+    private readonly companyPermissionsService: CompanyPermissionsService,
+  ) {}
 
   @CheckPermission('company', 'read')
   @Query('listCompanyRoles')
@@ -48,4 +58,9 @@ export class CompanyRoleResolvers {
   async getEmployeeCount(@Parent() role: CompanyRole) {
     return await this.companyRoleService.findByCompanyId(company.id);
   } */
+
+  @ResolveField('permissions')
+  async getEmployeeCount(@Parent() role: CompanyRole) {
+    return await this.companyPermissionsService.findByRoleId(role.id);
+  }
 }

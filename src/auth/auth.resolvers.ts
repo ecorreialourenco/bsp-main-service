@@ -1,13 +1,7 @@
-import {
-  SignupInput,
-  LoginInput,
-  LoginResponse,
-  UsernameValidationResponse,
-  SignupResponse,
-} from '../graphql.schema';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Public } from './decorators/public.decorator';
+import { SignupInput, LoginInput, User } from '../graphql.schema';
 import { AuthService } from './auth.service';
 
 @Resolver('Auth')
@@ -16,9 +10,7 @@ export class AuthResolvers {
 
   @Public()
   @Query('checkUsername')
-  async checkUsername(
-    @Args('username') username: string,
-  ): Promise<UsernameValidationResponse> {
+  async checkUsername(@Args('username') username: string): Promise<boolean> {
     return await this.AuthService.findUsername(username);
   }
 
@@ -26,14 +18,14 @@ export class AuthResolvers {
   @Mutation('login')
   async login(
     @Args('input') { username, password }: LoginInput,
-  ): Promise<LoginResponse> {
+  ): Promise<string> {
     const loginData = await this.AuthService.login(username, password);
     return loginData;
   }
 
   @Public()
   @Mutation('signup')
-  async signup(@Args('input') args: SignupInput): Promise<SignupResponse> {
+  async signup(@Args('input') args: SignupInput): Promise<User | null> {
     return await this.AuthService.signup(args);
   }
 }

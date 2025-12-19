@@ -4,7 +4,7 @@ type CompanyRole {
   minWages: Float
   maxWages: Float
   employeeCount: Int
-  #permissions: [CompanyPermission]
+  permissions: [CompanyPermission]
 }
 
 input CompanyRoleInput {

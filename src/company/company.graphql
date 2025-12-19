@@ -7,11 +7,6 @@ type Company {
   roles: [CompanyRole]
 }
 
-type CompanyResponse {
-  company: Company
-  status: Int
-}
-
 type CompanyResponsePaginated {
   companies: [Company]
   totalCount: Int
@@ -26,6 +21,14 @@ input CompanyInput {
   name: String!
   website: String!
   userIds: Int
+}
+
+input CompaniesListInput {
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
 }
 
 enum CurrencyEnum {
@@ -43,10 +46,10 @@ enum CurrencyEnum {
 
 type Query {
   getCompany(id: Int!): Company
-  listCompanies: CompanyResponsePaginated
+  listCompanies(input: CompaniesListInput): CompanyResponsePaginated
 }
 
 type Mutation {
-  updateCompany(id: Int!, input: CompanyInput!): CompanyResponse
-  deleteCompany(id: Int!): CompanyResponse
+  updateCompany(id: Int!, input: CompanyInput!): Company
+  deleteCompany(id: Int!): String
 }

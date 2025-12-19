@@ -8,9 +8,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 import { Injectable } from '@nestjs/common';
 
+import { CompanyPermissionsService } from '../companyPermissions/companyPermissions.service';
+
 @Injectable()
 export class CompanyRoleService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private companyPermissionsService: CompanyPermissionsService,
+  ) {}
 
   async findAll({
     companyId,
@@ -20,7 +25,6 @@ export class CompanyRoleService {
     const roles = await this.prisma.companyRoles.findMany({
       where: { companyId },
     });
-    console.log('🚀 ~ CompanyRoleService ~ findAll ~ roles:', roles);
     const totalCount = await this.prisma.companyRoles.count({
       where: { companyId },
     });
@@ -29,9 +33,15 @@ export class CompanyRoleService {
   }
 
   async create({ input }: { input: CompanyRoleInput }): Promise<CompanyRole> {
-    return await this.prisma.companyRoles.create({
+    const newRole = await this.prisma.companyRoles.create({
       data: input,
     });
+
+    await this.companyPermissionsService.createPermissionsForNewRole(
+      newRole.id,
+    );
+
+    return newRole;
   }
 
   async update({

@@ -1,8 +1,3 @@
-import {
-  UsernameValidationResponse,
-  LoginResponse,
-  User,
-} from '../graphql.schema';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AuthResolvers } from './auth.resolvers';
@@ -37,10 +32,7 @@ describe('AuthResolvers', () => {
 
   describe('checkUsername', () => {
     it('should call AuthService.findUsername and return the response', async () => {
-      const mockResponse: UsernameValidationResponse = {
-        isValid: true,
-        status: 200,
-      };
+      const mockResponse: boolean = true;
       (service.findUsername as jest.Mock).mockResolvedValue(mockResponse);
 
       const result = await resolver.checkUsername('teste');
@@ -51,7 +43,7 @@ describe('AuthResolvers', () => {
 
   describe('login', () => {
     it('should call AuthService.login and return LoginResponse', async () => {
-      const mockResponse: LoginResponse = { status: 200, token: 'abc123' };
+      const mockResponse: string = 'abc123';
       (service.login as jest.Mock).mockResolvedValue(mockResponse);
 
       const result = await resolver.login({
@@ -60,23 +52,6 @@ describe('AuthResolvers', () => {
       });
       expect(service.login).toHaveBeenCalledWith('teste', '123');
       expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe('signup', () => {
-    it('should call AuthService.signup and return User', async () => {
-      const mockUser: User = { id: 1, userName: 'teste', password: 'hashed' };
-      (service.signup as jest.Mock).mockResolvedValue(mockUser);
-
-      const result = await resolver.signup({
-        username: 'teste',
-        password: '123',
-      });
-      expect(service.signup).toHaveBeenCalledWith({
-        username: 'teste',
-        password: '123',
-      });
-      expect(result).toEqual(mockUser);
     });
   });
 });

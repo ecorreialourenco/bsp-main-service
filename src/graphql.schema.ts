@@ -28,6 +28,38 @@ export enum ContactType {
     Phone = "Phone"
 }
 
+export class MenuInput {
+    name: string;
+    slug: string;
+    isVisible: boolean;
+    order: number;
+    icon: string;
+    parentId?: Nullable<number>;
+}
+
+export class MenuListInput {
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+    isVisible?: Nullable<boolean>;
+}
+
+export class LanguageListInput {
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+    isAvailable?: Nullable<boolean>;
+}
+
+export class LanguageInput {
+    code: string;
+    name: string;
+    isAvailable: boolean;
+}
+
 export class LoginInput {
     username: string;
     password: string;
@@ -64,6 +96,31 @@ export class CompanyInput {
     name: string;
     website: string;
     userIds?: Nullable<number>;
+}
+
+export class CompaniesListInput {
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
+export class CompanyPermissionInput {
+    companyRoleId: number;
+    menuPermissions: CompanyPermissionMenuInput[];
+}
+
+export class CompanyPermissionMenuInput {
+    menuId: number;
+    read?: Nullable<boolean>;
+    createUpdate?: Nullable<boolean>;
+    delete?: Nullable<boolean>;
+}
+
+export class UpdateCompanyPermissions {
+    id: number;
+    input: CompanyPermissionMenuInput;
 }
 
 export class CompanyRoleInput {
@@ -130,27 +187,45 @@ export class NewUserRole {
     companyRoleId: number;
 }
 
-export class UsernameValidationResponse {
-    isValid?: Nullable<boolean>;
-    status?: Nullable<number>;
+export class Menu {
+    id: number;
+    name: string;
+    slug: string;
+    onlyAdmin: boolean;
+    isVisible: boolean;
+    parentId?: Nullable<number>;
+    subMenu?: Nullable<Nullable<Menu>[]>;
+    order?: Nullable<number>;
+    icon?: Nullable<string>;
 }
 
-export class LoginResponse {
-    token?: Nullable<string>;
-    status?: Nullable<number>;
+export class MenuResponsePaginated {
+    menus?: Nullable<Nullable<Menu>[]>;
+    totalCount?: Nullable<number>;
 }
 
-export class SignupResponse {
-    user?: Nullable<User>;
-    status?: Nullable<number>;
+export class Language {
+    id?: Nullable<number>;
+    code?: Nullable<string>;
+    name?: Nullable<string>;
+    isAvailable?: Nullable<boolean>;
+}
+
+export class LanguagesResponsePaginated {
+    languages?: Nullable<Nullable<Language>[]>;
+    totalCount?: Nullable<number>;
 }
 
 export abstract class IQuery {
-    abstract checkUsername(username?: Nullable<string>): Nullable<UsernameValidationResponse> | Promise<Nullable<UsernameValidationResponse>>;
+    abstract listMenus(input?: Nullable<MenuListInput>): Nullable<MenuResponsePaginated> | Promise<Nullable<MenuResponsePaginated>>;
+
+    abstract listLanguages(input?: Nullable<LanguageListInput>): Nullable<LanguagesResponsePaginated> | Promise<Nullable<LanguagesResponsePaginated>>;
+
+    abstract checkUsername(username?: Nullable<string>): Nullable<boolean> | Promise<Nullable<boolean>>;
 
     abstract getCompany(id: number): Nullable<Company> | Promise<Nullable<Company>>;
 
-    abstract listCompanies(): Nullable<CompanyResponsePaginated> | Promise<Nullable<CompanyResponsePaginated>>;
+    abstract listCompanies(input?: Nullable<CompaniesListInput>): Nullable<CompanyResponsePaginated> | Promise<Nullable<CompanyResponsePaginated>>;
 
     abstract listCompanyRoles(companyId: number): Nullable<CompanyRolesResponsePaginated> | Promise<Nullable<CompanyRolesResponsePaginated>>;
 
@@ -168,13 +243,31 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract login(input?: Nullable<LoginInput>): Nullable<LoginResponse> | Promise<Nullable<LoginResponse>>;
+    abstract createMenu(input: MenuInput): Nullable<Menu> | Promise<Nullable<Menu>>;
 
-    abstract signup(input?: Nullable<SignupInput>): Nullable<SignupResponse> | Promise<Nullable<SignupResponse>>;
+    abstract updateMenu(id: number, input?: Nullable<MenuInput>): Nullable<Menu> | Promise<Nullable<Menu>>;
 
-    abstract updateCompany(id: number, input: CompanyInput): Nullable<CompanyResponse> | Promise<Nullable<CompanyResponse>>;
+    abstract deleteMenu(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract deleteCompany(id: number): Nullable<CompanyResponse> | Promise<Nullable<CompanyResponse>>;
+    abstract restoreMenu(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createLanguage(input: LanguageInput): Nullable<Language> | Promise<Nullable<Language>>;
+
+    abstract updateLanguage(id: number, input: LanguageInput): Nullable<Language> | Promise<Nullable<Language>>;
+
+    abstract login(input?: Nullable<LoginInput>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract signup(input?: Nullable<SignupInput>): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateCompany(id: number, input: CompanyInput): Nullable<Company> | Promise<Nullable<Company>>;
+
+    abstract deleteCompany(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createPermissions(input: CompanyPermissionInput): Nullable<Nullable<CompanyPermission>[]> | Promise<Nullable<Nullable<CompanyPermission>[]>>;
+
+    abstract updatePermissions(input: Nullable<UpdateCompanyPermissions>[]): Nullable<Nullable<CompanyPermission>[]> | Promise<Nullable<Nullable<CompanyPermission>[]>>;
+
+    abstract removePermissions(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createCompanyRole(input: CompanyRoleInput): Nullable<CompanyRole> | Promise<Nullable<CompanyRole>>;
 
@@ -209,6 +302,14 @@ export abstract class IMutation {
     abstract createUserRole(input: NewUserRole): UserRole | Promise<UserRole>;
 }
 
+export abstract class ISubscription {
+    abstract menuChanged(companyRoleId: number): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract languageChanged(): Nullable<Language> | Promise<Nullable<Language>>;
+
+    abstract userStatusChanged(): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
+}
+
 export class Company {
     id: number;
     name: string;
@@ -218,14 +319,19 @@ export class Company {
     roles?: Nullable<Nullable<CompanyRole>[]>;
 }
 
-export class CompanyResponse {
-    company?: Nullable<Company>;
-    status?: Nullable<number>;
-}
-
 export class CompanyResponsePaginated {
     companies?: Nullable<Nullable<Company>[]>;
     totalCount?: Nullable<number>;
+}
+
+export class CompanyPermission {
+    id: number;
+    read: boolean;
+    createUpdate: boolean;
+    delete: boolean;
+    companyRoleId: number;
+    menuId: number;
+    menu?: Nullable<Menu>;
 }
 
 export class CompanyRole {
@@ -267,6 +373,7 @@ export class User {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
     userName?: Nullable<string>;
+    isAdmin?: Nullable<boolean>;
     isActive?: Nullable<boolean>;
     address?: Nullable<string>;
     type?: Nullable<string>;
@@ -288,10 +395,6 @@ export class UserResponsePaginated {
 export class UserResponse {
     user?: Nullable<User>;
     status?: Nullable<number>;
-}
-
-export abstract class ISubscription {
-    abstract userStatusChanged(): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
 }
 
 export class UserContact {

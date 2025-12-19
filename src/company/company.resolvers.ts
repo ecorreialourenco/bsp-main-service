@@ -1,7 +1,7 @@
 import {
+  CompaniesListInput,
   Company,
   CompanyInput,
-  CompanyResponse,
   CompanyResponsePaginated,
 } from 'src/graphql.schema';
 import {
@@ -34,8 +34,10 @@ export class CompanyResolvers {
 
   @CheckPermission('company', 'read')
   @Query('listCompanies')
-  async listCompanies(): Promise<CompanyResponsePaginated> {
-    return await this.companyService.findAll();
+  async listCompanies(
+    @Args('input') input: CompaniesListInput,
+  ): Promise<CompanyResponsePaginated> {
+    return await this.companyService.findAll({ input });
   }
 
   @CheckPermission('company', 'createUpdate')
@@ -43,7 +45,7 @@ export class CompanyResolvers {
   async updateCompany(
     @Args('id') id: number,
     @Args('input') input: CompanyInput,
-  ): Promise<CompanyResponse> {
+  ): Promise<Company> {
     return await this.companyService.update({ id, input });
   }
 

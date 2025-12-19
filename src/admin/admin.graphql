@@ -1,0 +1,81 @@
+type Menu {
+  id: Int!
+  name: String!
+  slug: String!
+  onlyAdmin: Boolean!
+  isVisible: Boolean!
+  parentId: Int
+  subMenu: [Menu]
+  order: Int
+  icon: String
+}
+
+type MenuResponsePaginated {
+  menus: [Menu]
+  totalCount: Int
+}
+
+input MenuInput {
+  name: String!
+  slug: String!
+  isVisible: Boolean!
+  order: Int!
+  icon: String!
+  parentId: Int
+}
+
+input MenuListInput {
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+  isVisible: Boolean
+}
+
+type Language {
+  id: Int
+  code: String
+  name: String
+  isAvailable: Boolean
+}
+
+type LanguagesResponsePaginated {
+  languages: [Language]
+  totalCount: Int
+}
+
+input LanguageListInput {
+  limit: Int
+  offset: Int
+  sortBy: String
+  sortOrder: String
+  isAvailable: Boolean
+}
+
+input LanguageInput {
+  code: String!
+  name: String!
+  isAvailable: Boolean!
+}
+
+type Query {
+  listMenus(input: MenuListInput): MenuResponsePaginated
+
+  listLanguages(input: LanguageListInput): LanguagesResponsePaginated
+}
+
+type Mutation {
+  createMenu(input: MenuInput!): Menu
+  updateMenu(id: Int!, input: MenuInput): Menu
+  deleteMenu(id: Int!, forceDelete: Boolean): String
+  restoreMenu(id: Int!): String
+
+  createLanguage(input: LanguageInput!): Language
+  updateLanguage(id: Int!, input: LanguageInput!): Language
+}
+
+type Subscription {
+  menuChanged(companyRoleId: Int!): Boolean
+  languageChanged: Language
+}

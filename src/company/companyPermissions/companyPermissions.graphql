@@ -1,0 +1,32 @@
+type CompanyPermission {
+  id: Int!
+  read: Boolean!
+  createUpdate: Boolean!
+  delete: Boolean!
+  companyRoleId: Int!
+  menuId: Int!
+  menu: Menu
+}
+
+input CompanyPermissionInput {
+  companyRoleId: Int!
+  menuPermissions: [CompanyPermissionMenuInput!]!
+}
+
+input CompanyPermissionMenuInput {
+  menuId: Int!
+  read: Boolean
+  createUpdate: Boolean
+  delete: Boolean
+}
+
+input UpdateCompanyPermissions {
+  id: Int!
+  input: CompanyPermissionMenuInput!
+}
+
+type Mutation {
+  createPermissions(input: CompanyPermissionInput!): [CompanyPermission]
+  updatePermissions(input: [UpdateCompanyPermissions]!): [CompanyPermission]
+  removePermissions(id: Int): String
+}

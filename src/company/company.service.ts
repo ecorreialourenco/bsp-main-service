@@ -1,6 +1,6 @@
 import {
+  CompaniesListInput,
   CompanyInput,
-  CompanyResponse,
   CompanyResponsePaginated,
 } from 'src/graphql.schema';
 import { Injectable } from '@nestjs/common';
@@ -16,8 +16,18 @@ export class CompanyService {
     return this.prisma.company.findUnique({ where: { id } });
   }
 
-  async findAll(): Promise<CompanyResponsePaginated> {
-    const companies = await this.prisma.company.findMany();
+  async findAll({
+    input,
+  }: {
+    input: CompaniesListInput;
+  }): Promise<CompanyResponsePaginated> {
+    const companies = await this.prisma.company.findMany({
+      skip: input?.offset || 0,
+      take: input?.limit || 10,
+      orderBy: input?.sortBy
+        ? { [input?.sortBy]: input?.sortOrder || 'asc' }
+        : { id: 'asc' },
+    });
     const totalCount = await this.prisma.company.count();
 
     return { companies, totalCount };
@@ -29,13 +39,11 @@ export class CompanyService {
   }: {
     id: number;
     input: CompanyInput;
-  }): Promise<CompanyResponse> {
-    const company = await this.prisma.company.update({
+  }): Promise<Company> {
+    return await this.prisma.company.update({
       where: { id },
       data: input,
     });
-
-    return { status: 200, company };
   }
 
   async delete(id: number): Promise<string> {

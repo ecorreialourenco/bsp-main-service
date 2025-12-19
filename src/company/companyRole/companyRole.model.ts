@@ -4,12 +4,13 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 
 import { Module } from '@nestjs/common';
 
+import { CompanyPermissionsModule } from '../companyPermissions/companyPermissions.model';
 import { CompanyRoleResolvers } from './companyRole.resolvers';
 import { CompanyRoleService } from './companyRole.service';
 
 @Module({
   providers: [CompanyRoleResolvers, CompanyRoleService],
-  imports: [PrismaModule, AuthModule, OfficeModule],
+  imports: [PrismaModule, AuthModule, OfficeModule, CompanyPermissionsModule],
   exports: [CompanyRoleService],
 })
 export class CompanyRoleModule {}
