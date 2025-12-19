@@ -9,10 +9,15 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 
 import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
 import { PermissionsGuard } from './auth/guards/permissions.guard';
+import { ClientContactsModule } from './client/clientContacts/clientContacts.module';
+import { ClientRolesModule } from './client/clientRoles/clientRoles.module';
 import { CompanyPermissionsModule } from './company/companyPermissions/companyPermissions.module';
 import { CompanyRoleModule } from './company/companyRole/companyRole.module';
+import { UserContactsModule } from './user/userContacts/userContacts.module';
+import { UserRoleModule } from './user/userRole/userRole.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { ClientModule } from './client/client.module';
 import { CompanyModule } from './company/company.module';
 import { OfficeModule } from './office/office.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -23,10 +28,15 @@ import { UserModule } from './user/user.module';
     AdminModule,
     AuthModule,
     CompanyModule,
+    ClientModule,
+    ClientContactsModule,
+    ClientRolesModule,
     CompanyPermissionsModule,
     CompanyRoleModule,
     OfficeModule,
     UserModule,
+    UserContactsModule,
+    UserRoleModule,
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,

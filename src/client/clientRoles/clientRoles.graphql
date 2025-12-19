@@ -1,0 +1,37 @@
+type ClientRole {
+  id: Int
+  name: String
+  company: Company
+  clients: [Client]
+}
+
+type ClientRolesPaginated {
+  roles: [ClientRole]
+  totalCount: Int
+}
+
+input ClientRoleInput {
+  name: String!
+  companyId: Int!
+}
+
+input ClientRolesListInput {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type Query {
+  getClientRole(id: Int!): ClientRole
+  listClientRoles(input: ClientRolesListInput): ClientRolesPaginated
+}
+
+type Mutation {
+  createClientRole(input: ClientRoleInput!): ClientRole
+  updateClientRole(id: Int!, input: ClientRoleInput!): ClientRole
+  deleteClientRole(id: Int!, forceDelete: Boolean): String
+  restoreClientRole(id: Int!): String
+}

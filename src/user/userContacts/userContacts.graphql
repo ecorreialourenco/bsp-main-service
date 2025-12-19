@@ -11,11 +11,6 @@ input UserContactInput {
   userId: Int!
 }
 
-type UserContactResponse {
-  contact: UserContact!
-  status: Int!
-}
-
 enum ContactType {
   Email
   Fax
@@ -28,7 +23,7 @@ type Query {
 }
 
 type Mutation {
-  createUserContact(input: UserContactInput!): UserContactResponse
-  updateUserContact(id: Int!, input: UserContactInput!): UserContactResponse
+  createUserContact(input: UserContactInput!): UserContact
+  updateUserContact(id: Int!, input: UserContactInput!): UserContact
   removeUserContact(id: Int!): String
 }

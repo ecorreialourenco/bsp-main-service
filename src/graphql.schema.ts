@@ -7,26 +7,9 @@
 
 /* tslint:disable */
 /* eslint-disable */
-
-export enum CurrencyEnum {
-    EUR = "EUR",
-    USD = "USD",
-    GBP = "GBP",
-    JPY = "JPY",
-    AUD = "AUD",
-    CAD = "CAD",
-    CHF = "CHF",
-    CNY = "CNY",
-    SEK = "SEK",
-    NZD = "NZD"
-}
-
-export enum ContactType {
-    Email = "Email",
-    Fax = "Fax",
-    Mobile = "Mobile",
-    Phone = "Phone"
-}
+export type ClientType = "Personal" | "Company";
+export type CurrencyEnum = "EUR" | "USD" | "GBP" | "JPY" | "AUD" | "CAD" | "CHF" | "CNY" | "SEK" | "NZD";
+export type ContactType = "Email" | "Fax" | "Mobile" | "Phone";
 
 export class MenuInput {
     name: string;
@@ -90,6 +73,48 @@ export class SignupInput {
     user: SignupUserInput;
     company: SignupCompanyInput;
     office: SignupOfficeInput;
+}
+
+export class ClientInput {
+    name: string;
+    address: string;
+    type: ClientType;
+    city: string;
+    state: string;
+    country: string;
+    zipCode: string;
+    companyId: number;
+    companyClientRoleId: number;
+}
+
+export class ClientListInput {
+    companyId: number;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
+export class ClientContactInput {
+    contact: string;
+    name: string;
+    type: ContactType;
+    clientId: number;
+}
+
+export class ClientRoleInput {
+    name: string;
+    companyId: number;
+}
+
+export class ClientRolesListInput {
+    companyId: number;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
 }
 
 export class CompanyInput {
@@ -223,6 +248,16 @@ export abstract class IQuery {
 
     abstract checkUsername(username?: Nullable<string>): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract getClient(id: number): Nullable<Client> | Promise<Nullable<Client>>;
+
+    abstract listClients(input?: Nullable<ClientListInput>): Nullable<ClientResponsePaginated> | Promise<Nullable<ClientResponsePaginated>>;
+
+    abstract listClientTypes(): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
+
+    abstract getClientRole(id: number): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
+
+    abstract listClientRoles(input?: Nullable<ClientRolesListInput>): Nullable<ClientRolesPaginated> | Promise<Nullable<ClientRolesPaginated>>;
+
     abstract getCompany(id: number): Nullable<Company> | Promise<Nullable<Company>>;
 
     abstract listCompanies(input?: Nullable<CompaniesListInput>): Nullable<CompanyResponsePaginated> | Promise<Nullable<CompanyResponsePaginated>>;
@@ -259,6 +294,30 @@ export abstract class IMutation {
 
     abstract signup(input?: Nullable<SignupInput>): Nullable<User> | Promise<Nullable<User>>;
 
+    abstract createClient(input: ClientInput): Nullable<Client> | Promise<Nullable<Client>>;
+
+    abstract updateClient(id: number, input: ClientInput): Nullable<Client> | Promise<Nullable<Client>>;
+
+    abstract removeClient(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreClient(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createClientContact(input: ClientContactInput): Nullable<ClientContact> | Promise<Nullable<ClientContact>>;
+
+    abstract updateClientContact(id: number, input: ClientContactInput): Nullable<ClientContact> | Promise<Nullable<ClientContact>>;
+
+    abstract removeClientContact(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreClientContact(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createClientRole(input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
+
+    abstract updateClientRole(id: number, input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
+
+    abstract deleteClientRole(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreClientRole(id: number): Nullable<string> | Promise<Nullable<string>>;
+
     abstract updateCompany(id: number, input: CompanyInput): Nullable<Company> | Promise<Nullable<Company>>;
 
     abstract deleteCompany(id: number): Nullable<string> | Promise<Nullable<string>>;
@@ -293,9 +352,9 @@ export abstract class IMutation {
 
     abstract changeUserActiveStatus(id: number, status: boolean): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
 
-    abstract createUserContact(input: UserContactInput): Nullable<UserContactResponse> | Promise<Nullable<UserContactResponse>>;
+    abstract createUserContact(input: UserContactInput): Nullable<UserContact> | Promise<Nullable<UserContact>>;
 
-    abstract updateUserContact(id: number, input: UserContactInput): Nullable<UserContactResponse> | Promise<Nullable<UserContactResponse>>;
+    abstract updateUserContact(id: number, input: UserContactInput): Nullable<UserContact> | Promise<Nullable<UserContact>>;
 
     abstract removeUserContact(id: number): Nullable<string> | Promise<Nullable<string>>;
 
@@ -308,6 +367,45 @@ export abstract class ISubscription {
     abstract languageChanged(): Nullable<Language> | Promise<Nullable<Language>>;
 
     abstract userStatusChanged(): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
+}
+
+export class Client {
+    id: number;
+    name: string;
+    address: string;
+    type: ClientType;
+    city?: Nullable<string>;
+    state?: Nullable<string>;
+    country?: Nullable<string>;
+    zipCode?: Nullable<string>;
+    clientNr: number;
+    contacts?: Nullable<Nullable<ClientContact>[]>;
+    companyClientRoleId: number;
+    role?: Nullable<ClientRole>;
+}
+
+export class ClientResponsePaginated {
+    clients?: Nullable<Nullable<Client>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class ClientContact {
+    id?: Nullable<number>;
+    contact?: Nullable<string>;
+    type?: Nullable<ContactType>;
+    client?: Nullable<Client>;
+}
+
+export class ClientRole {
+    id?: Nullable<number>;
+    name?: Nullable<string>;
+    company?: Nullable<Company>;
+    clients?: Nullable<Nullable<Client>[]>;
+}
+
+export class ClientRolesPaginated {
+    roles?: Nullable<Nullable<ClientRole>[]>;
+    totalCount?: Nullable<number>;
 }
 
 export class Company {
@@ -404,11 +502,6 @@ export class UserContact {
     contact: string;
     user?: Nullable<User>;
     type: ContactType;
-}
-
-export class UserContactResponse {
-    contact: UserContact;
-    status: number;
 }
 
 export class UserRole {

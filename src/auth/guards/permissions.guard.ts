@@ -40,10 +40,6 @@ export class PermissionsGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    console.log(
-      '🚀 ~ PermissionsGuard ~ canActivate ~ requiredRoles:',
-      requiredRoles,
-    );
 
     const dbUser = await this.prisma.user.findUnique({
       where: { id: user.id },
@@ -64,15 +60,12 @@ export class PermissionsGuard implements CanActivate {
       menuSlug: string;
       action: PermissionAction;
     }>('permission', context.getHandler());
-    console.log('🚀 ~ PermissionsGuard ~ canActivate ~ required:', required);
 
     if (!required) return true;
-    console.log('🚀 ~ PermissionsGuard ~ canActivate ~ userRole:', userRole);
 
     const menu = await this.prisma.menu.findUnique({
       where: { slug: required.menuSlug },
     });
-    console.log('🚀 ~ PermissionsGuard ~ canActivate ~ menu:', menu);
 
     if (!userRole || !menu) {
       throw new ForbiddenException();

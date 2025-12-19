@@ -1,5 +1,5 @@
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
-import { UserContactInput, UserContactResponse } from 'src/graphql.schema';
+import { UserContact, UserContactInput } from 'src/graphql.schema';
 
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -19,7 +19,7 @@ export class UserContactsResolvers {
   @Mutation('createUserContact')
   async createUserContact(
     @Args('input') input: UserContactInput,
-  ): Promise<UserContactResponse> {
+  ): Promise<UserContact> {
     return await this.userContactsService.create({ input });
   }
 
@@ -28,7 +28,7 @@ export class UserContactsResolvers {
   async updateUserContact(
     @Args('id') id: number,
     @Args('input') input: UserContactInput,
-  ): Promise<UserContactResponse> {
+  ): Promise<UserContact> {
     return await this.userContactsService.update({ id, input });
   }
 

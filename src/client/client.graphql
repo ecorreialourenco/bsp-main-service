@@ -1,0 +1,58 @@
+type Client {
+  id: Int!
+  name: String!
+  address: String!
+  type: ClientType!
+  city: String
+  state: String
+  country: String
+  zipCode: String
+  clientNr: Int!
+  contacts: [ClientContact]
+  companyClientRoleId: Int!
+  role: ClientRole
+}
+
+type ClientResponsePaginated {
+  clients: [Client]
+  totalCount: Int
+}
+
+input ClientInput {
+  name: String!
+  address: String!
+  type: ClientType!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  companyId: Int!
+  companyClientRoleId: Int!
+}
+
+input ClientListInput {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+enum ClientType {
+  Personal
+  Company
+}
+
+type Query {
+  getClient(id: Int!): Client
+  listClients(input: ClientListInput): ClientResponsePaginated
+  listClientTypes: [String]
+}
+
+type Mutation {
+  createClient(input: ClientInput!): Client
+  updateClient(id: Int!, input: ClientInput!): Client
+  removeClient(id: Int!, forceDelete: Boolean): String
+  restoreClient(id: Int!): String
+}

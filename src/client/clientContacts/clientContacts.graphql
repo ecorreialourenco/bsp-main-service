@@ -1,0 +1,20 @@
+type ClientContact {
+  id: Int
+  contact: String
+  type: ContactType
+  client: Client
+}
+
+input ClientContactInput {
+  contact: String!
+  name: String!
+  type: ContactType!
+  clientId: Int!
+}
+
+type Mutation {
+  createClientContact(input: ClientContactInput!): ClientContact
+  updateClientContact(id: Int!, input: ClientContactInput!): ClientContact
+  removeClientContact(id: Int!, forceDelete: Boolean): String
+  restoreClientContact(id: Int!): String
+}
