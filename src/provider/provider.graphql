@@ -1,0 +1,50 @@
+type Provider {
+  id: Int!
+  name: String
+  address: String
+  city: String
+  state: String
+  country: String
+  zipCode: String
+  providerNr: Int
+  contacts: [ProviderContact]
+  #products: [Product]
+  productsCount: Int
+}
+
+type ProviderListPaginated {
+  providers: [Provider]
+  totalCount: Int
+}
+
+input ProviderInput {
+  name: String!
+  website: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  zipCode: String!
+  companyId: Int!
+}
+
+input ProviderListInput {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type Query {
+  getProvider(id: Int!): Provider
+  listProviders(input: ProviderListInput): ProviderListPaginated
+}
+
+type Mutation {
+  createProvider(input: ProviderInput!): Provider
+  updateProvider(id: Int!, input: ProviderInput!): Provider
+  removeProvider(id: Int!, forceDelete: Boolean): String
+  restoreProvider(id: Int!): String
+}

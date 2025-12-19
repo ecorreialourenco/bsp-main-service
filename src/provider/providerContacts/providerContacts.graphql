@@ -1,0 +1,21 @@
+type ProviderContact {
+  id: Int
+  name: String
+  contact: String
+  type: ContactType
+  provider: Provider
+}
+
+input ProviderContactInput {
+  contact: String!
+  name: String!
+  type: ContactType!
+  providerId: Int!
+}
+
+type Mutation {
+  createProviderContact(input: ProviderContactInput): ProviderContact
+  updateProviderContact(id: Int, input: ProviderContactInput): ProviderContact
+  removeProviderContact(id: Int): String
+  restoreProviderContact(id: Int): String
+}

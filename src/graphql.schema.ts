@@ -180,6 +180,33 @@ export class OfficeListInput {
     sortOrder?: Nullable<string>;
 }
 
+export class ProviderInput {
+    name: string;
+    website: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    zipCode: string;
+    companyId: number;
+}
+
+export class ProviderListInput {
+    companyId: number;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
+export class ProviderContactInput {
+    contact: string;
+    name: string;
+    type: ContactType;
+    providerId: number;
+}
+
 export class UserInput {
     firstName: string;
     lastName: string;
@@ -268,6 +295,10 @@ export abstract class IQuery {
 
     abstract listOffices(input?: Nullable<OfficeListInput>): Nullable<OfficeResponsePaginated> | Promise<Nullable<OfficeResponsePaginated>>;
 
+    abstract getProvider(id: number): Nullable<Provider> | Promise<Nullable<Provider>>;
+
+    abstract listProviders(input?: Nullable<ProviderListInput>): Nullable<ProviderListPaginated> | Promise<Nullable<ProviderListPaginated>>;
+
     abstract getUser(id: number): Nullable<User> | Promise<Nullable<User>>;
 
     abstract listUsers(input?: Nullable<ListUsers>): Nullable<UserResponsePaginated> | Promise<Nullable<UserResponsePaginated>>;
@@ -341,6 +372,22 @@ export abstract class IMutation {
     abstract deleteOffice(id?: Nullable<number>, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract restoreOffice(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createProvider(input: ProviderInput): Nullable<Provider> | Promise<Nullable<Provider>>;
+
+    abstract updateProvider(id: number, input: ProviderInput): Nullable<Provider> | Promise<Nullable<Provider>>;
+
+    abstract removeProvider(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreProvider(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createProviderContact(input?: Nullable<ProviderContactInput>): Nullable<ProviderContact> | Promise<Nullable<ProviderContact>>;
+
+    abstract updateProviderContact(id?: Nullable<number>, input?: Nullable<ProviderContactInput>): Nullable<ProviderContact> | Promise<Nullable<ProviderContact>>;
+
+    abstract removeProviderContact(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreProviderContact(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createUser(input: UserInput): UserResponse | Promise<UserResponse>;
 
@@ -465,6 +512,32 @@ export class OfficeResponse {
 export class OfficeResponsePaginated {
     offices?: Nullable<Nullable<Office>[]>;
     totalCount?: Nullable<number>;
+}
+
+export class Provider {
+    id: number;
+    name?: Nullable<string>;
+    address?: Nullable<string>;
+    city?: Nullable<string>;
+    state?: Nullable<string>;
+    country?: Nullable<string>;
+    zipCode?: Nullable<string>;
+    providerNr?: Nullable<number>;
+    contacts?: Nullable<Nullable<ProviderContact>[]>;
+    productsCount?: Nullable<number>;
+}
+
+export class ProviderListPaginated {
+    providers?: Nullable<Nullable<Provider>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class ProviderContact {
+    id?: Nullable<number>;
+    name?: Nullable<string>;
+    contact?: Nullable<string>;
+    type?: Nullable<ContactType>;
+    provider?: Nullable<Provider>;
 }
 
 export class User {
