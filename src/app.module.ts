@@ -9,12 +9,12 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 
 import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
 import { PermissionsGuard } from './auth/guards/permissions.guard';
-import { CompanyPermissionsModule } from './company/companyPermissions/companyPermissions.model';
-import { CompanyRoleModule } from './company/companyRole/companyRole.model';
-import { AdminModule } from './admin/admin.model';
+import { CompanyPermissionsModule } from './company/companyPermissions/companyPermissions.module';
+import { CompanyRoleModule } from './company/companyRole/companyRole.module';
+import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
-import { CompanyModule } from './company/company.model';
-import { OfficeModule } from './office/office.model';
+import { CompanyModule } from './company/company.module';
+import { OfficeModule } from './office/office.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 

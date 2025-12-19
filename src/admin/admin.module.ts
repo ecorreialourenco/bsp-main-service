@@ -1,5 +1,5 @@
 import { AuthModule } from 'src/auth/auth.module';
-import { CompanyPermissionsModule } from 'src/company/companyPermissions/companyPermissions.model';
+import { CompanyPermissionsModule } from 'src/company/companyPermissions/companyPermissions.module';
 
 import { forwardRef, Module } from '@nestjs/common';
 

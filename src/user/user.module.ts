@@ -1,6 +1,6 @@
 import { PubSub } from 'graphql-subscriptions';
 import { AuthModule } from 'src/auth/auth.module';
-import { CompanyModule } from 'src/company/company.model';
+import { CompanyModule } from 'src/company/company.module';
 
 import { Module } from '@nestjs/common';
 

@@ -1,4 +1,4 @@
-import { AdminModule } from 'src/admin/admin.model';
+import { AdminModule } from 'src/admin/admin.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
