@@ -13,6 +13,8 @@ import { ClientContactsModule } from './client/clientContacts/clientContacts.mod
 import { ClientRolesModule } from './client/clientRoles/clientRoles.module';
 import { CompanyPermissionsModule } from './company/companyPermissions/companyPermissions.module';
 import { CompanyRoleModule } from './company/companyRole/companyRole.module';
+import { CategoryModule } from './product/category/category.module';
+import { ProductTypeModule } from './product/productType/productType.module';
 import { ProviderContactsModule } from './provider/providerContacts/providerContacts.module';
 import { UserContactsModule } from './user/userContacts/userContacts.module';
 import { UserRoleModule } from './user/userRole/userRole.module';
@@ -22,6 +24,7 @@ import { ClientModule } from './client/client.module';
 import { CompanyModule } from './company/company.module';
 import { OfficeModule } from './office/office.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { ProductModule } from './product/product.module';
 import { ProviderModule } from './provider/provider.module';
 import { UserModule } from './user/user.module';
 
@@ -29,6 +32,7 @@ import { UserModule } from './user/user.module';
   imports: [
     AdminModule,
     AuthModule,
+    CategoryModule,
     CompanyModule,
     ClientModule,
     ClientContactsModule,
@@ -36,6 +40,8 @@ import { UserModule } from './user/user.module';
     CompanyPermissionsModule,
     CompanyRoleModule,
     OfficeModule,
+    ProductModule,
+    ProductTypeModule,
     ProviderModule,
     ProviderContactsModule,
     UserModule,

@@ -180,6 +180,90 @@ export class OfficeListInput {
     sortOrder?: Nullable<string>;
 }
 
+export class CategoryInput {
+    companyId: number;
+    names: CategoryNameInput[];
+}
+
+export class CategoryNameInput {
+    name: string;
+    productLanguagesInput: number;
+}
+
+export class CategoryListInput {
+    companyId: number;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
+export class ProductInput {
+    ref: string;
+    companyId: number;
+    productTypeId: number;
+    languages: Nullable<ProductLanguagesInput>[];
+    providers: Nullable<ProductProviderInput>[];
+}
+
+export class ProductLanguagesInput {
+    id?: Nullable<number>;
+    title: string;
+    description: string;
+    productLanguagesInput: number;
+}
+
+export class ProductProviderInput {
+    id?: Nullable<number>;
+    providerId: number;
+}
+
+export class ProductListInput {
+    companyId: number;
+    providerId?: Nullable<number>;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
+export class ProductProvidersInput {
+    productId: number;
+    providers: ProductProvidersPricesInput[];
+}
+
+export class ProductProvidersPricesInput {
+    providerId: number;
+    price: number;
+}
+
+export class UpdateProductProvidersPricesInput {
+    productId: number;
+    providerId: number;
+    price: number;
+}
+
+export class ProductTypeInput {
+    companyId: number;
+    names: ProductTypeNameInput[];
+}
+
+export class ProductTypeNameInput {
+    name: string;
+    companyLanguageId: number;
+}
+
+export class ProductTypeListInput {
+    companyId: number;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
 export class ProviderInput {
     name: string;
     website: string;
@@ -295,6 +379,14 @@ export abstract class IQuery {
 
     abstract listOffices(input?: Nullable<OfficeListInput>): Nullable<OfficeResponsePaginated> | Promise<Nullable<OfficeResponsePaginated>>;
 
+    abstract listCategories(input?: Nullable<CategoryListInput>): Nullable<CategoryResponsePaginated> | Promise<Nullable<CategoryResponsePaginated>>;
+
+    abstract getProduct(id: number): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract listProducts(input?: Nullable<ProductListInput>): Nullable<ProductResponsePaginated> | Promise<Nullable<ProductResponsePaginated>>;
+
+    abstract listProductTypes(input?: Nullable<ProductListInput>): Nullable<ProductTypeResponsePaginated> | Promise<Nullable<ProductTypeResponsePaginated>>;
+
     abstract getProvider(id: number): Nullable<Provider> | Promise<Nullable<Provider>>;
 
     abstract listProviders(input?: Nullable<ProviderListInput>): Nullable<ProviderListPaginated> | Promise<Nullable<ProviderListPaginated>>;
@@ -372,6 +464,34 @@ export abstract class IMutation {
     abstract deleteOffice(id?: Nullable<number>, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract restoreOffice(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createCategory(input: CategoryInput): Nullable<Category> | Promise<Nullable<Category>>;
+
+    abstract updateCategory(id: number, input: CategoryInput): Nullable<Category> | Promise<Nullable<Category>>;
+
+    abstract removeCategory(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreCategory(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createProduct(input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract updateProduct(id: number, input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract removeProduct(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreProduct(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createOrRestore(id?: Nullable<number>, input?: Nullable<ProductProvidersInput>): Nullable<Nullable<ProductProvider>[]> | Promise<Nullable<Nullable<ProductProvider>[]>>;
+
+    abstract updateProductProviderPrice(input?: Nullable<UpdateProductProvidersPricesInput>): Nullable<ProductProvider> | Promise<Nullable<ProductProvider>>;
+
+    abstract createProductType(input: ProductTypeInput): Nullable<ProductType> | Promise<Nullable<ProductType>>;
+
+    abstract updateProductType(id: number, input: ProductTypeInput): Nullable<ProductType> | Promise<Nullable<ProductType>>;
+
+    abstract removeProductType(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreProductType(id: number): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createProvider(input: ProviderInput): Nullable<Provider> | Promise<Nullable<Provider>>;
 
@@ -511,6 +631,102 @@ export class OfficeResponse {
 
 export class OfficeResponsePaginated {
     offices?: Nullable<Nullable<Office>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class Category {
+    id: number;
+    names?: Nullable<Nullable<CategoryName>[]>;
+    products?: Nullable<Nullable<Product>[]>;
+}
+
+export class CategoryName {
+    id?: Nullable<number>;
+    ref?: Nullable<string>;
+    name?: Nullable<string>;
+    companyLanguageId?: Nullable<number>;
+    language?: Nullable<Language>;
+}
+
+export class CategoryResponsePaginated {
+    categories?: Nullable<Nullable<Category>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class Product {
+    id: number;
+    ref?: Nullable<string>;
+    languages?: Nullable<Nullable<ProductLanguage>[]>;
+    providers?: Nullable<Nullable<Provider>[]>;
+    categories?: Nullable<Nullable<Category>[]>;
+    productTypeId: number;
+    type?: Nullable<ProductType>;
+    price?: Nullable<number>;
+    prices?: Nullable<Nullable<ProductPrice>[]>;
+    costPrice?: Nullable<Nullable<ProductCost>[]>;
+    stock?: Nullable<Nullable<ProductStock>[]>;
+}
+
+export class ProductCost {
+    id: number;
+    productProviderId?: Nullable<number>;
+    price?: Nullable<number>;
+}
+
+export class ProductLanguage {
+    id?: Nullable<number>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    languageId?: Nullable<number>;
+}
+
+export class ProductPrice {
+    id?: Nullable<number>;
+    productId?: Nullable<number>;
+    price?: Nullable<number>;
+    curency?: Nullable<CurrencyEnum>;
+}
+
+export class ProductStock {
+    id?: Nullable<number>;
+    product?: Nullable<Product>;
+    office?: Nullable<Office>;
+    quantity?: Nullable<number>;
+}
+
+export class ProductResponsePaginated {
+    products?: Nullable<Nullable<Product>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class ProductProvider {
+    id: number;
+    products?: Nullable<Nullable<Product>[]>;
+    providers?: Nullable<Nullable<ProductProviderPrice>[]>;
+    prices?: Nullable<Nullable<ProductProviderPrice>[]>;
+}
+
+export class ProductProviderPrice {
+    id?: Nullable<number>;
+    providerId?: Nullable<number>;
+    lastPrice?: Nullable<number>;
+    prices?: Nullable<number>;
+}
+
+export class ProductType {
+    id: number;
+    names?: Nullable<Nullable<ProductTypeName>[]>;
+    products?: Nullable<Nullable<Product>[]>;
+}
+
+export class ProductTypeName {
+    id?: Nullable<number>;
+    name?: Nullable<string>;
+    companyLanguageId?: Nullable<number>;
+}
+
+export class ProductTypeResponsePaginated {
+    types?: Nullable<Nullable<ProductType>[]>;
     totalCount?: Nullable<number>;
 }
 

@@ -1,0 +1,46 @@
+type ProductType {
+  id: Int!
+  names: [ProductTypeName]
+  products: [Product]
+}
+
+type ProductTypeName {
+  id: Int
+  name: String
+  companyLanguageId: Int
+}
+
+type ProductTypeResponsePaginated {
+  types: [ProductType]
+  totalCount: Int
+}
+
+input ProductTypeInput {
+  companyId: Int!
+  names: [ProductTypeNameInput!]!
+}
+
+input ProductTypeNameInput {
+  name: String!
+  companyLanguageId: Int!
+}
+
+input ProductTypeListInput {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type Query {
+  listProductTypes(input: ProductListInput): ProductTypeResponsePaginated
+}
+
+type Mutation {
+  createProductType(input: ProductTypeInput!): ProductType
+  updateProductType(id: Int!, input: ProductTypeInput!): ProductType
+  removeProductType(id: Int!, forceDelete: Boolean): String
+  restoreProductType(id: Int!): String
+}

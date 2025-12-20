@@ -1,0 +1,50 @@
+type Category {
+  id: Int!
+  names: [CategoryName]
+  products: [Product]
+}
+
+type CategoryName {
+  id: Int
+  ref: String
+  name: String
+  companyLanguageId: Int
+  language: Language
+}
+
+type CategoryResponsePaginated {
+  categories: [Category]
+  totalCount: Int
+}
+
+input CategoryInput {
+  companyId: Int!
+  names: [CategoryNameInput!]!
+}
+
+input CategoryNameInput {
+  name: String!
+  productLanguagesInput: Int!
+}
+
+input CategoryListInput {
+  companyId: Int!
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type Query {
+  listCategories(
+    input: CategoryListInput
+  ): CategoryResponsePaginated
+}
+
+type Mutation {
+  createCategory(input: CategoryInput!): Category
+  updateCategory(id: Int!, input: CategoryInput!): Category
+  removeCategory(id: Int!, forceDelete: Boolean): String
+  restoreCategory(id: Int!): String
+}

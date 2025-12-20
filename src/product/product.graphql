@@ -1,0 +1,87 @@
+type Product {
+  id: Int!
+  ref: String
+  languages: [ProductLanguage]
+  providers: [Provider]
+  categories: [Category]
+  productTypeId: Int!
+  type: ProductType
+  price: Float
+  prices: [ProductPrice]
+  costPrice: [ProductCost]
+  stock: [ProductStock]
+}
+
+type ProductCost {
+  id: Int!
+  productProviderId: Int
+  price: Float
+}
+
+type ProductLanguage {
+  id: Int
+  title: String
+  description: String
+  languageId: Int
+}
+
+type ProductPrice {
+  id: Int
+  productId: Int
+  price: Float
+  curency: CurrencyEnum
+}
+
+type ProductStock {
+  id: Int
+  product: Product
+  office: Office
+  quantity: Int
+}
+
+type ProductResponsePaginated {
+  products: [Product]
+  totalCount: Int
+}
+
+input ProductInput {
+  ref: String!
+  companyId: Int!
+  productTypeId: Int!
+  languages: [ProductLanguagesInput]!
+  providers: [ProductProviderInput]!
+}
+
+input ProductLanguagesInput {
+  id: Int
+  title: String!
+  description: String!
+  productLanguagesInput: Int!
+}
+
+input ProductProviderInput {
+  id: Int
+  providerId: Int!
+}
+
+input ProductListInput {
+  companyId: Int!
+  providerId: Int
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+type Query {
+  getProduct(id: Int!): Product
+  listProducts(input: ProductListInput): ProductResponsePaginated
+}
+
+type Mutation {
+  createProduct(input: ProductInput!): Product
+  updateProduct(id: Int!, input: ProductInput!): Product
+  removeProduct(id: Int!, forceDelete: Boolean): String
+  restoreProduct(id: Int!): String
+}

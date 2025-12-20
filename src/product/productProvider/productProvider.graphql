@@ -1,0 +1,36 @@
+type ProductProvider {
+  id: Int!
+  products: [Product]
+  providers: [ProductProviderPrice]
+  prices: [ProductProviderPrice]
+}
+
+type ProductProviderPrice {
+  id: Int
+  providerId: Int
+  lastPrice: Float
+  prices: Float
+}
+
+input ProductProvidersInput {
+  productId: Int!
+  providers: [ProductProvidersPricesInput!]!
+}
+
+input ProductProvidersPricesInput {
+  providerId: Int!
+  price: Float!
+}
+
+input UpdateProductProvidersPricesInput {
+  productId: Int!
+  providerId: Int!
+  price: Float!
+}
+
+type Mutation {
+  createOrRestore(id: Int, input: ProductProvidersInput): [ProductProvider]
+  updateProductProviderPrice(
+    input: UpdateProductProvidersPricesInput
+  ): ProductProvider
+}
