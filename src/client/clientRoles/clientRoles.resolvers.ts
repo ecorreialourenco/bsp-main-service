@@ -18,7 +18,7 @@ import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
 import { ClientDiscountService } from '../clientDiscount/clientDiscount.service';
 import { ClientRolesService } from './clientRoles.service';
 
-@Resolver('ClientRoles')
+@Resolver('ClientRole')
 export class ClientRolesResolvers {
   constructor(
     private readonly clientRolesService: ClientRolesService,

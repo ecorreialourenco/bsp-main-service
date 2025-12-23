@@ -10,13 +10,13 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { ClientDiscountService } from './clientDiscount.service';
 
-@Resolver('ClientDicount')
+@Resolver('ClientDiscount')
 export class ClientDiscountResolvers {
   constructor(private readonly clientDiscountService: ClientDiscountService) {}
 
   @CheckPermission('company', 'createUpdate')
-  @Query('listClientDicount')
-  async listClientDicount(
+  @Query('listClientDiscount')
+  async listClientDiscount(
     @Args('input') input: ListClientDiscountInput,
   ): Promise<ClientDiscountPaginated> {
     return await this.clientDiscountService.findAll({ input });
@@ -40,8 +40,8 @@ export class ClientDiscountResolvers {
   }
 
   @CheckPermission('company', 'delete')
-  @Mutation('deleteClientDiscount')
-  async deleteClientDiscount(
+  @Mutation('removeClientDiscount')
+  async removeClientDiscount(
     @Args('id') id: number,
     @Args('forceDelete') forceDelete?: boolean,
   ): Promise<string> {
