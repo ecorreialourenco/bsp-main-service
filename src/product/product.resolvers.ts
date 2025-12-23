@@ -3,6 +3,10 @@ import {
   Product,
   ProductInput,
   ProductResponsePaginated,
+  ProductPrice,
+  Category,
+  ProductType,
+  ProductProviderPrice,
 } from 'src/graphql.schema';
 import {
   Args,
@@ -74,37 +78,53 @@ export class ProductResolvers {
     return await this.productService.restore(id);
   }
 
+  @CheckPermission('products', 'delete')
+  @Mutation('updateProductPrice')
+  async updateProductPrice(
+    @Args('productId') productId: number,
+    @Args('price') price: number,
+    @Args('currency') currency: string,
+  ): Promise<ProductPrice> {
+    return await this.productService.updatePrice({
+      productId,
+      price,
+      currency,
+    });
+  }
+
   @ResolveField('categories')
-  async getCategories(@Parent() product: Product) {
+  async getCategories(@Parent() product: Product): Promise<Category[]> {
     return await this.categoryService.findByProductId({
       productId: product.id,
     });
   }
 
   @ResolveField('type')
-  async getType(@Parent() product: Product) {
+  async getType(@Parent() product: Product): Promise<ProductType | null> {
     return await this.productTypeService.findByTypeId({
       productTypeId: product.productTypeId,
     });
   }
 
   @ResolveField('price')
-  async getPrice(@Parent() product: Product) {
+  async getPrice(@Parent() product: Product): Promise<number> {
     return await this.productService.getPrice({
       productId: product.id,
     });
   }
 
   @ResolveField('prices')
-  async getPrices(@Parent() product: Product) {
+  async getPrices(@Parent() product: Product): Promise<ProductPrice[]> {
     return await this.productService.getPrices({
       productId: product.id,
     });
   }
 
-  @ResolveField('costPrice')
-  async getCostPrice(@Parent() product: Product) {
-    return await this.productProviderService.getProductPrice({
+  @ResolveField('costPrices')
+  async getCostPrices(
+    @Parent() product: Product,
+  ): Promise<ProductProviderPrice[]> {
+    return await this.productProviderService.getProductPrices({
       productId: product.id,
     });
   }

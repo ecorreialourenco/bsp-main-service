@@ -8,14 +8,8 @@ type Product {
   type: ProductType
   price: Float
   prices: [ProductPrice]
-  costPrice: [ProductCost]
+  costPrices: [ProductProviderPrice]
   stock: [ProductStock]
-}
-
-type ProductCost {
-  id: Int!
-  productProviderId: Int
-  price: Float
 }
 
 type ProductLanguage {
@@ -84,4 +78,6 @@ type Mutation {
   updateProduct(id: Int!, input: ProductInput!): Product
   removeProduct(id: Int!, forceDelete: Boolean): String
   restoreProduct(id: Int!): String
+
+  updateProductPrice(id: Int!, price: Float!): ProductPrice
 }

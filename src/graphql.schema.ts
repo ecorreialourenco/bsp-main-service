@@ -481,7 +481,7 @@ export abstract class IMutation {
 
     abstract restoreProduct(id: number): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract createOrRestore(id?: Nullable<number>, input?: Nullable<ProductProvidersInput>): Nullable<Nullable<ProductProvider>[]> | Promise<Nullable<Nullable<ProductProvider>[]>>;
+    abstract createOrRestoreProductProvider(id?: Nullable<number>, input?: Nullable<ProductProvidersInput>): Nullable<Nullable<ProductProvider>[]> | Promise<Nullable<Nullable<ProductProvider>[]>>;
 
     abstract updateProductProviderPrice(input?: Nullable<UpdateProductProvidersPricesInput>): Nullable<ProductProvider> | Promise<Nullable<ProductProvider>>;
 
@@ -663,14 +663,8 @@ export class Product {
     type?: Nullable<ProductType>;
     price?: Nullable<number>;
     prices?: Nullable<Nullable<ProductPrice>[]>;
-    costPrice?: Nullable<Nullable<ProductCost>[]>;
+    costPrices?: Nullable<Nullable<ProductProviderPrice>[]>;
     stock?: Nullable<Nullable<ProductStock>[]>;
-}
-
-export class ProductCost {
-    id: number;
-    productProviderId?: Nullable<number>;
-    price?: Nullable<number>;
 }
 
 export class ProductLanguage {

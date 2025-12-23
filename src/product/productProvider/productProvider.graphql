@@ -29,7 +29,10 @@ input UpdateProductProvidersPricesInput {
 }
 
 type Mutation {
-  createOrRestore(id: Int, input: ProductProvidersInput): [ProductProvider]
+  createOrRestoreProductProvider(
+    id: Int
+    input: ProductProvidersInput
+  ): [ProductProvider]
   updateProductProviderPrice(
     input: UpdateProductProvidersPricesInput
   ): ProductProvider

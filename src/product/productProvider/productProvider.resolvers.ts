@@ -21,8 +21,8 @@ export class ProductProviderResolvers {
   ) {}
 
   @CheckPermission('products', 'createUpdate')
-  @Mutation('createOrRestore')
-  async createOrRestore(
+  @Mutation('createOrRestoreProductProvider')
+  async createOrRestoreProductProvider(
     @Args('input') input: ProductProvidersInput,
   ): Promise<ProductProvider[] | null> {
     return await this.productProviderService.createOrRestore({ input });

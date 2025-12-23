@@ -1,5 +1,5 @@
 import {
-  ProductCost,
+  ProductProviderPrice,
   ProductProvidersInput,
   UpdateProductProvidersPricesInput,
 } from 'src/graphql.schema';
@@ -83,11 +83,11 @@ export class ProductProviderService {
     });
   }
 
-  async getProductPrice({
+  async getProductPrices({
     productId,
   }: {
     productId: number;
-  }): Promise<ProductCost[]> {
+  }): Promise<ProductProviderPrice[]> {
     const productProviders = await this.prisma.productProvider.findMany({
       where: { productId },
       include: {
@@ -98,18 +98,12 @@ export class ProductProviderService {
       },
     });
 
-    const providerPrices = await this.prisma.productProviderPrices.findMany({
+    return await this.prisma.productProviderPrices.findMany({
       where: {
         productProviderId: { in: productProviders.map((pp) => pp.id) },
         deletedAt: null,
       },
       orderBy: { createdAt: 'desc' },
     });
-
-    return providerPrices.map((pp) => ({
-      id: pp.id,
-      productProviderId: pp.productProviderId,
-      price: pp.price,
-    }));
   }
 }

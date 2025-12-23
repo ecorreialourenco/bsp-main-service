@@ -96,6 +96,20 @@ export class ProductService {
     return 'Product restored';
   }
 
+  async updatePrice({
+    productId,
+    price,
+    currency,
+  }: {
+    productId: number;
+    price: number;
+    currency: string;
+  }): Promise<ProductPrice> {
+    return await this.prisma.productPrice.create({
+      data: { productId, price, currency },
+    });
+  }
+
   async findByCategoryId({
     categoryId,
   }: {
