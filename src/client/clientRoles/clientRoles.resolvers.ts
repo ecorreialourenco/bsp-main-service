@@ -1,18 +1,29 @@
 import {
+  ClientDiscount,
   ClientRole,
   ClientRoleInput,
   ClientRolesListInput,
   ClientRolesPaginated,
 } from 'src/graphql.schema';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
 
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-
+import { ClientDiscountService } from '../clientDiscount/clientDiscount.service';
 import { ClientRolesService } from './clientRoles.service';
 
 @Resolver('ClientRoles')
 export class ClientRolesResolvers {
-  constructor(private readonly clientRolesService: ClientRolesService) {}
+  constructor(
+    private readonly clientRolesService: ClientRolesService,
+    private readonly clientDiscountService: ClientDiscountService,
+  ) {}
 
   @CheckPermission('clients', 'createUpdate')
   @Query('getClientRole')
@@ -54,15 +65,18 @@ export class ClientRolesResolvers {
     return await this.clientRolesService.delete({ id, forceDelete });
   }
 
-  /* @CheckPermission('clients', 'delete')
+  @CheckPermission('clients', 'delete')
   @Mutation('restoreClientRole')
   async restoreClientRole(@Args('id') id: number): Promise<string> {
     return await this.clientRolesService.delete({ id });
-  } */
+  }
 
-  /* @CheckPermission('clients', 'delete')
-  @Mutation('restoreClientRole')
-  async restoreClientRole(@Args('id') id: number): Promise<string> {
-    return await this.clientRolesService.delete({ id });
-  } */
+  @ResolveField('discounts')
+  async getDiscounts(
+    @Parent() clientRole: ClientRole,
+  ): Promise<ClientDiscount[]> {
+    return await this.clientDiscountService.findByClientRoleId({
+      clientRoleId: clientRole.id,
+    });
+  }
 }

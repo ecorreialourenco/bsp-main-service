@@ -103,6 +103,24 @@ export class ClientContactInput {
     clientId: number;
 }
 
+export class ListClientDiscountInput {
+    companyClientRoleId: number;
+    categoryId?: Nullable<number>;
+    productTypeId?: Nullable<number>;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
+}
+
+export class ClientDiscountInput {
+    companyClientRoleId: number;
+    percentage: number;
+    categoryId: number;
+    productTypeId: number;
+}
+
 export class ClientRoleInput {
     name: string;
     companyId: number;
@@ -365,6 +383,8 @@ export abstract class IQuery {
 
     abstract listClientTypes(): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
 
+    abstract listClientDiscount(input?: Nullable<ListClientDiscountInput>): Nullable<ClientDiscountPaginated> | Promise<Nullable<ClientDiscountPaginated>>;
+
     abstract getClientRole(id: number): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
 
     abstract listClientRoles(input?: Nullable<ClientRolesListInput>): Nullable<ClientRolesPaginated> | Promise<Nullable<ClientRolesPaginated>>;
@@ -433,6 +453,14 @@ export abstract class IMutation {
 
     abstract restoreClientContact(id: number): Nullable<string> | Promise<Nullable<string>>;
 
+    abstract createClientDiscount(input: ClientDiscountInput): Nullable<ClientDiscount> | Promise<Nullable<ClientDiscount>>;
+
+    abstract updateClientDiscount(id: number, input: ClientDiscountInput): Nullable<ClientDiscount> | Promise<Nullable<ClientDiscount>>;
+
+    abstract removeClientDiscount(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract restoreClientDiscount(id: number): Nullable<string> | Promise<Nullable<string>>;
+
     abstract createClientRole(input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
 
     abstract updateClientRole(id: number, input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
@@ -480,6 +508,8 @@ export abstract class IMutation {
     abstract removeProduct(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract restoreProduct(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract updateProductPrice(id: number, price: number): Nullable<ProductPrice> | Promise<Nullable<ProductPrice>>;
 
     abstract createOrRestoreProductProvider(id?: Nullable<number>, input?: Nullable<ProductProvidersInput>): Nullable<Nullable<ProductProvider>[]> | Promise<Nullable<Nullable<ProductProvider>[]>>;
 
@@ -563,11 +593,25 @@ export class ClientContact {
     client?: Nullable<Client>;
 }
 
-export class ClientRole {
+export class ClientDiscount {
     id?: Nullable<number>;
+    companyClientRoleId?: Nullable<number>;
+    percentage?: Nullable<number>;
+    categoryId?: Nullable<number>;
+    productTypeId?: Nullable<number>;
+}
+
+export class ClientDiscountPaginated {
+    discounts?: Nullable<Nullable<ClientDiscount>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class ClientRole {
+    id: number;
     name?: Nullable<string>;
     company?: Nullable<Company>;
     clients?: Nullable<Nullable<Client>[]>;
+    discounts?: Nullable<Nullable<ClientDiscount>[]>;
 }
 
 export class ClientRolesPaginated {

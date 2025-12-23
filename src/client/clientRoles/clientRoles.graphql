@@ -1,8 +1,9 @@
 type ClientRole {
-  id: Int
+  id: Int!
   name: String
   company: Company
   clients: [Client]
+  discounts: [ClientDiscount]
 }
 
 type ClientRolesPaginated {

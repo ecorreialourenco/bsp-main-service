@@ -1,0 +1,41 @@
+type ClientDiscount {
+  id: Int
+  companyClientRoleId: Int
+  percentage: Float
+  categoryId: Int
+  productTypeId: Int
+}
+
+type ClientDiscountPaginated {
+  discounts: [ClientDiscount]
+  totalCount: Int
+}
+
+input ListClientDiscountInput {
+  companyClientRoleId: Int!
+  categoryId: Int
+  productTypeId: Int
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
+input ClientDiscountInput {
+  companyClientRoleId: Int!
+  percentage: Float!
+  categoryId: Int!
+  productTypeId: Int!
+}
+
+type Query {
+  listClientDiscount(input: ListClientDiscountInput): ClientDiscountPaginated
+}
+
+type Mutation {
+  createClientDiscount(input: ClientDiscountInput!): ClientDiscount
+  updateClientDiscount(id: Int!, input: ClientDiscountInput!): ClientDiscount
+  removeClientDiscount(id: Int!, forceDelete: Boolean): String
+  restoreClientDiscount(id: Int!): String
+}
