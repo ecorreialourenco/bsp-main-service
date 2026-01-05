@@ -14,6 +14,7 @@ import {
 } from '@nestjs/graphql';
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
 import { OfficeService } from 'src/office/office.service';
+import { UserService } from 'src/user/user.service';
 
 import { CompanyRoleService } from './companyRole/companyRole.service';
 import { CompanyService } from './company.service';
@@ -24,6 +25,7 @@ export class CompanyResolvers {
     private readonly companyService: CompanyService,
     private readonly officeService: OfficeService,
     private readonly companyRoleService: CompanyRoleService,
+    private readonly userService: UserService,
   ) {}
 
   @CheckPermission('company', 'read')
@@ -63,5 +65,10 @@ export class CompanyResolvers {
   @ResolveField('roles')
   async getRoles(@Parent() company: Company) {
     return await this.companyRoleService.findByCompanyId(company.id);
+  }
+
+  @ResolveField('users')
+  async getUsers(@Parent() company: Company) {
+    return await this.userService.findByCompanyId({ companyId: company.id });
   }
 }

@@ -101,4 +101,10 @@ export class UserService {
 
     return { user, status: 200 };
   }
+
+  async findByCompanyId({ companyId }: { companyId: number }): Promise<User[]> {
+    return await this.prisma.user.findMany({
+      where: { companyId },
+    });
+  }
 }

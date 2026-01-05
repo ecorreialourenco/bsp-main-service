@@ -1,7 +1,8 @@
 import { AuthModule } from 'src/auth/auth.module';
 import { OfficeModule } from 'src/office/office.module';
+import { UserModule } from 'src/user/user.module';
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { PrismaModule } from '../prisma/prisma.module';
 import { CompanyRoleModule } from './companyRole/companyRole.module';
@@ -10,7 +11,13 @@ import { CompanyService } from './company.service';
 
 @Module({
   providers: [CompanyResolvers, CompanyService],
-  imports: [PrismaModule, AuthModule, OfficeModule, CompanyRoleModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    OfficeModule,
+    CompanyRoleModule,
+    forwardRef(() => UserModule),
+  ],
   exports: [CompanyService],
 })
 export class CompanyModule {}

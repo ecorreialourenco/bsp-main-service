@@ -2,7 +2,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { AuthModule } from 'src/auth/auth.module';
 import { CompanyModule } from 'src/company/company.module';
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { PrismaModule } from '../prisma/prisma.module';
 import { UserContactsModule } from './userContacts/userContacts.module';
@@ -19,12 +19,13 @@ import { UserService } from './user.service';
       useValue: new PubSub(),
     },
   ],
+  exports: [UserService],
   imports: [
     PrismaModule,
     AuthModule,
-    CompanyModule,
     UserContactsModule,
     UserRoleModule,
+    forwardRef(() => CompanyModule),
   ],
 })
 export class UserModule {}
