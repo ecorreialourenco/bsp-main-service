@@ -31,7 +31,8 @@ export class MenuService {
     } = {
       parentId: null,
     };
-    if (input.isVisible) {
+
+    if (input?.isVisible) {
       where = { ...where, isVisible: input.isVisible };
     }
 

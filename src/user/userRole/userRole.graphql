@@ -15,4 +15,9 @@ type Query {
 
 type Mutation {
   createUserRole(input: NewUserRole!): UserRole!
+  changeUserRole(userId: Int!, companyRoleId: Int!): UserRole!
+}
+
+type Subscription {
+  userRoleChanged(userId: Int!): UserRole
 }

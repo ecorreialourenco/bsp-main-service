@@ -349,6 +349,7 @@ export class Menu {
     isVisible: boolean;
     parentId?: Nullable<number>;
     subMenu?: Nullable<Nullable<Menu>[]>;
+    userPermission?: Nullable<CompanyPermission>;
     order?: Nullable<number>;
     icon?: Nullable<string>;
 }

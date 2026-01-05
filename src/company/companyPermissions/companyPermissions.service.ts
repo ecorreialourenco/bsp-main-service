@@ -63,10 +63,12 @@ export class CompanyPermissionsService {
     });
   }
 
-  async createPermissionsForNewMenu(menuId: number) {
+  async createPermissionsForNewMenu(
+    menuId: number,
+  ): Promise<CompanyPermission[]> {
     const roles = await this.prisma.companyRoles.findMany();
 
-    return await this.prisma.companyPermissions.createMany({
+    await this.prisma.companyPermissions.createMany({
       data: roles.map((role) => ({
         read: role.isProtected ? true : false,
         createUpdate: role.isProtected ? true : false,
@@ -75,19 +77,25 @@ export class CompanyPermissionsService {
         companyRoleId: role.id,
       })),
     });
+
+    return await this.prisma.companyPermissions.findMany({
+      where: { menuId, deletedAt: null },
+    });
   }
 
-  async createPermissionsForNewRole(roleId: number) {
+  async createPermissionsForNewRole(
+    roleId: number,
+  ): Promise<CompanyPermission[]> {
     const menus = await this.prisma.menu.findMany();
     const role = await this.prisma.companyRoles.findUnique({
       where: { id: roleId },
     });
 
     if (!role) {
-      return null;
+      return [];
     }
 
-    return await this.prisma.companyPermissions.createMany({
+    await this.prisma.companyPermissions.createMany({
       data: menus.map((menu) => ({
         read: role.isProtected ? true : false,
         createUpdate: role.isProtected ? true : false,
@@ -95,6 +103,31 @@ export class CompanyPermissionsService {
         menuId: menu.id,
         companyRoleId: role.id,
       })),
+    });
+
+    return await this.prisma.companyPermissions.findMany({
+      where: { companyRoleId: roleId, deletedAt: null },
+    });
+  }
+
+  async findMenuPermissionsByUser({
+    menuId,
+    userId,
+  }: {
+    menuId: number;
+    userId: number;
+  }): Promise<CompanyPermission | null> {
+    const userRole = await this.prisma.userRoles.findFirst({
+      where: { userId, deletedAt: null },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!userRole) {
+      return null;
+    }
+
+    return await this.prisma.companyPermissions.findFirst({
+      where: { menuId, companyRoleId: userRole?.companyRoleId },
     });
   }
 }

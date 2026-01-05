@@ -18,6 +18,18 @@ export class UserRoleService {
     return await this.prisma.userRoles.create({ data: input });
   }
 
+  async updateRole({
+    userId,
+    companyRoleId,
+  }: {
+    userId: number;
+    companyRoleId: number;
+  }): Promise<UserRole> {
+    return await this.prisma.userRoles.create({
+      data: { companyRoleId, userId },
+    });
+  }
+
   async countByRole({
     companyRoleId,
   }: {
