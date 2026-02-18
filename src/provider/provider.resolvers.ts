@@ -14,6 +14,7 @@ import {
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
+import { ProductService } from 'src/product/product.service';
 
 import { ProviderContactsService } from './providerContacts/providerContacts.service';
 import { ProviderService } from './provider.service';
@@ -24,15 +25,16 @@ export class ProviderResolvers {
   constructor(
     private readonly providerService: ProviderService,
     private readonly providerContactsService: ProviderContactsService,
+    private readonly productService: ProductService,
   ) {}
 
-  @CheckPermission('provider', 'read')
+  @CheckPermission('providers', 'read')
   @Query('getProvider')
   async getProvider(@Args('id') id: number): Promise<Provider | null> {
     return await this.providerService.findOne(id);
   }
 
-  @CheckPermission('provider', 'read')
+  @CheckPermission('providers', 'read')
   @Query('listProviders')
   async listProviders(
     @Args('input') input: ProviderListInput,
@@ -40,13 +42,13 @@ export class ProviderResolvers {
     return await this.providerService.findAll({ input });
   }
 
-  @CheckPermission('provider', 'createUpdate')
+  @CheckPermission('providers', 'createUpdate')
   @Mutation('createProvider')
   async createProvider(@Args('input') input: ProviderInput): Promise<Provider> {
     return await this.providerService.create({ input });
   }
 
-  @CheckPermission('provider', 'createUpdate')
+  @CheckPermission('providers', 'createUpdate')
   @Mutation('updateProvider')
   async updateProvider(
     @Args('id') id: number,
@@ -55,7 +57,7 @@ export class ProviderResolvers {
     return await this.providerService.update({ id, input });
   }
 
-  @CheckPermission('provider', 'delete')
+  @CheckPermission('providers', 'delete')
   @Mutation('removeProvider')
   async removeProvider(
     @Args('id') id: number,
@@ -64,7 +66,7 @@ export class ProviderResolvers {
     return await this.providerService.delete({ id, forceDelete });
   }
 
-  @CheckPermission('provider', 'delete')
+  @CheckPermission('providers', 'delete')
   @Mutation('restoreProvider')
   async restoreProvider(@Args('id') id: number): Promise<string> {
     return await this.providerService.restore(id);
@@ -73,6 +75,15 @@ export class ProviderResolvers {
   @ResolveField('contacts')
   async getContacts(@Parent() provider: Provider) {
     return await this.providerContactsService.findByProviderId({
+      providerId: provider.id,
+    });
+  }
+
+  @ResolveField('productsCount')
+  async getProviderProductsCount(
+    @Parent() provider: Provider,
+  ): Promise<number> {
+    return await this.productService.countProductsByProviderId({
       providerId: provider.id,
     });
   }

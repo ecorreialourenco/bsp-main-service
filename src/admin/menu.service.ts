@@ -93,6 +93,7 @@ export class MenuService {
   async findSubMenu(id: number): Promise<Menu[]> {
     return await this.prisma.menu.findMany({
       where: { parentId: id },
+      orderBy: { order: 'asc' },
     });
   }
 

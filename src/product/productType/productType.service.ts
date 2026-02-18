@@ -65,7 +65,7 @@ export class ProductTypeService {
     id: number;
     input: ProductTypeInput;
   }): Promise<ProductType | null> {
-    const updates = await this.prisma.$transaction(
+    await this.prisma.$transaction(
       input.names.map((lang) =>
         this.prisma.productTypeName.upsert({
           where: { id },
@@ -80,7 +80,6 @@ export class ProductTypeService {
         }),
       ),
     );
-    console.log('🚀 ~ ProductTypeService ~ update ~ updates:', updates);
 
     return await this.prisma.productType.findUnique({
       where: { id },

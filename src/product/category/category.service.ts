@@ -67,7 +67,7 @@ export class CategoryService {
     id: number;
     input: CategoryInput;
   }): Promise<Category | null> {
-    const updates = await this.prisma.$transaction(
+    await this.prisma.$transaction(
       input.names.map((lang) =>
         this.prisma.categoryName.upsert({
           where: { id },
@@ -82,7 +82,6 @@ export class CategoryService {
         }),
       ),
     );
-    console.log('🚀 ~ CategoryService ~ update ~ updates:', updates);
 
     return await this.prisma.category.findUnique({
       where: { id },

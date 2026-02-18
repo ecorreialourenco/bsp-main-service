@@ -15,6 +15,7 @@ export class MenuInput {
     name: string;
     slug: string;
     isVisible: boolean;
+    onlyAdmin?: Nullable<boolean>;
     order: number;
     icon: string;
     parentId?: Nullable<number>;
@@ -324,6 +325,7 @@ export class UserInput {
 
 export class ListUsers {
     companyId: number;
+    userRoleId?: Nullable<number>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     sortBy?: Nullable<string>;
@@ -557,14 +559,18 @@ export abstract class IMutation {
     abstract removeUserContact(id: number): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createUserRole(input: NewUserRole): UserRole | Promise<UserRole>;
+
+    abstract changeUserRole(userId: number, companyRoleId: number): UserRole | Promise<UserRole>;
 }
 
 export abstract class ISubscription {
-    abstract menuChanged(companyRoleId: number): Nullable<boolean> | Promise<Nullable<boolean>>;
+    abstract menuChanged(): Nullable<Menu> | Promise<Nullable<Menu>>;
 
     abstract languageChanged(): Nullable<Language> | Promise<Nullable<Language>>;
 
     abstract userStatusChanged(): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
+
+    abstract userRoleChanged(userId: number): Nullable<UserRole> | Promise<Nullable<UserRole>>;
 }
 
 export class Client {

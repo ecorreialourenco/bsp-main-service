@@ -18,15 +18,28 @@ export class UserService {
   }
 
   async findAll({
-    input: { companyId, offset, limit, sortBy, sortOrder },
+    input: { companyId, userRoleId, offset, limit, sortBy, sortOrder },
   }: {
     input: ListUsers;
   }): Promise<UserResponsePaginated> {
+    const filters: {
+      companyId: number;
+      id?: { in: number[] };
+      deletedAt: null;
+    } = {
+      companyId,
+      deletedAt: null,
+    };
+
+    if (userRoleId) {
+      const filterUserByRole = await this.prisma.userRoles.findMany({
+        where: { companyRoleId: userRoleId },
+      });
+      filters.id = { in: filterUserByRole.map((ur) => ur.userId) };
+    }
+
     const users = await this.prisma.user.findMany({
-      where: {
-        companyId,
-        deletedAt: null,
-      },
+      where: filters,
       take: limit ?? 10,
       skip: offset ?? 0,
       orderBy: sortBy
@@ -35,7 +48,7 @@ export class UserService {
           }
         : { id: 'asc' },
     });
-    const totalCount = await this.prisma.user.count({ where: { companyId } });
+    const totalCount = await this.prisma.user.count({ where: filters });
 
     return { users, totalCount };
   }

@@ -33,6 +33,7 @@ input UserInput {
 
 input ListUsers {
   companyId: Int!
+  userRoleId: Int
   limit: Int
   offset: Int
   sortBy: String

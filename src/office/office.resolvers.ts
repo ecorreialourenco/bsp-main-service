@@ -15,13 +15,13 @@ import { OfficeService } from './office.service';
 export class OfficeResolvers {
   constructor(private readonly officeService: OfficeService) {}
 
-  @CheckPermission('office', 'read')
+  @CheckPermission('offices', 'read')
   @Query('getOffice')
   async getOffice(@Args('id') id: number): Promise<Office | null> {
     return await this.officeService.findOne(id);
   }
 
-  @CheckPermission('office', 'read')
+  @CheckPermission('offices', 'read')
   @Query('listOffices')
   async listOffices(
     @Args('input') input: OfficeListInput,
@@ -29,7 +29,7 @@ export class OfficeResolvers {
     return await this.officeService.findAll({ input });
   }
 
-  @CheckPermission('office', 'createUpdate')
+  @CheckPermission('offices', 'createUpdate')
   @Mutation('createOffice')
   async createOffice(
     @Args('input') input: OfficeInput,
@@ -37,7 +37,7 @@ export class OfficeResolvers {
     return await this.officeService.create({ input });
   }
 
-  @CheckPermission('office', 'createUpdate')
+  @CheckPermission('offices', 'createUpdate')
   @Mutation('updateOffice')
   async updateOffice(
     @Args('id') id: number,
@@ -46,7 +46,7 @@ export class OfficeResolvers {
     return await this.officeService.update({ id, input });
   }
 
-  @CheckPermission('office', 'delete')
+  @CheckPermission('offices', 'delete')
   @Mutation('deleteOffice')
   async deleteOffice(
     @Args('id') id: number,
@@ -55,7 +55,7 @@ export class OfficeResolvers {
     return await this.officeService.delete(id, forceDelete);
   }
 
-  @CheckPermission('office', 'delete')
+  @CheckPermission('offices', 'delete')
   @Mutation('restoreOffice')
   async restoreOffice(@Args('id') id: number): Promise<string> {
     return await this.officeService.delete(id);

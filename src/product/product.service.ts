@@ -18,15 +18,32 @@ export class ProductService {
   }
 
   async findAll({
-    input: { companyId, offset, limit, sortBy, sortOrder },
+    input: { companyId, providerId, offset, limit, sortBy, sortOrder },
   }: {
     input: ProductListInput;
   }): Promise<ProductResponsePaginated> {
+    const filters: {
+      companyId: number;
+      id?: { in: number[] };
+      deletedAt: null;
+    } = {
+      companyId,
+      deletedAt: null,
+    };
+
+    if (providerId) {
+      const providerProducts = await this.prisma.productProvider.findMany({
+        where: {
+          providerId,
+          deletedAt: null,
+        },
+      });
+
+      filters.id = { in: providerProducts.map((pp) => pp.productId) };
+    }
+
     const products = await this.prisma.products.findMany({
-      where: {
-        companyId,
-        deletedAt: null,
-      },
+      where: filters,
       take: limit ?? 10,
       skip: offset ?? 0,
       orderBy: sortBy
@@ -35,9 +52,7 @@ export class ProductService {
           }
         : { id: 'asc' },
     });
-    const totalCount = await this.prisma.products.count({
-      where: { companyId },
-    });
+    const totalCount = await this.prisma.products.count({ where: filters });
 
     return { products, totalCount };
   }
@@ -149,5 +164,17 @@ export class ProductService {
     return await this.prisma.productPrice.findMany({
       where: { productId },
     });
+  }
+
+  async countProductsByProviderId({
+    providerId,
+  }: {
+    providerId: number;
+  }): Promise<number> {
+    const products = await this.prisma.productProvider.groupBy({
+      by: ['productId'],
+      where: { providerId },
+    });
+    return products.length || 0;
   }
 }
