@@ -2,6 +2,7 @@ type ClientContact {
   id: Int
   contact: String
   type: ContactType
+  name: String
   client: Client
 }
 

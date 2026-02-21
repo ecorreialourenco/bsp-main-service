@@ -1,0 +1,12 @@
+input ListUserPermissions {
+  userId: Int!
+  menuId: Int
+}
+
+type UserPermissionsResponse {
+  permissions: [CompanyPermission]
+}
+
+type Query {
+  listUserPermissions(input: ListUserPermissions): UserPermissionsResponse
+}

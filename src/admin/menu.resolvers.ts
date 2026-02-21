@@ -36,8 +36,9 @@ export class MenuResolvers {
   @Query('listMenus')
   async listMenus(
     @Args('input') input: MenuListInput,
+    @CurrentUser() user: any,
   ): Promise<MenuResponsePaginated> {
-    return await this.menuService.findAll({ input });
+    return await this.menuService.findAll({ input, user });
   }
 
   @Mutation('createMenu')

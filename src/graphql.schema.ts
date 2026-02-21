@@ -15,7 +15,7 @@ export class MenuInput {
     name: string;
     slug: string;
     isVisible: boolean;
-    onlyAdmin?: Nullable<boolean>;
+    onlyAdmin: boolean;
     order: number;
     icon: string;
     parentId?: Nullable<number>;
@@ -338,6 +338,11 @@ export class UserContactInput {
     userId: number;
 }
 
+export class ListUserPermissions {
+    userId: number;
+    menuId?: Nullable<number>;
+}
+
 export class NewUserRole {
     userId: number;
     companyRoleId: number;
@@ -419,6 +424,8 @@ export abstract class IQuery {
     abstract listUsers(input?: Nullable<ListUsers>): Nullable<UserResponsePaginated> | Promise<Nullable<UserResponsePaginated>>;
 
     abstract listContactTypes(): Nullable<Nullable<string>[]> | Promise<Nullable<Nullable<string>[]>>;
+
+    abstract listUserPermissions(input?: Nullable<ListUserPermissions>): Nullable<UserPermissionsResponse> | Promise<Nullable<UserPermissionsResponse>>;
 
     abstract getUserRole(userId: number): Nullable<UserRole> | Promise<Nullable<UserRole>>;
 }
@@ -597,6 +604,7 @@ export class ClientContact {
     id?: Nullable<number>;
     contact?: Nullable<string>;
     type?: Nullable<ContactType>;
+    name?: Nullable<string>;
     client?: Nullable<Client>;
 }
 
@@ -722,7 +730,7 @@ export class ProductLanguage {
     id?: Nullable<number>;
     title?: Nullable<string>;
     description?: Nullable<string>;
-    languageId?: Nullable<number>;
+    companyLanguageId?: Nullable<number>;
 }
 
 export class ProductPrice {
@@ -836,6 +844,10 @@ export class UserContact {
     contact: string;
     user?: Nullable<User>;
     type: ContactType;
+}
+
+export class UserPermissionsResponse {
+    permissions?: Nullable<Nullable<CompanyPermission>[]>;
 }
 
 export class UserRole {

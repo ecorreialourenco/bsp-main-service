@@ -17,6 +17,7 @@ import { CategoryModule } from './product/category/category.module';
 import { ProductTypeModule } from './product/productType/productType.module';
 import { ProviderContactsModule } from './provider/providerContacts/providerContacts.module';
 import { UserContactsModule } from './user/userContacts/userContacts.module';
+import { UserPermissionsModule } from './user/userPermissions/userPermissions.module';
 import { UserRoleModule } from './user/userRole/userRole.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
@@ -46,6 +47,7 @@ import { UserModule } from './user/user.module';
     ProviderContactsModule,
     UserModule,
     UserContactsModule,
+    UserPermissionsModule,
     UserRoleModule,
     PrismaModule,
     ConfigModule.forRoot({

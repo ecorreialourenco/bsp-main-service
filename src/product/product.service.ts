@@ -5,7 +5,7 @@ import {
   ProductResponsePaginated,
 } from 'src/graphql.schema';
 import { Injectable } from '@nestjs/common';
-import { Products } from '@prisma/client';
+import { ProductLanguage, Products } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -176,5 +176,15 @@ export class ProductService {
       where: { providerId },
     });
     return products.length || 0;
+  }
+
+  async getProductLanguages({
+    productId,
+  }: {
+    productId: number;
+  }): Promise<ProductLanguage[]> {
+    return await this.prisma.productLanguage.findMany({
+      where: { productId },
+    });
   }
 }

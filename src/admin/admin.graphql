@@ -20,7 +20,7 @@ input MenuInput {
   name: String!
   slug: String!
   isVisible: Boolean!
-  onlyAdmin: Boolean
+  onlyAdmin: Boolean!
   order: Int!
   icon: String!
   parentId: Int

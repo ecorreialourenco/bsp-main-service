@@ -16,7 +16,7 @@ type ProductLanguage {
   id: Int
   title: String
   description: String
-  languageId: Int
+  companyLanguageId: Int
 }
 
 type ProductPrice {

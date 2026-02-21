@@ -6,7 +6,7 @@ import {
 import { CompanyPermissionsService } from 'src/company/companyPermissions/companyPermissions.service';
 
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { Menu } from '@prisma/client';
+import { Menu, User } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -20,8 +20,10 @@ export class MenuService {
 
   async findAll({
     input,
+    user,
   }: {
     input: MenuListInput;
+    user: User;
   }): Promise<MenuResponsePaginated> {
     let where: {
       id?: { in: number[] };
@@ -34,6 +36,19 @@ export class MenuService {
 
     if (input?.isVisible) {
       where = { ...where, isVisible: input.isVisible };
+    }
+
+    if (!user.isAdmin) {
+      const userRole = await this.prisma.userRoles.findFirst({
+        where: { userId: user.id },
+      });
+      const menuWithPermission = await this.prisma.companyPermissions.findMany({
+        where: { companyRoleId: userRole?.companyRoleId, read: true },
+      });
+      where = {
+        ...where,
+        id: { in: menuWithPermission.map((mwp) => mwp.menuId) },
+      };
     }
 
     const menus = await this.prisma.menu.findMany({

@@ -19,6 +19,8 @@ import {
 import { PubSub } from 'graphql-subscriptions';
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
 
+import { ProductLanguage } from '@prisma/client';
+
 import { CategoryService } from './category/category.service';
 import { ProductProviderService } from './productProvider/productProvider.service';
 import { ProductTypeService } from './productType/productType.service';
@@ -125,6 +127,15 @@ export class ProductResolvers {
     @Parent() product: Product,
   ): Promise<ProductProviderPrice[]> {
     return await this.productProviderService.getProductPrices({
+      productId: product.id,
+    });
+  }
+
+  @ResolveField('languages')
+  async getProductLanguages(
+    @Parent() product: Product,
+  ): Promise<ProductLanguage[]> {
+    return await this.productService.getProductLanguages({
       productId: product.id,
     });
   }
