@@ -32,6 +32,7 @@ input ClientInput {
 
 input ClientListInput {
   companyId: Int!
+  search: String
   limit: Int
   offset: Int
   cursor: Int

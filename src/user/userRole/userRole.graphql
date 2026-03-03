@@ -2,6 +2,7 @@ type UserRole {
   id: Int!
   userId: Int
   companyRoleId: Int
+  name: String
 }
 
 input NewUserRole {

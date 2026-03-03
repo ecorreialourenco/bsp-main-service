@@ -90,6 +90,7 @@ export class ClientInput {
 
 export class ClientListInput {
     companyId: number;
+    search?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -296,6 +297,7 @@ export class ProviderInput {
 
 export class ProviderListInput {
     companyId: number;
+    search?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -325,6 +327,7 @@ export class UserInput {
 
 export class ListUsers {
     companyId: number;
+    search?: Nullable<string>;
     userRoleId?: Nullable<number>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
@@ -854,6 +857,7 @@ export class UserRole {
     id: number;
     userId?: Nullable<number>;
     companyRoleId?: Nullable<number>;
+    name?: Nullable<string>;
 }
 
 type Nullable<T> = T | null;

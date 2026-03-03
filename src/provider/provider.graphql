@@ -30,6 +30,7 @@ input ProviderInput {
 
 input ProviderListInput {
   companyId: Int!
+  search: String
   limit: Int
   offset: Int
   cursor: Int

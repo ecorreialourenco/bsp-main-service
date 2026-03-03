@@ -1,15 +1,26 @@
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+  Subscription,
+} from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { CheckPermission } from 'src/auth/decorators/permissions.decorator';
+import { CompanyRoleService } from 'src/company/companyRole/companyRole.service';
 import { NewUserRole, UserRole } from 'src/graphql.schema';
-
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 
 import { UserRoleService } from './userRole.service';
 
 @Resolver('UserRole')
 export class UserRoleResolvers {
   private readonly pubSub = new PubSub();
-  constructor(private readonly userRoleService: UserRoleService) {}
+  constructor(
+    private readonly userRoleService: UserRoleService,
+    private readonly companyRoleService: CompanyRoleService,
+  ) {}
 
   @CheckPermission('users', 'read')
   @Query('getUserRole')
@@ -42,5 +53,12 @@ export class UserRoleResolvers {
   @Subscription('userRoleChanged')
   userRoleChanged() {
     return this.pubSub.asyncIterableIterator('userRoleChanged');
+  }
+
+  @ResolveField('name')
+  async getRole(@Parent() userRole: UserRole) {
+    return await this.companyRoleService
+      .findById(userRole.id)
+      .then((res) => res?.name ?? '');
   }
 }

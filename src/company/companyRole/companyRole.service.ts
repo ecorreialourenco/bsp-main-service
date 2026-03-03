@@ -17,6 +17,10 @@ export class CompanyRoleService {
     private companyPermissionsService: CompanyPermissionsService,
   ) {}
 
+  async findById(id: number) {
+    return await this.prisma.companyRoles.findUnique({ where: { id } });
+  }
+
   async findAll({
     companyId,
   }: {

@@ -17,15 +17,26 @@ export class ProviderService {
   }
 
   async findAll({
-    input: { companyId, offset, limit, sortBy, sortOrder },
+    input: { companyId, search, offset, limit, sortBy, sortOrder },
   }: {
     input: ProviderListInput;
   }): Promise<ProviderListPaginated> {
+    const where: {
+      companyId: number;
+      deletedAt: null;
+      name?: {
+        contains: string;
+      };
+    } = { companyId, deletedAt: null };
+
+    if (search) {
+      where.name = {
+        contains: search,
+      };
+    }
+
     const providers = await this.prisma.provider.findMany({
-      where: {
-        companyId,
-        deletedAt: null,
-      },
+      where,
       take: limit ?? 10,
       skip: offset ?? 0,
       orderBy: sortBy

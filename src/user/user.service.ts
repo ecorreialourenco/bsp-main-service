@@ -18,7 +18,7 @@ export class UserService {
   }
 
   async findAll({
-    input: { companyId, userRoleId, offset, limit, sortBy, sortOrder },
+    input: { companyId, search, userRoleId, offset, limit, sortBy, sortOrder },
   }: {
     input: ListUsers;
   }): Promise<UserResponsePaginated> {
@@ -26,10 +26,23 @@ export class UserService {
       companyId: number;
       id?: { in: number[] };
       deletedAt: null;
+      OR?: [
+        { firstName: { contains: string } },
+        { lastName: { contains: string } },
+        { userName: { contains: string } },
+      ];
     } = {
       companyId,
       deletedAt: null,
     };
+
+    if (search) {
+      filters.OR = [
+        { firstName: { contains: search } },
+        { lastName: { contains: search } },
+        { userName: { contains: search } },
+      ];
+    }
 
     if (userRoleId) {
       const filterUserByRole = await this.prisma.userRoles.findMany({
