@@ -39,16 +39,8 @@ export class MenuService {
     }
 
     if (!user.isAdmin) {
-      const userRole = await this.prisma.userRoles.findFirst({
-        where: { userId: user.id },
-      });
-      const menuWithPermission = await this.prisma.companyPermissions.findMany({
-        where: { companyRoleId: userRole?.companyRoleId, read: true },
-      });
-      where = {
-        ...where,
-        id: { in: menuWithPermission.map((mwp) => mwp.menuId) },
-      };
+      const menuIds = await this.getMenuIdsByUserPermissions(user.id);
+      where = { ...where, id: { in: menuIds }, onlyAdmin: false };
     }
 
     const menus = await this.prisma.menu.findMany({
@@ -105,9 +97,17 @@ export class MenuService {
     return 'Menu restored';
   }
 
-  async findSubMenu(id: number): Promise<Menu[]> {
+  async findSubMenu({
+    id,
+    userId,
+  }: {
+    id: number;
+    userId: number;
+  }): Promise<Menu[]> {
+    const menuIds = await this.getMenuIdsByUserPermissions(userId);
+
     return await this.prisma.menu.findMany({
-      where: { parentId: id },
+      where: { parentId: id, id: { in: menuIds } },
       orderBy: { order: 'asc' },
     });
   }
@@ -116,5 +116,16 @@ export class MenuService {
     return await this.prisma.menu.findUnique({
       where: { id },
     });
+  }
+
+  async getMenuIdsByUserPermissions(userId: number): Promise<number[]> {
+    const userRole = await this.prisma.userRoles.findFirst({
+      where: { userId: userId },
+    });
+    const menuWithPermission = await this.prisma.companyPermissions.findMany({
+      where: { companyRoleId: userRole?.companyRoleId, read: true },
+    });
+
+    return menuWithPermission.map((mwp) => mwp.menuId);
   }
 }

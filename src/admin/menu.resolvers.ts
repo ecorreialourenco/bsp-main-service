@@ -86,8 +86,8 @@ export class MenuResolvers {
   }
 
   @ResolveField('subMenu')
-  async getSubMenu(@Parent() menu: Menu) {
-    return await this.menuService.findSubMenu(menu.id);
+  async getSubMenu(@Parent() menu: Menu, @CurrentUser() user: any) {
+    return await this.menuService.findSubMenu({ id: menu.id, userId: user.id });
   }
 
   @UseGuards(GqlAuthGuard)

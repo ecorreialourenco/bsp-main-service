@@ -11,6 +11,7 @@ import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
 import { PermissionsGuard } from './auth/guards/permissions.guard';
 import { ClientContactsModule } from './client/clientContacts/clientContacts.module';
 import { ClientRolesModule } from './client/clientRoles/clientRoles.module';
+import { CompanyLanguagesModule } from './company/companyLanguages/companyLanguages.module';
 import { CompanyPermissionsModule } from './company/companyPermissions/companyPermissions.module';
 import { CompanyRoleModule } from './company/companyRole/companyRole.module';
 import { CategoryModule } from './product/category/category.module';
@@ -40,6 +41,7 @@ import { UserModule } from './user/user.module';
     ClientRolesModule,
     CompanyPermissionsModule,
     CompanyRoleModule,
+    CompanyLanguagesModule,
     OfficeModule,
     ProductModule,
     ProductTypeModule,

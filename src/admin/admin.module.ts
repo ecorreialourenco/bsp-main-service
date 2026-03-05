@@ -16,6 +16,6 @@ import { MenuService } from './menu.service';
     AuthModule,
     forwardRef(() => CompanyPermissionsModule),
   ],
-  exports: [AdminModule, MenuService],
+  exports: [AdminModule, MenuService, LanguageService],
 })
 export class AdminModule {}

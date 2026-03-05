@@ -1,0 +1,35 @@
+type CompanyLanguages {
+  id: Int!
+  companyId: Int!
+  languageId: Int!
+  isDefault: Boolean
+  name: String
+}
+
+input CompanyLanguagesInput {
+  companyId: Int!
+  languageId: Int!
+  isDefault: Boolean!
+}
+
+input UpdateCompanyLanguagesInput {
+  isDefault: Boolean!
+}
+
+type CompanyLanguagesResponsePaginated {
+  languages: [CompanyLanguages]
+  totalCount: Int
+}
+
+type Query {
+  listCompanyLanguages(companyId: Int!): CompanyLanguagesResponsePaginated
+}
+
+type Mutation {
+  createCompanyLanguages(input: CompanyLanguagesInput!): CompanyLanguages
+  updateCompanyLanguages(
+    id: Int!
+    input: UpdateCompanyLanguagesInput!
+  ): CompanyLanguages
+  deleteCompanyLanguages(id: Int!): String
+}

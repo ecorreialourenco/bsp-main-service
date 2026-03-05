@@ -12,6 +12,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export class LanguageService {
   constructor(private prisma: PrismaService) {}
 
+  async getById({ id }: { id: number }): Promise<Language | null> {
+    return await this.prisma.language.findUnique({
+      where: { id },
+    });
+  }
+
   async findAll({
     input,
   }: {

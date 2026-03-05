@@ -151,6 +151,16 @@ export class CompaniesListInput {
     sortOrder?: Nullable<string>;
 }
 
+export class CompanyLanguagesInput {
+    companyId: number;
+    languageId: number;
+    isDefault: boolean;
+}
+
+export class UpdateCompanyLanguagesInput {
+    isDefault: boolean;
+}
+
 export class CompanyPermissionInput {
     companyRoleId: number;
     menuPermissions: CompanyPermissionMenuInput[];
@@ -404,6 +414,8 @@ export abstract class IQuery {
 
     abstract listCompanies(input?: Nullable<CompaniesListInput>): Nullable<CompanyResponsePaginated> | Promise<Nullable<CompanyResponsePaginated>>;
 
+    abstract listCompanyLanguages(companyId: number): Nullable<CompanyLanguagesResponsePaginated> | Promise<Nullable<CompanyLanguagesResponsePaginated>>;
+
     abstract listCompanyRoles(companyId: number): Nullable<CompanyRolesResponsePaginated> | Promise<Nullable<CompanyRolesResponsePaginated>>;
 
     abstract getOffice(Id?: Nullable<number>): Nullable<Office> | Promise<Nullable<Office>>;
@@ -485,6 +497,12 @@ export abstract class IMutation {
     abstract updateCompany(id: number, input: CompanyInput): Nullable<Company> | Promise<Nullable<Company>>;
 
     abstract deleteCompany(id: number): Nullable<string> | Promise<Nullable<string>>;
+
+    abstract createCompanyLanguages(input: CompanyLanguagesInput): Nullable<CompanyLanguages> | Promise<Nullable<CompanyLanguages>>;
+
+    abstract updateCompanyLanguages(id: number, input: UpdateCompanyLanguagesInput): Nullable<CompanyLanguages> | Promise<Nullable<CompanyLanguages>>;
+
+    abstract deleteCompanyLanguages(id: number): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createPermissions(input: CompanyPermissionInput): Nullable<Nullable<CompanyPermission>[]> | Promise<Nullable<Nullable<CompanyPermission>[]>>;
 
@@ -648,6 +666,19 @@ export class Company {
 
 export class CompanyResponsePaginated {
     companies?: Nullable<Nullable<Company>[]>;
+    totalCount?: Nullable<number>;
+}
+
+export class CompanyLanguages {
+    id: number;
+    companyId: number;
+    languageId: number;
+    isDefault?: Nullable<boolean>;
+    name?: Nullable<string>;
+}
+
+export class CompanyLanguagesResponsePaginated {
+    languages?: Nullable<Nullable<CompanyLanguages>[]>;
     totalCount?: Nullable<number>;
 }
 
