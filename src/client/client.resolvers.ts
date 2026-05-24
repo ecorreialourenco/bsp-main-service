@@ -30,7 +30,7 @@ export class ClientResolvers {
 
   @CheckPermission('clients', 'read')
   @Query('getClient')
-  async getClient(@Args('id') id: number): Promise<Client | null> {
+  async getClient(@Args('id') id: string): Promise<Client | null> {
     return await this.clientService.findOne(id);
   }
 
@@ -57,7 +57,7 @@ export class ClientResolvers {
   @CheckPermission('clients', 'createUpdate')
   @Mutation('updateClient')
   async updateClient(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ClientInput,
   ): Promise<Client> {
     return await this.clientService.update({ id, input });
@@ -66,7 +66,7 @@ export class ClientResolvers {
   @CheckPermission('clients', 'delete')
   @Mutation('removeClient')
   async removeClient(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete: boolean,
   ): Promise<string> {
     return await this.clientService.delete({ id, forceDelete });
@@ -74,7 +74,7 @@ export class ClientResolvers {
 
   @CheckPermission('clients', 'delete')
   @Mutation('restoreClient')
-  async restoreClient(@Args('id') id: number): Promise<string> {
+  async restoreClient(@Args('id') id: string): Promise<string> {
     return await this.clientService.restore(id);
   }
 

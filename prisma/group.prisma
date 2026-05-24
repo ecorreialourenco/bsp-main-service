@@ -1,0 +1,13 @@
+model Group {
+  id        String    @id @default(uuid(7))
+  name      String
+   planId              String    
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  plan                GroupPlan @relation(fields: [planId], references: [id])
+  
+  companies   Company[]
+}
+

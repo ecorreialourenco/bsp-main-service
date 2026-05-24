@@ -3,6 +3,11 @@ input LoginInput {
   password: String!
 }
 
+input Group {
+  id: String
+  name: String
+}
+
 input SignupUserInput {
   firstName: String!
   lastName: String!

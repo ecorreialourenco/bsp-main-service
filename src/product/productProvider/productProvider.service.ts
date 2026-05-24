@@ -76,7 +76,7 @@ export class ProductProviderService {
     });
   }
 
-  async getPrice({ productProviderId }: { productProviderId: number }) {
+  async getPrice({ productProviderId }: { productProviderId: string }) {
     return this.prisma.productProviderPrices.findMany({
       where: { productProviderId, deletedAt: null },
       orderBy: { createdAt: 'desc' },
@@ -86,7 +86,7 @@ export class ProductProviderService {
   async getProductPrices({
     productId,
   }: {
-    productId: number;
+    productId: string;
   }): Promise<ProductProviderPrice[]> {
     const productProviders = await this.prisma.productProvider.findMany({
       where: { productId },

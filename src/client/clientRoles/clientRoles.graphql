@@ -1,5 +1,5 @@
 type ClientRole {
-  id: Int!
+  id: String!
   name: String
   company: Company
   clients: [Client]
@@ -13,11 +13,11 @@ type ClientRolesPaginated {
 
 input ClientRoleInput {
   name: String!
-  companyId: Int!
+  companyId: String!
 }
 
 input ClientRolesListInput {
-  companyId: Int!
+  companyId: String!
   limit: Int
   offset: Int
   cursor: Int
@@ -26,13 +26,13 @@ input ClientRolesListInput {
 }
 
 type Query {
-  getClientRole(id: Int!): ClientRole
+  getClientRole(id: String!): ClientRole
   listClientRoles(input: ClientRolesListInput): ClientRolesPaginated
 }
 
 type Mutation {
   createClientRole(input: ClientRoleInput!): ClientRole
-  updateClientRole(id: Int!, input: ClientRoleInput!): ClientRole
-  deleteClientRole(id: Int!, forceDelete: Boolean): String
-  restoreClientRole(id: Int!): String
+  updateClientRole(id: String!, input: ClientRoleInput!): ClientRole
+  deleteClientRole(id: String!, forceDelete: Boolean): String
+  restoreClientRole(id: String!): String
 }

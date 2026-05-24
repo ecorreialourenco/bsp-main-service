@@ -1,10 +1,10 @@
 type Menu {
-  id: Int!
+  id: String!
   name: String!
   slug: String!
   onlyAdmin: Boolean!
   isVisible: Boolean!
-  parentId: Int
+  parentId: String
   subMenu: [Menu]
   userPermission: CompanyPermission
   order: Int
@@ -23,7 +23,7 @@ input MenuInput {
   onlyAdmin: Boolean!
   order: Int!
   icon: String!
-  parentId: Int
+  parentId: String
 }
 
 input MenuListInput {
@@ -36,7 +36,7 @@ input MenuListInput {
 }
 
 type Language {
-  id: Int
+  id: String
   code: String
   name: String
   isAvailable: Boolean
@@ -69,12 +69,12 @@ type Query {
 
 type Mutation {
   createMenu(input: MenuInput!): Menu
-  updateMenu(id: Int!, input: MenuInput): Menu
-  deleteMenu(id: Int!, forceDelete: Boolean): String
-  restoreMenu(id: Int!): String
+  updateMenu(id: String!, input: MenuInput): Menu
+  deleteMenu(id: String!, forceDelete: Boolean): String
+  restoreMenu(id: String!): String
 
   createLanguage(input: LanguageInput!): Language
-  updateLanguage(id: Int!, input: LanguageInput!): Language
+  updateLanguage(id: String!, input: LanguageInput!): Language
 }
 
 type Subscription {

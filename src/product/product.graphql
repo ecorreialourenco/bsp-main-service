@@ -1,10 +1,10 @@
 type Product {
-  id: Int!
+  id: String!
   ref: String
   languages: [ProductLanguage]
   providers: [Provider]
   categories: [Category]
-  productTypeId: Int!
+  productTypeId: String!
   type: ProductType
   price: Float
   prices: [ProductPrice]
@@ -13,21 +13,21 @@ type Product {
 }
 
 type ProductLanguage {
-  id: Int
+  id: String
   title: String
   description: String
-  companyLanguageId: Int
+  companyLanguageId: String
 }
 
 type ProductPrice {
-  id: Int
-  productId: Int
+  id: String
+  productId: String
   price: Float
   curency: CurrencyEnum
 }
 
 type ProductStock {
-  id: Int
+  id: String
   product: Product
   office: Office
   quantity: Int
@@ -40,27 +40,27 @@ type ProductResponsePaginated {
 
 input ProductInput {
   ref: String!
-  companyId: Int!
-  productTypeId: Int!
+  companyId: String!
+  productTypeId: String!
   languages: [ProductLanguagesInput]!
   providers: [ProductProviderInput]!
 }
 
 input ProductLanguagesInput {
-  id: Int
+  id: String
   title: String!
   description: String!
-  productLanguagesInput: Int!
+  productLanguagesInput: String!
 }
 
 input ProductProviderInput {
-  id: Int
-  providerId: Int!
+  id: String
+  providerId: String!
 }
 
 input ProductListInput {
-  companyId: Int!
-  providerId: Int
+  companyId: String!
+  providerId: String
   limit: Int
   offset: Int
   cursor: Int
@@ -69,15 +69,15 @@ input ProductListInput {
 }
 
 type Query {
-  getProduct(id: Int!): Product
+  getProduct(id: String!): Product
   listProducts(input: ProductListInput): ProductResponsePaginated
 }
 
 type Mutation {
   createProduct(input: ProductInput!): Product
-  updateProduct(id: Int!, input: ProductInput!): Product
-  removeProduct(id: Int!, forceDelete: Boolean): String
-  restoreProduct(id: Int!): String
+  updateProduct(id: String!, input: ProductInput!): Product
+  removeProduct(id: String!, forceDelete: Boolean): String
+  restoreProduct(id: String!): String
 
-  updateProductPrice(id: Int!, price: Float!): ProductPrice
+  updateProductPrice(id: String!, price: Float!): ProductPrice
 }

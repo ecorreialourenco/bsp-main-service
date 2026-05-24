@@ -11,16 +11,20 @@ export class UserPermissionsService {
   constructor(private prisma: PrismaService) {}
 
   async findUserPermissions({
-    input: { userId },
+    input: { userId, companyId },
   }: {
     input: ListUserPermissions;
   }): Promise<UserPermissionsResponse> {
-    const userRole = await this.prisma.userRoles.findFirst({
-      where: { userId },
+    const userCompanies = await this.prisma.userCompanies.findFirst({
+      where: { userId, companyId },
     });
 
-    const permissions = await this.prisma.companyPermissions.findMany({
-      where: { companyRoleId: userRole?.companyRoleId },
+    const userRole = await this.prisma.userRoles.findFirst({
+      where: { userCompanyId: userCompanies?.id },
+    });
+
+    const permissions = await this.prisma.permissions.findMany({
+      where: { roleId: userRole?.roleId },
     });
 
     return { permissions };

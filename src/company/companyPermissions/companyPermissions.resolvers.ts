@@ -1,6 +1,5 @@
 import {
   CompanyPermission,
-  CompanyPermissionInput,
   UpdateCompanyPermissions,
 } from 'src/graphql.schema';
 import {
@@ -23,14 +22,6 @@ export class CompanyPermissionsResolvers {
   ) {}
 
   @CheckPermission('company', 'createUpdate')
-  @Mutation('createPermissions')
-  async createPermissions(
-    @Args('input') input: CompanyPermissionInput,
-  ): Promise<CompanyPermission[]> {
-    return await this.companyPermissionsService.create({ input });
-  }
-
-  @CheckPermission('company', 'createUpdate')
   @Mutation('updatePermissions')
   async updatePermissions(
     @Args('input') input: UpdateCompanyPermissions[],
@@ -40,8 +31,8 @@ export class CompanyPermissionsResolvers {
 
   @CheckPermission('companyRole', 'delete')
   @Mutation('removePermissions')
-  async removePermissions(@Args('id') id: number): Promise<string> {
-    return await this.companyPermissionsService.delete(id);
+  async removePermissions(@Args('roleId') roleId: string): Promise<string> {
+    return await this.companyPermissionsService.delete(roleId);
   }
 
   @ResolveField('menu')

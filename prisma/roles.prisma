@@ -1,7 +1,7 @@
-model CompanyRoles {
-  id          Int       @id @default(autoincrement())
+model Roles {
+  id          String       @id @default(uuid(7))
   name        String
-  companyId   Int
+  companyId   String
   minWages    Float     @default(0.0)
   maxWages    Float     @default(0.0)
   isProtected Boolean   @default(false)
@@ -12,5 +12,5 @@ model CompanyRoles {
   company Company @relation(fields: [companyId], references: [id])
 
   usersRoles         UserRoles[]
-  companyPermissions CompanyPermissions[]
+  permissions Permissions[]
 }

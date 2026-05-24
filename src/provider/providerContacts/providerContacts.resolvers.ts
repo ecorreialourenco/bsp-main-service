@@ -22,7 +22,7 @@ export class ProviderContactsResolvers {
   @CheckPermission('providers', 'createUpdate')
   @Mutation('updateProviderContact')
   async updateProviderContact(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ProviderContactInput,
   ): Promise<ProviderContact> {
     return await this.providerContactsService.update({ id, input });
@@ -31,7 +31,7 @@ export class ProviderContactsResolvers {
   @CheckPermission('providers', 'delete')
   @Mutation('removeProviderContact')
   async removeProviderContact(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete?: boolean,
   ): Promise<string> {
     return await this.providerContactsService.delete({ id, forceDelete });
@@ -39,7 +39,7 @@ export class ProviderContactsResolvers {
 
   @CheckPermission('providers', 'delete')
   @Mutation('restoreProviderContact')
-  async restoreProviderContact(@Args('id') id: number): Promise<string> {
+  async restoreProviderContact(@Args('id') id: string): Promise<string> {
     return await this.providerContactsService.delete({ id });
   }
 }

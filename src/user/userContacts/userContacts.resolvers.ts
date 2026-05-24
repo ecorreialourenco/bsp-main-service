@@ -26,7 +26,7 @@ export class UserContactsResolvers {
   @CheckPermission('users', 'createUpdate')
   @Mutation('updateUserContact')
   async updateUserContact(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: UserContactInput,
   ): Promise<UserContact> {
     return await this.userContactsService.update({ id, input });
@@ -34,7 +34,7 @@ export class UserContactsResolvers {
 
   @CheckPermission('users', 'delete')
   @Mutation('removeUserContact')
-  async removeUserContact(@Args('id') id: number): Promise<string> {
+  async removeUserContact(@Args('id') id: string): Promise<string> {
     return await this.userContactsService.delete({ id });
   }
 }

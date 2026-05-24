@@ -1,36 +1,36 @@
 type ProductProvider {
-  id: Int!
+  id: String!
   products: [Product]
   providers: [ProductProviderPrice]
   prices: [ProductProviderPrice]
 }
 
 type ProductProviderPrice {
-  id: Int
-  providerId: Int
+  id: String
+  providerId: String
   lastPrice: Float
   prices: Float
 }
 
 input ProductProvidersInput {
-  productId: Int!
+  productId: String!
   providers: [ProductProvidersPricesInput!]!
 }
 
 input ProductProvidersPricesInput {
-  providerId: Int!
+  providerId: String!
   price: Float!
 }
 
 input UpdateProductProvidersPricesInput {
-  productId: Int!
-  providerId: Int!
+  productId: String!
+  providerId: String!
   price: Float!
 }
 
 type Mutation {
   createOrRestoreProductProvider(
-    id: Int
+    id: String
     input: ProductProvidersInput
   ): [ProductProvider]
   updateProductProviderPrice(

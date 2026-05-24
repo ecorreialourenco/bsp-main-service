@@ -62,7 +62,7 @@ export class ProductTypeService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ProductTypeInput;
   }): Promise<ProductType | null> {
     await this.prisma.$transaction(
@@ -90,7 +90,7 @@ export class ProductTypeService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -108,7 +108,7 @@ export class ProductTypeService {
     return 'Product type deleted';
   }
 
-  async restore({ id }: { id: number }): Promise<string> {
+  async restore({ id }: { id: string }): Promise<string> {
     await this.prisma.productType.update({
       where: { id },
       data: { deletedAt: null },
@@ -117,7 +117,7 @@ export class ProductTypeService {
     return 'Product type restored';
   }
 
-  async findNamesById({ id }: { id: number }): Promise<ProductType[]> {
+  async findNamesById({ id }: { id: string }): Promise<ProductType[]> {
     return await this.prisma.productTypeName.findMany({
       where: { productTypeId: id },
     });
@@ -126,7 +126,7 @@ export class ProductTypeService {
   async findByTypeId({
     productTypeId,
   }: {
-    productTypeId: number;
+    productTypeId: string;
   }): Promise<ProductType | null> {
     return await this.prisma.productType.findUnique({
       where: { id: productTypeId },

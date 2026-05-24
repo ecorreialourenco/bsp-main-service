@@ -12,7 +12,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class CompanyService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id: number): Promise<Company | null> {
+  async findOne(id: string): Promise<Company | null> {
     return this.prisma.company.findUnique({ where: { id } });
   }
 
@@ -37,7 +37,7 @@ export class CompanyService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: CompanyInput;
   }): Promise<Company> {
     return await this.prisma.company.update({
@@ -46,7 +46,7 @@ export class CompanyService {
     });
   }
 
-  async delete(id: number): Promise<string> {
+  async delete(id: string): Promise<string> {
     await this.prisma.company.delete({ where: { id } });
 
     return 'Company deleted';

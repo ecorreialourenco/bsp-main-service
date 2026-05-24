@@ -11,8 +11,8 @@ export const createPrismaMock = () => mockDeep<PrismaService>();
 
 export const prismaMockValue = {
   company: {
-    findMany: jest.fn().mockResolvedValue([{ id: 1, name: 'Test Company' }]),
-    findUnique: jest.fn().mockResolvedValue({ id: 1, name: 'Test Company' }),
+    findMany: jest.fn().mockResolvedValue([{ id: '1', name: 'Test Company' }]),
+    findUnique: jest.fn().mockResolvedValue({ id: '1', name: 'Test Company' }),
     create: jest
       .fn()
       .mockImplementation(({ data }) => Promise.resolve({ id: '1', ...data })),
@@ -24,17 +24,17 @@ export const prismaMockValue = {
     findFirst: jest.fn().mockResolvedValue(companyRoleStub()),
     create: jest
       .fn()
-      .mockImplementation(({ data }) => Promise.resolve({ id: 1, ...data })),
+      .mockImplementation(({ data }) => Promise.resolve({ id: '1', ...data })),
     update: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
   },
-  companyPermissions: {
+  permissions: {
     findFirst: jest.fn().mockImplementation(({ where }) => {
       const permissions = companyPermissionsStub().find((permission) => {
         if (where?.id) {
           return permission.id === where.id;
-        } else if (where?.companyRoleId && where?.menuId) {
+        } else if (where?.roleId && where?.menuId) {
           return (
-            permission.companyRoleId === where.companyRoleId &&
+            permission.roleId === where.roleId &&
             permission.menuId === where.menuId
           );
         }
@@ -71,7 +71,7 @@ export const prismaMockValue = {
     }),
     create: jest
       .fn()
-      .mockImplementation(({ data }) => Promise.resolve({ id: 1, ...data })),
+      .mockImplementation(({ data }) => Promise.resolve({ id: '1', ...data })),
     update: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
   },
   menu: {
@@ -86,27 +86,27 @@ export const prismaMockValue = {
     }),
     create: jest
       .fn()
-      .mockImplementation(({ data }) => Promise.resolve({ id: 1, ...data })),
+      .mockImplementation(({ data }) => Promise.resolve({ id: '1', ...data })),
     update: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
     delete: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
   },
   office: {
-    findFirst: jest.fn().mockResolvedValue({ id: 1, ...officeStub }),
-    findUnique: jest.fn().mockResolvedValue({ id: 1, ...officeStub }),
+    findFirst: jest.fn().mockResolvedValue({ id: '1', ...officeStub }),
+    findUnique: jest.fn().mockResolvedValue({ id: '1', ...officeStub }),
     findMany: jest.fn().mockResolvedValue([]),
     count: jest.fn().mockResolvedValue(0),
     create: jest
       .fn()
-      .mockImplementation(({ data }) => Promise.resolve({ id: 1, ...data })),
+      .mockImplementation(({ data }) => Promise.resolve({ id: '1', ...data })),
     update: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
     delete: jest.fn().mockImplementation(({ data }) => Promise.resolve(data)),
   },
   user: {
     findFirst: jest.fn().mockImplementation(({ where }) => {
       const user = userListStub().find((user) => {
-        if (where?.id) {
+        /*  if (where?.id) {
           return user.companyId === where.id;
-        } else if (where?.userName) {
+        } else */ if (where?.userName) {
           return user.userName === where.userName;
         }
       });
@@ -114,22 +114,22 @@ export const prismaMockValue = {
       return Promise.resolve(user);
     }),
     findMany: jest.fn().mockImplementation((data) => {
-      const list = userListStub().filter(
+      const list = userListStub(); /* .filter(
         (user) => user.companyId === data?.where?.companyId,
-      );
+      ); */
       return Promise.resolve(list);
     }),
     count: jest.fn().mockImplementation((data) => {
-      const list = userListStub().filter(
+      const list = userListStub(); /* .filter(
         (user) => user.companyId === data?.where?.companyId,
-      );
+      ); */
       return Promise.resolve(list.length);
     }),
     findUnique: jest.fn().mockImplementation(({ where }) => {
       const user = userListStub().find((user) => {
-        if (where?.id) {
+        /* if (where?.id) {
           return user.companyId === where.id;
-        } else if (where?.userName) {
+        } else */ if (where?.userName) {
           return user.userName === where.userName;
         }
       });
@@ -141,7 +141,8 @@ export const prismaMockValue = {
       return Promise.resolve({ ...data, id: 1 });
     }),
     update: jest.fn().mockImplementation(({ data, where }) => {
-      const user = userListStub().find((user) => user.companyId === where?.id);
+      const user =
+        userListStub(); /* .find((user) => user.companyId === where?.id) */
 
       return Promise.resolve({ ...user, ...data });
     }),
@@ -170,12 +171,10 @@ export const prismaMockValue = {
   userRoles: {
     findFirst: jest.fn().mockResolvedValue({
       id: 1,
-      companyRoleId: 1,
+      roleId: 1,
       userId: 1,
     }),
-    create: jest
-      .fn()
-      .mockResolvedValue({ id: 1, companyRoleId: 1, userCompanyId: 1 }),
+    create: jest.fn().mockResolvedValue({ id: 1, roleId: 1, userCompanyId: 1 }),
   },
   userRoleWage: {
     create: jest.fn().mockResolvedValue({ id: 1, userRoleId: 1, userId: 1 }),

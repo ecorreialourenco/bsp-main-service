@@ -15,7 +15,7 @@ export class ProviderContactsService {
   async findByProviderId({
     providerId,
   }: {
-    providerId: number;
+    providerId: string;
   }): Promise<ProviderContact[]> {
     return await this.prisma.providerContacts.findMany({
       where: { providerId },
@@ -34,7 +34,7 @@ export class ProviderContactsService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ProviderContactInput;
   }): Promise<ProviderContact> {
     return await this.prisma.providerContacts.update({
@@ -47,7 +47,7 @@ export class ProviderContactsService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -62,7 +62,7 @@ export class ProviderContactsService {
     return 'Provider contact deleted';
   }
 
-  async restore({ id }: { id: number }): Promise<string> {
+  async restore({ id }: { id: string }): Promise<string> {
     await this.prisma.providerContacts.update({
       where: { id },
       data: { deletedAt: null },

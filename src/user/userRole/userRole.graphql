@@ -1,24 +1,24 @@
 type UserRole {
-  id: Int!
-  userId: Int
-  companyRoleId: Int
+  id: String!
+  userCompanyId: String
+  roleId: String
   name: String
 }
 
 input NewUserRole {
-  userId: Int!
-  companyRoleId: Int!
+  userCompanyId: String!
+  roleId: String!
 }
 
 type Query {
-  getUserRole(userId: Int!): UserRole
+  getUserRole(userCompanyId: String!): UserRole
 }
 
 type Mutation {
   createUserRole(input: NewUserRole!): UserRole!
-  changeUserRole(userId: Int!, companyRoleId: Int!): UserRole!
+  changeUserRole(userCompanyId: String!, roleId: String!): UserRole!
 }
 
 type Subscription {
-  userRoleChanged(userId: Int!): UserRole
+  userRoleChanged(userCompanyId: String!): UserRole
 }

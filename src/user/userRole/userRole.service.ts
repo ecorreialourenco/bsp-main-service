@@ -7,9 +7,13 @@ import { Injectable } from '@nestjs/common';
 export class UserRoleService {
   constructor(private prisma: PrismaService) {}
 
-  async findByUserId({ userId }: { userId: number }): Promise<UserRole | null> {
+  async findByUserId({
+    userCompanyId,
+  }: {
+    userCompanyId: string;
+  }): Promise<UserRole | null> {
     return await this.prisma.userRoles.findFirst({
-      where: { userId },
+      where: { userCompanyId },
       orderBy: { id: 'desc' },
     });
   }
@@ -19,22 +23,18 @@ export class UserRoleService {
   }
 
   async updateRole({
-    userId,
-    companyRoleId,
+    userCompanyId,
+    roleId,
   }: {
-    userId: number;
-    companyRoleId: number;
+    userCompanyId: string;
+    roleId: string;
   }): Promise<UserRole> {
     return await this.prisma.userRoles.create({
-      data: { companyRoleId, userId },
+      data: { roleId, userCompanyId },
     });
   }
 
-  async countByRole({
-    companyRoleId,
-  }: {
-    companyRoleId: number;
-  }): Promise<number> {
-    return this.prisma.userRoles.count({ where: { companyRoleId } });
+  async countByRole({ roleId }: { roleId: string }): Promise<number> {
+    return this.prisma.userRoles.count({ where: { roleId } });
   }
 }

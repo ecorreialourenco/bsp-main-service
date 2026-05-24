@@ -1,0 +1,16 @@
+model Menu {
+  id        String    @id @default(uuid(7))
+  slug      String    @unique
+  name      String
+  onlyAdmin Boolean   @default(false)
+  isVisible Boolean   @default(false)
+  order     Int       @default(autoincrement())
+  icon      String
+  parentId  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  permissions Permissions[]
+}
+

@@ -1,5 +1,5 @@
 type Provider {
-  id: Int!
+  id: String!
   name: String
   address: String
   city: String
@@ -25,11 +25,11 @@ input ProviderInput {
   state: String!
   country: String!
   zipCode: String!
-  companyId: Int!
+  companyId: String!
 }
 
 input ProviderListInput {
-  companyId: Int!
+  companyId: String!
   search: String
   limit: Int
   offset: Int
@@ -39,13 +39,13 @@ input ProviderListInput {
 }
 
 type Query {
-  getProvider(id: Int!): Provider
+  getProvider(id: String!): Provider
   listProviders(input: ProviderListInput): ProviderListPaginated
 }
 
 type Mutation {
   createProvider(input: ProviderInput!): Provider
-  updateProvider(id: Int!, input: ProviderInput!): Provider
-  removeProvider(id: Int!, forceDelete: Boolean): String
-  restoreProvider(id: Int!): String
+  updateProvider(id: String!, input: ProviderInput!): Provider
+  removeProvider(id: String!, forceDelete: Boolean): String
+  restoreProvider(id: String!): String
 }

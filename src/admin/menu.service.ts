@@ -26,10 +26,10 @@ export class MenuService {
     user: User;
   }): Promise<MenuResponsePaginated> {
     let where: {
-      id?: { in: number[] };
+      id?: { in: string[] };
       onlyAdmin?: boolean;
       isVisible?: boolean;
-      parentId: number | null;
+      parentId: string | null;
     } = {
       parentId: null,
     };
@@ -72,14 +72,14 @@ export class MenuService {
     return newMenu;
   }
 
-  async update({ id, input }: { id: number; input: MenuInput }): Promise<Menu> {
+  async update({ id, input }: { id: string; input: MenuInput }): Promise<Menu> {
     return await this.prisma.menu.update({
       where: { id },
       data: input,
     });
   }
 
-  async delete(id: number): Promise<string> {
+  async delete(id: string): Promise<string> {
     await this.prisma.menu.update({
       where: { id },
       data: { deletedAt: new Date() },
@@ -88,7 +88,7 @@ export class MenuService {
     return 'Menu deleted';
   }
 
-  async restore(id: number): Promise<string> {
+  async restore(id: string): Promise<string> {
     await this.prisma.menu.update({
       where: { id },
       data: { deletedAt: null },
@@ -101,29 +101,29 @@ export class MenuService {
     id,
     userId,
   }: {
-    id: number;
-    userId: number;
+    id: string;
+    userId: string;
   }): Promise<Menu[]> {
-    const menuIds = await this.getMenuIdsByUserPermissions(userId);
+    //const menuIds = await this.getMenuIdsByUserPermissions(userCompanyId);
 
     return await this.prisma.menu.findMany({
-      where: { parentId: id, id: { in: menuIds } },
+      where: { parentId: id /* id: { in: menuIds } */ },
       orderBy: { order: 'asc' },
     });
   }
 
-  async findMenuById(id: number): Promise<Menu | null> {
+  async findMenuById(id: string): Promise<Menu | null> {
     return await this.prisma.menu.findUnique({
       where: { id },
     });
   }
 
-  async getMenuIdsByUserPermissions(userId: number): Promise<number[]> {
+  async getMenuIdsByUserPermissions(userCompanyId: string): Promise<string[]> {
     const userRole = await this.prisma.userRoles.findFirst({
-      where: { userId: userId },
+      where: { userCompanyId },
     });
-    const menuWithPermission = await this.prisma.companyPermissions.findMany({
-      where: { companyRoleId: userRole?.companyRoleId, read: true },
+    const menuWithPermission = await this.prisma.permissions.findMany({
+      where: { roleId: userRole?.roleId, read: true },
     });
 
     return menuWithPermission.map((mwp) => mwp.menuId);

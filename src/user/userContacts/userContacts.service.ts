@@ -12,7 +12,7 @@ export class UserContactsService {
     return Object.values(ContactType);
   }
 
-  async findByUserId({ userId }: { userId: number }): Promise<UserContact[]> {
+  async findByUserId({ userId }: { userId: string }): Promise<UserContact[]> {
     return await this.prisma.userContacts.findMany({
       where: { userId },
     });
@@ -26,7 +26,7 @@ export class UserContactsService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: UserContactInput;
   }): Promise<UserContact> {
     return await this.prisma.userContacts.update({
@@ -35,7 +35,7 @@ export class UserContactsService {
     });
   }
 
-  async delete({ id }: { id: number }): Promise<string> {
+  async delete({ id }: { id: string }): Promise<string> {
     await this.prisma.userContacts.delete({ where: { id } });
 
     return 'User contact deleted';

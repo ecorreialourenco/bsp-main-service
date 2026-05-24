@@ -1,14 +1,14 @@
 type Category {
-  id: Int!
+  id: String!
   names: [CategoryName]
   products: [Product]
 }
 
 type CategoryName {
-  id: Int
+  id: String
   ref: String
   name: String
-  companyLanguageId: Int
+  companyLanguageId: String
   language: Language
 }
 
@@ -18,17 +18,17 @@ type CategoryResponsePaginated {
 }
 
 input CategoryInput {
-  companyId: Int!
+  companyId: String!
   names: [CategoryNameInput!]!
 }
 
 input CategoryNameInput {
   name: String!
-  productLanguagesInput: Int!
+  productLanguagesInput: String!
 }
 
 input CategoryListInput {
-  companyId: Int!
+  companyId: String!
   limit: Int
   offset: Int
   cursor: Int
@@ -37,14 +37,12 @@ input CategoryListInput {
 }
 
 type Query {
-  listCategories(
-    input: CategoryListInput
-  ): CategoryResponsePaginated
+  listCategories(input: CategoryListInput): CategoryResponsePaginated
 }
 
 type Mutation {
   createCategory(input: CategoryInput!): Category
-  updateCategory(id: Int!, input: CategoryInput!): Category
-  removeCategory(id: Int!, forceDelete: Boolean): String
-  restoreCategory(id: Int!): String
+  updateCategory(id: String!, input: CategoryInput!): Category
+  removeCategory(id: String!, forceDelete: Boolean): String
+  restoreCategory(id: String!): String
 }

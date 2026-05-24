@@ -1,32 +1,28 @@
 type CompanyPermission {
-  id: Int!
+  id: String!
   read: Boolean!
-  createUpdate: Boolean!
+  create: Boolean!
+  update: Boolean!
   delete: Boolean!
-  companyRoleId: Int!
-  menuId: Int!
+  roleId: String!
+  menuId: String!
   menu: Menu
 }
 
-input CompanyPermissionInput {
-  companyRoleId: Int!
-  menuPermissions: [CompanyPermissionMenuInput!]!
-}
-
 input CompanyPermissionMenuInput {
-  menuId: Int!
+  menuId: String!
   read: Boolean
-  createUpdate: Boolean
+  create: Boolean!
+  update: Boolean!
   delete: Boolean
 }
 
 input UpdateCompanyPermissions {
-  id: Int!
+  id: String!
   input: CompanyPermissionMenuInput!
 }
 
 type Mutation {
-  createPermissions(input: CompanyPermissionInput!): [CompanyPermission]
   updatePermissions(input: [UpdateCompanyPermissions]!): [CompanyPermission]
-  removePermissions(id: Int): String
+  removePermissions(roleId: String): String
 }

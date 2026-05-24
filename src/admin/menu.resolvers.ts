@@ -52,7 +52,7 @@ export class MenuResolvers {
 
   @Mutation('updateMenu')
   async updateMenu(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: MenuInput,
   ): Promise<Menu> {
     const menu = await this.menuService.update({ id, input });
@@ -63,7 +63,7 @@ export class MenuResolvers {
   }
 
   @Mutation('deleteMenu')
-  async deleteMenu(@Args('id') id: number): Promise<string> {
+  async deleteMenu(@Args('id') id: string): Promise<string> {
     const response = await this.menuService.delete(id);
 
     await this.pubSub.publish('menuChanged', { menu: null });
@@ -72,7 +72,7 @@ export class MenuResolvers {
   }
 
   @Mutation('restoreMenu')
-  async restoreMenu(@Args('id') id: number): Promise<string> {
+  async restoreMenu(@Args('id') id: string): Promise<string> {
     const response = await this.menuService.restore(id);
 
     await this.pubSub.publish('menuChanged', { menu: null });

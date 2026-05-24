@@ -52,9 +52,9 @@ export class PermissionsGuard implements CanActivate {
 
     if (dbUser?.isAdmin) return true;
 
-    const userRole = await this.prisma.userRoles.findFirst({
+    /* const userRole = await this.prisma.userRoles.findFirst({
       where: { userId: user.id },
-    });
+    }); */
 
     const required = this.reflector.get<{
       menuSlug: string;
@@ -67,14 +67,14 @@ export class PermissionsGuard implements CanActivate {
       where: { slug: required.menuSlug },
     });
 
-    if (!userRole || !menu) {
+    /*  if (!userRole || !menu) {
       throw new ForbiddenException();
-    }
+    } */
 
-    const permission = await this.prisma.companyPermissions.findFirst({
+    const permission = await this.prisma.permissions.findFirst({
       where: {
-        companyRoleId: userRole.companyRoleId,
-        menuId: menu.id,
+        //roleId: userRole.roleId,
+        menuId: menu?.id,
       },
     });
 

@@ -12,7 +12,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ClientService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id: number): Promise<Client | null> {
+  async findOne(id: string): Promise<Client | null> {
     return await this.prisma.client.findUnique({ where: { id } });
   }
 
@@ -22,7 +22,7 @@ export class ClientService {
     input: ClientListInput;
   }): Promise<ClientResponsePaginated> {
     const where: {
-      companyId: number;
+      companyId: string;
       deletedAt: null;
       name?: {
         contains: string;
@@ -45,7 +45,7 @@ export class ClientService {
           }
         : { id: 'asc' },
     });
-    const totalCount = await this.prisma.client.count({ where: { companyId } });
+    const totalCount = await this.prisma.client.count({ where });
 
     return { clients, totalCount };
   }
@@ -62,7 +62,7 @@ export class ClientService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ClientInput;
   }): Promise<Client> {
     return await this.prisma.client.update({
@@ -75,7 +75,7 @@ export class ClientService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -90,7 +90,7 @@ export class ClientService {
     return 'Client deleted';
   }
 
-  async restore(id: number): Promise<string> {
+  async restore(id: string): Promise<string> {
     await this.prisma.client.delete({ where: { id } });
 
     return 'Client restored';

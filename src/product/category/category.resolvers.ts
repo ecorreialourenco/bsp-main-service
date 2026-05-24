@@ -43,7 +43,7 @@ export class CategoryResolvers {
   @CheckPermission('products', 'createUpdate')
   @Mutation('updateCategory')
   async updateCategory(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: CategoryInput,
   ): Promise<Category | null> {
     return await this.categoryService.update({ id, input });
@@ -52,7 +52,7 @@ export class CategoryResolvers {
   @CheckPermission('products', 'delete')
   @Mutation('removeCategory')
   async removeCategory(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete?: boolean,
   ): Promise<string> {
     return await this.categoryService.delete({ id, forceDelete });
@@ -60,7 +60,7 @@ export class CategoryResolvers {
 
   @CheckPermission('products', 'delete')
   @Mutation('restoreCategory')
-  async restoreCategory(@Args('id') id: number): Promise<string> {
+  async restoreCategory(@Args('id') id: string): Promise<string> {
     return await this.categoryService.delete({ id });
   }
 

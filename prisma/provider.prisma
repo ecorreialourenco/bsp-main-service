@@ -1,5 +1,5 @@
 model Provider {
-  id         Int       @id @default(autoincrement())
+  id         String       @id @default(uuid(7))
   name       String
   website    String
   address    String
@@ -8,7 +8,7 @@ model Provider {
   country    String
   zipCode    String
   providerNr Int       @default(1)
-  companyId  Int
+  companyId  String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt
   deletedAt  DateTime?
@@ -20,9 +20,9 @@ model Provider {
 }
 
 model ProviderContacts {
-  id         Int         @id @default(autoincrement())
+  id         String         @id @default(uuid(7))
   name       String
-  providerId Int
+  providerId String
   type       ContactType
   contact    String
   createdAt  DateTime    @default(now())

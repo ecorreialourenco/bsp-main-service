@@ -1,5 +1,5 @@
 type CompanyRole {
-  id: Int!
+  id: String!
   name: String!
   minWages: Float
   maxWages: Float
@@ -11,7 +11,7 @@ input CompanyRoleInput {
   name: String!
   minWages: Float!
   maxWages: Float!
-  companyId: Int!
+  companyId: String!
 }
 
 input UpdateCompanyRoleInput {
@@ -25,12 +25,22 @@ type CompanyRolesResponsePaginated {
   totalCount: Int
 }
 
+input ListCompanyRolesInput {
+  companyId: String!
+  search: String
+  limit: Int
+  offset: Int
+  cursor: Int
+  sortBy: String
+  sortOrder: String
+}
+
 type Query {
-  listCompanyRoles(companyId: Int!): CompanyRolesResponsePaginated
+  listCompanyRoles(input: ListCompanyRolesInput): CompanyRolesResponsePaginated
 }
 
 type Mutation {
   createCompanyRole(input: CompanyRoleInput!): CompanyRole
-  updateCompanyRole(id: Int!, input: UpdateCompanyRoleInput!): CompanyRole
-  deleteCompanyRole(id: Int!): String
+  updateCompanyRole(id: String!, input: UpdateCompanyRoleInput!): CompanyRole
+  deleteCompanyRole(id: String!): String
 }

@@ -1,5 +1,5 @@
 type Client {
-  id: Int!
+  id: String!
   name: String!
   address: String!
   type: ClientType!
@@ -9,7 +9,7 @@ type Client {
   zipCode: String
   clientNr: Int!
   contacts: [ClientContact]
-  companyClientRoleId: Int!
+  companyClientRoleId: String!
   role: ClientRole
 }
 
@@ -26,12 +26,12 @@ input ClientInput {
   state: String!
   country: String!
   zipCode: String!
-  companyId: Int!
-  companyClientRoleId: Int!
+  companyId: String!
+  companyClientRoleId: String!
 }
 
 input ClientListInput {
-  companyId: Int!
+  companyId: String!
   search: String
   limit: Int
   offset: Int
@@ -46,14 +46,14 @@ enum ClientType {
 }
 
 type Query {
-  getClient(id: Int!): Client
+  getClient(id: String!): Client
   listClients(input: ClientListInput): ClientResponsePaginated
   listClientTypes: [String]
 }
 
 type Mutation {
   createClient(input: ClientInput!): Client
-  updateClient(id: Int!, input: ClientInput!): Client
-  removeClient(id: Int!, forceDelete: Boolean): String
-  restoreClient(id: Int!): String
+  updateClient(id: String!, input: ClientInput!): Client
+  removeClient(id: String!, forceDelete: Boolean): String
+  restoreClient(id: String!): String
 }

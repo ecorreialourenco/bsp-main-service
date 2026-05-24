@@ -1,25 +1,25 @@
 model UserRoles {
-  id            Int       @id @default(autoincrement())
-  userId        Int
-  companyRoleId Int
+  id            String       @id @default(uuid(7))
+  userCompanyId        String
+  roleId        String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   deletedAt     DateTime?
 
-  user        User           @relation(fields: [userId], references: [id])
-  companyRole CompanyRoles   @relation(fields: [companyRoleId], references: [id])
+  user        UserCompanies            @relation(fields: [userCompanyId], references: [id])
+  role        Roles           @relation(fields: [roleId], references: [id])
   wages       UserRoleWage[]
 
-  @@unique([userId, companyRoleId])
+  @@unique([userCompanyId, roleId])
 }
 
 model UserRoleWage {
-  id         Int       @id @default(autoincrement())
-  userRoleId Int
-  wages      Float     @default(0.0)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
-  deletedAt  DateTime?
+  id          String    @id @default(uuid(7))
+  userRoleId  String
+  wages       Float     @default(0.0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  deletedAt   DateTime?
 
   userRole UserRoles @relation(fields: [userRoleId], references: [id])
 }

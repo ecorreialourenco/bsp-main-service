@@ -1,5 +1,5 @@
 type Office {
-  id: Int
+  id: String
   name: String
   address: String
   city: String
@@ -17,11 +17,11 @@ input OfficeInput {
   state: String!
   country: String!
   zipCode: String!
-  companyId: Int!
+  companyId: String!
 }
 
 input OfficeListInput {
-  companyId: Int!
+  companyId: String!
   limit: Int
   offset: Int
   cursor: Int
@@ -40,13 +40,13 @@ type OfficeResponsePaginated {
 }
 
 type Query {
-  getOffice(Id: Int): Office
+  getOffice(Id: String): Office
   listOffices(input: OfficeListInput): OfficeResponsePaginated
 }
 
 type Mutation {
   createOffice(input: OfficeInput): OfficeResponse
-  updateOffice(id: Int, input: OfficeInput): OfficeResponse
-  deleteOffice(id: Int, forceDelete: Boolean): String
-  restoreOffice(id: Int): String
+  updateOffice(id: String, input: OfficeInput): OfficeResponse
+  deleteOffice(id: String, forceDelete: Boolean): String
+  restoreOffice(id: String): String
 }

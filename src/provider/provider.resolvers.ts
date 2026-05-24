@@ -30,7 +30,7 @@ export class ProviderResolvers {
 
   @CheckPermission('providers', 'read')
   @Query('getProvider')
-  async getProvider(@Args('id') id: number): Promise<Provider | null> {
+  async getProvider(@Args('id') id: string): Promise<Provider | null> {
     return await this.providerService.findOne(id);
   }
 
@@ -51,7 +51,7 @@ export class ProviderResolvers {
   @CheckPermission('providers', 'createUpdate')
   @Mutation('updateProvider')
   async updateProvider(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ProviderInput,
   ): Promise<Provider> {
     return await this.providerService.update({ id, input });
@@ -60,7 +60,7 @@ export class ProviderResolvers {
   @CheckPermission('providers', 'delete')
   @Mutation('removeProvider')
   async removeProvider(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete: boolean,
   ): Promise<string> {
     return await this.providerService.delete({ id, forceDelete });
@@ -68,7 +68,7 @@ export class ProviderResolvers {
 
   @CheckPermission('providers', 'delete')
   @Mutation('restoreProvider')
-  async restoreProvider(@Args('id') id: number): Promise<string> {
+  async restoreProvider(@Args('id') id: string): Promise<string> {
     return await this.providerService.restore(id);
   }
 

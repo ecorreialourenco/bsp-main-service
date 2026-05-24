@@ -39,7 +39,7 @@ export class LanguageResolvers {
 
   @Mutation('updateLanguage')
   async updateLanguage(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: LanguageInput,
   ): Promise<Language | null> {
     const language = await this.languageService.update({ id, input });

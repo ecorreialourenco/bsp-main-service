@@ -1,5 +1,5 @@
 model Client {
-  id                  Int        @id @default(autoincrement())
+  id                  String        @id @default(uuid(7))
   name                String
   type                ClientType
   address             String
@@ -8,8 +8,8 @@ model Client {
   country             String
   zipCode             String
   clientNr            Int        @default(1)
-  companyId           Int
-  companyClientRoleId Int
+  companyId           String
+  companyClientRoleId String
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @default(now()) @updatedAt
   deletedAt           DateTime?
@@ -21,9 +21,9 @@ model Client {
 }
 
 model ClientContacts {
-  id        Int         @id @default(autoincrement())
+  id        String         @id @default(uuid(7))
   name      String?
-  clientId  Int
+  clientId  String
   type      ContactType
   contact   String
   createdAt DateTime    @default(now())

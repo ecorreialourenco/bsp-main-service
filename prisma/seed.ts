@@ -1,18 +1,9 @@
-import { faker } from '@faker-js/faker';
-import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@prisma/client';
+/* import { faker } from '@faker-js/faker';
 
 import 'dotenv/config';
 
-const adapter = new PrismaMariaDb({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  connectionLimit: 50,
-});
-
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 const getContact = () => {
   const contactType = faker.helpers.arrayElement([
     'Email',
@@ -27,10 +18,16 @@ const getContact = () => {
   return { contact, contactType };
 };
 
-const roleData = (name: string, companyId: number) => {
+const roleData = (name: string, companyId: number, isProtected?: boolean) => {
   const min = Number(faker.commerce.price({ min: 900, max: 2000 }));
   const max = Number(faker.commerce.price({ min: min + 1, max: 5000 }));
-  return { companyId, name, minWages: min, maxWages: max };
+  return {
+    companyId,
+    name,
+    minWages: min,
+    maxWages: max,
+    isProtected: isProtected ?? false,
+  };
 };
 
 const NUM_COMPANIES = 20;
@@ -183,7 +180,7 @@ async function main() {
 
     await prisma.companyRoles.createMany({
       data: [
-        roleData('CEO', company.id),
+        roleData('CEO', company.id, true),
         roleData('Sales', company.id),
         roleData('Technical', company.id),
       ],
@@ -196,10 +193,10 @@ async function main() {
     await prisma.$transaction(
       roles.flatMap((role) =>
         menu.map((m) =>
-          prisma.companyPermissions.create({
+          prisma.permissions.create({
             data: {
               menuId: m.id,
-              companyRoleId: role.id,
+              roleId: role.id,
               read: faker.datatype.boolean(),
               createUpdate: faker.datatype.boolean(),
               delete: faker.datatype.boolean(),
@@ -249,7 +246,7 @@ async function main() {
       await prisma.userRoles.create({
         data: {
           userId: user.id,
-          companyRoleId: roles[Math.ceil(Math.random() * roles.length) - 1].id,
+          roleId: roles[Math.ceil(Math.random() * roles.length) - 1].id,
         },
       });
     }
@@ -441,3 +438,4 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+ */

@@ -1,12 +1,12 @@
 model Office {
-  id        Int       @id @default(autoincrement())
+  id        String       @id @default(uuid(7))
   name      String
   address   String
   city      String
   state     String
   country   String
   zipCode   String
-  companyId Int
+  companyId String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   deletedAt DateTime?

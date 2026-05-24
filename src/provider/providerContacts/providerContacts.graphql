@@ -1,5 +1,5 @@
 type ProviderContact {
-  id: Int
+  id: String
   name: String
   contact: String
   type: ContactType
@@ -10,12 +10,15 @@ input ProviderContactInput {
   contact: String!
   name: String!
   type: ContactType!
-  providerId: Int!
+  providerId: String!
 }
 
 type Mutation {
   createProviderContact(input: ProviderContactInput): ProviderContact
-  updateProviderContact(id: Int, input: ProviderContactInput): ProviderContact
-  removeProviderContact(id: Int): String
-  restoreProviderContact(id: Int): String
+  updateProviderContact(
+    id: String
+    input: ProviderContactInput
+  ): ProviderContact
+  removeProviderContact(id: String): String
+  restoreProviderContact(id: String): String
 }

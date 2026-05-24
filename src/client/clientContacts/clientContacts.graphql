@@ -1,5 +1,5 @@
 type ClientContact {
-  id: Int
+  id: String
   contact: String
   type: ContactType
   name: String
@@ -10,12 +10,12 @@ input ClientContactInput {
   contact: String!
   name: String!
   type: ContactType!
-  clientId: Int!
+  clientId: String!
 }
 
 type Mutation {
   createClientContact(input: ClientContactInput!): ClientContact
-  updateClientContact(id: Int!, input: ClientContactInput!): ClientContact
-  removeClientContact(id: Int!, forceDelete: Boolean): String
-  restoreClientContact(id: Int!): String
+  updateClientContact(id: String!, input: ClientContactInput!): ClientContact
+  removeClientContact(id: String!, forceDelete: Boolean): String
+  restoreClientContact(id: String!): String
 }

@@ -38,7 +38,7 @@ export class ProductResolvers {
 
   @CheckPermission('products', 'read')
   @Query('getProduct')
-  async getProduct(@Args('id') id: number): Promise<Product | null> {
+  async getProduct(@Args('id') id: string): Promise<Product | null> {
     return await this.productService.findOne(id);
   }
 
@@ -59,7 +59,7 @@ export class ProductResolvers {
   @CheckPermission('products', 'createUpdate')
   @Mutation('updateProduct')
   async updateProduct(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ProductInput,
   ): Promise<Product> {
     return await this.productService.update({ id, input });
@@ -68,7 +68,7 @@ export class ProductResolvers {
   @CheckPermission('products', 'delete')
   @Mutation('removeProduct')
   async removeProduct(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete: boolean,
   ): Promise<string> {
     return await this.productService.delete({ id, forceDelete });
@@ -76,14 +76,14 @@ export class ProductResolvers {
 
   @CheckPermission('products', 'delete')
   @Mutation('restoreProduct')
-  async restoreProduct(@Args('id') id: number): Promise<string> {
+  async restoreProduct(@Args('id') id: string): Promise<string> {
     return await this.productService.restore(id);
   }
 
   @CheckPermission('products', 'delete')
   @Mutation('updateProductPrice')
   async updateProductPrice(
-    @Args('productId') productId: number,
+    @Args('productId') productId: string,
     @Args('price') price: number,
     @Args('currency') currency: string,
   ): Promise<ProductPrice> {

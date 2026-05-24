@@ -12,7 +12,7 @@ import { Injectable } from '@nestjs/common';
 export class ClientRolesService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne({ id }: { id: number }): Promise<ClientRole | null> {
+  async findOne({ id }: { id: string }): Promise<ClientRole | null> {
     return await this.prisma.companyClientRole.findUnique({
       where: { id },
     });
@@ -51,7 +51,7 @@ export class ClientRolesService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ClientRoleInput;
   }): Promise<ClientRole> {
     return await this.prisma.companyClientRole.update({
@@ -64,7 +64,7 @@ export class ClientRolesService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -79,7 +79,7 @@ export class ClientRolesService {
     return 'Client role deleted';
   }
 
-  async restore({ id }: { id: number }): Promise<string> {
+  async restore({ id }: { id: string }): Promise<string> {
     await this.prisma.companyClientRole.update({
       where: { id },
       data: { deletedAt: null },

@@ -2,6 +2,7 @@ import {
   CompanyRole,
   CompanyRoleInput,
   CompanyRolesResponsePaginated,
+  ListCompanyRolesInput,
 } from 'src/graphql.schema';
 import {
   Args,
@@ -28,9 +29,9 @@ export class CompanyRoleResolvers {
   @CheckPermission('company', 'read')
   @Query('listCompanyRoles')
   async listCompanyRoles(
-    @Args('companyId') companyId: number,
+    @Args('input') input: ListCompanyRolesInput,
   ): Promise<CompanyRolesResponsePaginated> {
-    return await this.companyRoleService.findAll({ companyId });
+    return await this.companyRoleService.findAll({ input });
   }
 
   @CheckPermission('company', 'createUpdate')
@@ -44,7 +45,7 @@ export class CompanyRoleResolvers {
   @CheckPermission('company', 'createUpdate')
   @Mutation('updateCompanyRole')
   async updateCompanyRole(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: CompanyRoleInput,
   ): Promise<CompanyRole> {
     return await this.companyRoleService.update({ id, input });
@@ -52,13 +53,13 @@ export class CompanyRoleResolvers {
 
   @CheckPermission('companyRole', 'delete')
   @Mutation('deleteCompanyRole')
-  async deleteCompanyRole(@Args('id') id: number): Promise<string> {
+  async deleteCompanyRole(@Args('id') id: string): Promise<string> {
     return await this.companyRoleService.delete(id);
   }
 
   @ResolveField('employeeCount')
   async getEmployeeCount(@Parent() role: CompanyRole) {
-    return await this.userRoleService.countByRole({ companyRoleId: role.id });
+    return await this.userRoleService.countByRole({ roleId: role.id });
   }
 
   @ResolveField('permissions')

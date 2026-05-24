@@ -64,7 +64,7 @@ export class CategoryService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: CategoryInput;
   }): Promise<Category | null> {
     await this.prisma.$transaction(
@@ -92,7 +92,7 @@ export class CategoryService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -108,7 +108,7 @@ export class CategoryService {
     return 'Product category deleted';
   }
 
-  async restore({ id }: { id: number }): Promise<string> {
+  async restore({ id }: { id: string }): Promise<string> {
     await this.prisma.category.update({
       where: { id },
       data: { deletedAt: null },
@@ -120,7 +120,7 @@ export class CategoryService {
   async findByProductId({
     productId,
   }: {
-    productId: number;
+    productId: string;
   }): Promise<Category[]> {
     const productCategories = await this.prisma.productCategory.findMany({
       where: { productId },
@@ -130,7 +130,7 @@ export class CategoryService {
     });
   }
 
-  async findNamesById({ id }: { id: number }): Promise<CategoryName[]> {
+  async findNamesById({ id }: { id: string }): Promise<CategoryName[]> {
     return await this.prisma.categoryName.findMany({
       where: { categoryId: id },
     });

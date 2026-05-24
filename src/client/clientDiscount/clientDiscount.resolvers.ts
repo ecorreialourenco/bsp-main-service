@@ -33,7 +33,7 @@ export class ClientDiscountResolvers {
   @CheckPermission('company', 'createUpdate')
   @Mutation('updateClientDiscount')
   async updateClientDiscount(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ClientDiscountInput,
   ): Promise<ClientDiscount> {
     return await this.clientDiscountService.update({ id, input });
@@ -42,7 +42,7 @@ export class ClientDiscountResolvers {
   @CheckPermission('company', 'delete')
   @Mutation('removeClientDiscount')
   async removeClientDiscount(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete?: boolean,
   ): Promise<string> {
     return await this.clientDiscountService.delete({ id, forceDelete });
@@ -50,7 +50,7 @@ export class ClientDiscountResolvers {
 
   @CheckPermission('company', 'delete')
   @Mutation('restoreClientDiscount')
-  async restoreClientDiscount(@Args('id') id: number): Promise<string> {
+  async restoreClientDiscount(@Args('id') id: string): Promise<string> {
     return await this.clientDiscountService.delete({ id });
   }
 }

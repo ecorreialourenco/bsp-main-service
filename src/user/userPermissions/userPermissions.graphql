@@ -1,6 +1,7 @@
 input ListUserPermissions {
-  userId: Int!
-  menuId: Int
+  userId: String!
+  companyId: String!
+  menuId: String
 }
 
 type UserPermissionsResponse {

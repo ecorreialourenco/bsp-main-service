@@ -12,7 +12,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProviderService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id: number): Promise<Provider | null> {
+  async findOne(id: string): Promise<Provider | null> {
     return await this.prisma.provider.findUnique({ where: { id } });
   }
 
@@ -22,7 +22,7 @@ export class ProviderService {
     input: ProviderListInput;
   }): Promise<ProviderListPaginated> {
     const where: {
-      companyId: number;
+      companyId: string;
       deletedAt: null;
       name?: {
         contains: string;
@@ -60,7 +60,7 @@ export class ProviderService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ProviderInput;
   }): Promise<Provider> {
     return await this.prisma.provider.update({
@@ -73,7 +73,7 @@ export class ProviderService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -88,7 +88,7 @@ export class ProviderService {
     return 'Provider deleted';
   }
 
-  async restore(id: number): Promise<string> {
+  async restore(id: string): Promise<string> {
     await this.prisma.provider.delete({ where: { id } });
 
     return 'Provider restored';

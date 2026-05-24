@@ -17,7 +17,7 @@ export class OfficeResolvers {
 
   @CheckPermission('offices', 'read')
   @Query('getOffice')
-  async getOffice(@Args('id') id: number): Promise<Office | null> {
+  async getOffice(@Args('id') id: string): Promise<Office | null> {
     return await this.officeService.findOne(id);
   }
 
@@ -40,7 +40,7 @@ export class OfficeResolvers {
   @CheckPermission('offices', 'createUpdate')
   @Mutation('updateOffice')
   async updateOffice(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: OfficeInput,
   ): Promise<OfficeResponse> {
     return await this.officeService.update({ id, input });
@@ -49,7 +49,7 @@ export class OfficeResolvers {
   @CheckPermission('offices', 'delete')
   @Mutation('deleteOffice')
   async deleteOffice(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete: boolean,
   ): Promise<string> {
     return await this.officeService.delete(id, forceDelete);
@@ -57,7 +57,7 @@ export class OfficeResolvers {
 
   @CheckPermission('offices', 'delete')
   @Mutation('restoreOffice')
-  async restoreOffice(@Args('id') id: number): Promise<string> {
+  async restoreOffice(@Args('id') id: string): Promise<string> {
     return await this.officeService.delete(id);
   }
 }

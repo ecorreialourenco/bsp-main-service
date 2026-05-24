@@ -18,9 +18,9 @@ export class ClientDiscountService {
     input: ListClientDiscountInput;
   }): Promise<ClientDiscountPaginated> {
     const where: {
-      companyClientRoleId: number;
-      categoryId?: number;
-      productTypeId?: number;
+      companyClientRoleId: string;
+      categoryId?: string;
+      productTypeId?: string;
       deletedAt: null;
     } = {
       companyClientRoleId,
@@ -61,7 +61,7 @@ export class ClientDiscountService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ClientDiscountInput;
   }): Promise<ClientDiscount> {
     return await this.prisma.companyClientDiscount.update({
@@ -74,7 +74,7 @@ export class ClientDiscountService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -89,7 +89,7 @@ export class ClientDiscountService {
     return 'Client discount deleted';
   }
 
-  async restore({ id }: { id: number }): Promise<string> {
+  async restore({ id }: { id: string }): Promise<string> {
     await this.prisma.companyClientDiscount.update({
       where: { id },
       data: { deletedAt: null },
@@ -101,7 +101,7 @@ export class ClientDiscountService {
   async findByClientRoleId({
     clientRoleId,
   }: {
-    clientRoleId: number;
+    clientRoleId: string;
   }): Promise<ClientDiscount[]> {
     return await this.prisma.companyClientDiscount.findMany({
       where: { companyClientRoleId: clientRoleId },

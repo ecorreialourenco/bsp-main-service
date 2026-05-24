@@ -1,13 +1,13 @@
 type ProductType {
-  id: Int!
+  id: String!
   names: [ProductTypeName]
   products: [Product]
 }
 
 type ProductTypeName {
-  id: Int
+  id: String
   name: String
-  companyLanguageId: Int
+  companyLanguageId: String
 }
 
 type ProductTypeResponsePaginated {
@@ -16,17 +16,17 @@ type ProductTypeResponsePaginated {
 }
 
 input ProductTypeInput {
-  companyId: Int!
+  companyId: String!
   names: [ProductTypeNameInput!]!
 }
 
 input ProductTypeNameInput {
   name: String!
-  companyLanguageId: Int!
+  companyLanguageId: String!
 }
 
 input ProductTypeListInput {
-  companyId: Int!
+  companyId: String!
   limit: Int
   offset: Int
   cursor: Int
@@ -40,7 +40,7 @@ type Query {
 
 type Mutation {
   createProductType(input: ProductTypeInput!): ProductType
-  updateProductType(id: Int!, input: ProductTypeInput!): ProductType
-  removeProductType(id: Int!, forceDelete: Boolean): String
-  restoreProductType(id: Int!): String
+  updateProductType(id: String!, input: ProductTypeInput!): ProductType
+  removeProductType(id: String!, forceDelete: Boolean): String
+  restoreProductType(id: String!): String
 }

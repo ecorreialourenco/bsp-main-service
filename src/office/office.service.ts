@@ -13,7 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OfficeService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id: number): Promise<Office | null> {
+  async findOne(id: string): Promise<Office | null> {
     return this.prisma.office.findUnique({ where: { id } });
   }
 
@@ -45,7 +45,7 @@ export class OfficeService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: OfficeInput;
   }): Promise<OfficeResponse> {
     const office = await this.prisma.office.update({
@@ -56,7 +56,7 @@ export class OfficeService {
     return { status: 200, office };
   }
 
-  async delete(id: number, forceDelete?: boolean): Promise<string> {
+  async delete(id: string, forceDelete?: boolean): Promise<string> {
     if (forceDelete) {
       await this.prisma.office.delete({ where: { id } });
     } else {
@@ -69,13 +69,13 @@ export class OfficeService {
     return 'Office deleted';
   }
 
-  async restore(id: number): Promise<string> {
+  async restore(id: string): Promise<string> {
     await this.prisma.office.delete({ where: { id } });
 
     return 'Office restored';
   }
 
-  async findByCompanyId(companyId: number): Promise<Office[]> {
+  async findByCompanyId(companyId: string): Promise<Office[]> {
     return this.prisma.office.findMany({
       where: { companyId },
     });

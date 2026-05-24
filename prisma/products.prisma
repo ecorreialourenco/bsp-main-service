@@ -1,8 +1,8 @@
 model Products {
-  id            Int       @id @default(autoincrement())
+  id            String       @id @default(uuid(7))
   ref           String
-  companyId     Int
-  productTypeId Int
+  companyId     String
+  productTypeId String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   deletedAt     DateTime?
@@ -18,9 +18,9 @@ model Products {
 }
 
 model ProductLanguage {
-  id                Int       @id @default(autoincrement())
-  productId         Int
-  companyLanguageId Int
+  id                String       @id @default(uuid(7))
+  productId         String
+  companyLanguageId String
   title             String
   description       String
   createdAt         DateTime  @default(now())
@@ -32,8 +32,8 @@ model ProductLanguage {
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
-  companyId Int
+  id        String       @id @default(uuid(7))
+  companyId String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   deletedAt DateTime?
@@ -46,9 +46,9 @@ model Category {
 }
 
 model CategoryName {
-  id                Int       @id @default(autoincrement())
-  categoryId        Int
-  companyLanguageId Int
+  id                String       @id @default(uuid(7))
+  categoryId        String
+  companyLanguageId String
   name              String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
@@ -59,9 +59,9 @@ model CategoryName {
 }
 
 model ProductCategory {
-  id         Int       @id @default(autoincrement())
-  productId  Int
-  categoryId Int
+  id         String       @id @default(uuid(7))
+  productId  String
+  categoryId String
   reatedAt   DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt
   deletedAt  DateTime?
@@ -71,8 +71,8 @@ model ProductCategory {
 }
 
 model ProductType {
-  id        Int       @id @default(autoincrement())
-  companyId Int
+  id        String       @id @default(uuid(7))
+  companyId String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   deletedAt DateTime?
@@ -85,9 +85,9 @@ model ProductType {
 }
 
 model ProductTypeName {
-  id                Int       @id @default(autoincrement())
-  productTypeId     Int
-  companyLanguageId Int
+  id                String       @id @default(uuid(7))
+  productTypeId     String
+  companyLanguageId String
   name              String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
@@ -98,9 +98,9 @@ model ProductTypeName {
 }
 
 model ProductProvider {
-  id         Int       @id @default(autoincrement())
-  productId  Int
-  providerId Int
+  id         String       @id @default(uuid(7))
+  productId  String
+  providerId String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt
   deletedAt  DateTime?
@@ -116,8 +116,8 @@ model ProductProvider {
  * Selling price
  */
 model ProductPrice {
-  id        Int       @id @default(autoincrement())
-  productId Int
+  id        String       @id @default(uuid(7))
+  productId String
   price     Float
   currency  String
   createdAt DateTime  @default(now())
@@ -131,9 +131,9 @@ model ProductPrice {
  * Purchase price
  */
 model ProductProviderPrices {
-  id                Int       @id @default(autoincrement())
-  productProviderId Int
-  price             Int
+  id                String       @id @default(uuid(7))
+  productProviderId String
+  price             Float
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
   deletedAt         DateTime?
@@ -142,9 +142,9 @@ model ProductProviderPrices {
 }
 
 model ProductStock {
-  id        Int       @id @default(autoincrement())
-  productId Int
-  officeId  Int
+  id        String       @id @default(uuid(7))
+  productId String
+  officeId  String
   quantity  Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt

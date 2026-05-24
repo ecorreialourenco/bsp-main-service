@@ -18,7 +18,7 @@ export class MenuInput {
     onlyAdmin: boolean;
     order: number;
     icon: string;
-    parentId?: Nullable<number>;
+    parentId?: Nullable<string>;
 }
 
 export class MenuListInput {
@@ -47,6 +47,11 @@ export class LanguageInput {
 export class LoginInput {
     username: string;
     password: string;
+}
+
+export class Group {
+    id?: Nullable<string>;
+    name?: Nullable<string>;
 }
 
 export class SignupUserInput {
@@ -84,12 +89,12 @@ export class ClientInput {
     state: string;
     country: string;
     zipCode: string;
-    companyId: number;
-    companyClientRoleId: number;
+    companyId: string;
+    companyClientRoleId: string;
 }
 
 export class ClientListInput {
-    companyId: number;
+    companyId: string;
     search?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
@@ -102,13 +107,13 @@ export class ClientContactInput {
     contact: string;
     name: string;
     type: ContactType;
-    clientId: number;
+    clientId: string;
 }
 
 export class ListClientDiscountInput {
-    companyClientRoleId: number;
-    categoryId?: Nullable<number>;
-    productTypeId?: Nullable<number>;
+    companyClientRoleId: string;
+    categoryId?: Nullable<string>;
+    productTypeId?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -117,19 +122,19 @@ export class ListClientDiscountInput {
 }
 
 export class ClientDiscountInput {
-    companyClientRoleId: number;
+    companyClientRoleId: string;
     percentage: number;
-    categoryId: number;
-    productTypeId: number;
+    categoryId: string;
+    productTypeId: string;
 }
 
 export class ClientRoleInput {
     name: string;
-    companyId: number;
+    companyId: string;
 }
 
 export class ClientRolesListInput {
-    companyId: number;
+    companyId: string;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -152,8 +157,8 @@ export class CompaniesListInput {
 }
 
 export class CompanyLanguagesInput {
-    companyId: number;
-    languageId: number;
+    companyId: string;
+    languageId: string;
     isDefault: boolean;
 }
 
@@ -161,20 +166,16 @@ export class UpdateCompanyLanguagesInput {
     isDefault: boolean;
 }
 
-export class CompanyPermissionInput {
-    companyRoleId: number;
-    menuPermissions: CompanyPermissionMenuInput[];
-}
-
 export class CompanyPermissionMenuInput {
-    menuId: number;
+    menuId: string;
     read?: Nullable<boolean>;
-    createUpdate?: Nullable<boolean>;
+    create: boolean;
+    update: boolean;
     delete?: Nullable<boolean>;
 }
 
 export class UpdateCompanyPermissions {
-    id: number;
+    id: string;
     input: CompanyPermissionMenuInput;
 }
 
@@ -182,13 +183,23 @@ export class CompanyRoleInput {
     name: string;
     minWages: number;
     maxWages: number;
-    companyId: number;
+    companyId: string;
 }
 
 export class UpdateCompanyRoleInput {
     name: string;
     minWages: number;
     maxWages: number;
+}
+
+export class ListCompanyRolesInput {
+    companyId: string;
+    search?: Nullable<string>;
+    limit?: Nullable<number>;
+    offset?: Nullable<number>;
+    cursor?: Nullable<number>;
+    sortBy?: Nullable<string>;
+    sortOrder?: Nullable<string>;
 }
 
 export class OfficeInput {
@@ -198,11 +209,11 @@ export class OfficeInput {
     state: string;
     country: string;
     zipCode: string;
-    companyId: number;
+    companyId: string;
 }
 
 export class OfficeListInput {
-    companyId: number;
+    companyId: string;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -211,17 +222,17 @@ export class OfficeListInput {
 }
 
 export class CategoryInput {
-    companyId: number;
+    companyId: string;
     names: CategoryNameInput[];
 }
 
 export class CategoryNameInput {
     name: string;
-    productLanguagesInput: number;
+    productLanguagesInput: string;
 }
 
 export class CategoryListInput {
-    companyId: number;
+    companyId: string;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -231,27 +242,27 @@ export class CategoryListInput {
 
 export class ProductInput {
     ref: string;
-    companyId: number;
-    productTypeId: number;
+    companyId: string;
+    productTypeId: string;
     languages: Nullable<ProductLanguagesInput>[];
     providers: Nullable<ProductProviderInput>[];
 }
 
 export class ProductLanguagesInput {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     title: string;
     description: string;
-    productLanguagesInput: number;
+    productLanguagesInput: string;
 }
 
 export class ProductProviderInput {
-    id?: Nullable<number>;
-    providerId: number;
+    id?: Nullable<string>;
+    providerId: string;
 }
 
 export class ProductListInput {
-    companyId: number;
-    providerId?: Nullable<number>;
+    companyId: string;
+    providerId?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -260,33 +271,33 @@ export class ProductListInput {
 }
 
 export class ProductProvidersInput {
-    productId: number;
+    productId: string;
     providers: ProductProvidersPricesInput[];
 }
 
 export class ProductProvidersPricesInput {
-    providerId: number;
+    providerId: string;
     price: number;
 }
 
 export class UpdateProductProvidersPricesInput {
-    productId: number;
-    providerId: number;
+    productId: string;
+    providerId: string;
     price: number;
 }
 
 export class ProductTypeInput {
-    companyId: number;
+    companyId: string;
     names: ProductTypeNameInput[];
 }
 
 export class ProductTypeNameInput {
     name: string;
-    companyLanguageId: number;
+    companyLanguageId: string;
 }
 
 export class ProductTypeListInput {
-    companyId: number;
+    companyId: string;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     cursor?: Nullable<number>;
@@ -302,11 +313,11 @@ export class ProviderInput {
     state: string;
     country: string;
     zipCode: string;
-    companyId: number;
+    companyId: string;
 }
 
 export class ProviderListInput {
-    companyId: number;
+    companyId: string;
     search?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
@@ -319,7 +330,7 @@ export class ProviderContactInput {
     contact: string;
     name: string;
     type: ContactType;
-    providerId: number;
+    providerId: string;
 }
 
 export class UserInput {
@@ -332,13 +343,13 @@ export class UserInput {
     state?: Nullable<string>;
     country?: Nullable<string>;
     zipCode?: Nullable<string>;
-    companyId: number;
+    companyId: string;
 }
 
 export class ListUsers {
-    companyId: number;
+    companyId: string;
     search?: Nullable<string>;
-    userRoleId?: Nullable<number>;
+    userRoleId?: Nullable<string>;
     limit?: Nullable<number>;
     offset?: Nullable<number>;
     sortBy?: Nullable<string>;
@@ -348,26 +359,27 @@ export class ListUsers {
 export class UserContactInput {
     contact: string;
     type: ContactType;
-    userId: number;
+    userId: string;
 }
 
 export class ListUserPermissions {
-    userId: number;
-    menuId?: Nullable<number>;
+    userId: string;
+    companyId: string;
+    menuId?: Nullable<string>;
 }
 
 export class NewUserRole {
-    userId: number;
-    companyRoleId: number;
+    userCompanyId: string;
+    roleId: string;
 }
 
 export class Menu {
-    id: number;
+    id: string;
     name: string;
     slug: string;
     onlyAdmin: boolean;
     isVisible: boolean;
-    parentId?: Nullable<number>;
+    parentId?: Nullable<string>;
     subMenu?: Nullable<Nullable<Menu>[]>;
     userPermission?: Nullable<CompanyPermission>;
     order?: Nullable<number>;
@@ -380,7 +392,7 @@ export class MenuResponsePaginated {
 }
 
 export class Language {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     code?: Nullable<string>;
     name?: Nullable<string>;
     isAvailable?: Nullable<boolean>;
@@ -398,7 +410,7 @@ export abstract class IQuery {
 
     abstract checkUsername(username?: Nullable<string>): Nullable<boolean> | Promise<Nullable<boolean>>;
 
-    abstract getClient(id: number): Nullable<Client> | Promise<Nullable<Client>>;
+    abstract getClient(id: string): Nullable<Client> | Promise<Nullable<Client>>;
 
     abstract listClients(input?: Nullable<ClientListInput>): Nullable<ClientResponsePaginated> | Promise<Nullable<ClientResponsePaginated>>;
 
@@ -406,35 +418,35 @@ export abstract class IQuery {
 
     abstract listClientDiscount(input?: Nullable<ListClientDiscountInput>): Nullable<ClientDiscountPaginated> | Promise<Nullable<ClientDiscountPaginated>>;
 
-    abstract getClientRole(id: number): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
+    abstract getClientRole(id: string): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
 
     abstract listClientRoles(input?: Nullable<ClientRolesListInput>): Nullable<ClientRolesPaginated> | Promise<Nullable<ClientRolesPaginated>>;
 
-    abstract getCompany(id: number): Nullable<Company> | Promise<Nullable<Company>>;
+    abstract getCompany(id: string): Nullable<Company> | Promise<Nullable<Company>>;
 
     abstract listCompanies(input?: Nullable<CompaniesListInput>): Nullable<CompanyResponsePaginated> | Promise<Nullable<CompanyResponsePaginated>>;
 
-    abstract listCompanyLanguages(companyId: number): Nullable<CompanyLanguagesResponsePaginated> | Promise<Nullable<CompanyLanguagesResponsePaginated>>;
+    abstract listCompanyLanguages(companyId: string): Nullable<CompanyLanguagesResponsePaginated> | Promise<Nullable<CompanyLanguagesResponsePaginated>>;
 
-    abstract listCompanyRoles(companyId: number): Nullable<CompanyRolesResponsePaginated> | Promise<Nullable<CompanyRolesResponsePaginated>>;
+    abstract listCompanyRoles(input?: Nullable<ListCompanyRolesInput>): Nullable<CompanyRolesResponsePaginated> | Promise<Nullable<CompanyRolesResponsePaginated>>;
 
-    abstract getOffice(Id?: Nullable<number>): Nullable<Office> | Promise<Nullable<Office>>;
+    abstract getOffice(Id?: Nullable<string>): Nullable<Office> | Promise<Nullable<Office>>;
 
     abstract listOffices(input?: Nullable<OfficeListInput>): Nullable<OfficeResponsePaginated> | Promise<Nullable<OfficeResponsePaginated>>;
 
     abstract listCategories(input?: Nullable<CategoryListInput>): Nullable<CategoryResponsePaginated> | Promise<Nullable<CategoryResponsePaginated>>;
 
-    abstract getProduct(id: number): Nullable<Product> | Promise<Nullable<Product>>;
+    abstract getProduct(id: string): Nullable<Product> | Promise<Nullable<Product>>;
 
     abstract listProducts(input?: Nullable<ProductListInput>): Nullable<ProductResponsePaginated> | Promise<Nullable<ProductResponsePaginated>>;
 
     abstract listProductTypes(input?: Nullable<ProductListInput>): Nullable<ProductTypeResponsePaginated> | Promise<Nullable<ProductTypeResponsePaginated>>;
 
-    abstract getProvider(id: number): Nullable<Provider> | Promise<Nullable<Provider>>;
+    abstract getProvider(id: string): Nullable<Provider> | Promise<Nullable<Provider>>;
 
     abstract listProviders(input?: Nullable<ProviderListInput>): Nullable<ProviderListPaginated> | Promise<Nullable<ProviderListPaginated>>;
 
-    abstract getUser(id: number): Nullable<User> | Promise<Nullable<User>>;
+    abstract getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
 
     abstract listUsers(input?: Nullable<ListUsers>): Nullable<UserResponsePaginated> | Promise<Nullable<UserResponsePaginated>>;
 
@@ -442,21 +454,21 @@ export abstract class IQuery {
 
     abstract listUserPermissions(input?: Nullable<ListUserPermissions>): Nullable<UserPermissionsResponse> | Promise<Nullable<UserPermissionsResponse>>;
 
-    abstract getUserRole(userId: number): Nullable<UserRole> | Promise<Nullable<UserRole>>;
+    abstract getUserRole(userCompanyId: string): Nullable<UserRole> | Promise<Nullable<UserRole>>;
 }
 
 export abstract class IMutation {
     abstract createMenu(input: MenuInput): Nullable<Menu> | Promise<Nullable<Menu>>;
 
-    abstract updateMenu(id: number, input?: Nullable<MenuInput>): Nullable<Menu> | Promise<Nullable<Menu>>;
+    abstract updateMenu(id: string, input?: Nullable<MenuInput>): Nullable<Menu> | Promise<Nullable<Menu>>;
 
-    abstract deleteMenu(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract deleteMenu(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreMenu(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreMenu(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createLanguage(input: LanguageInput): Nullable<Language> | Promise<Nullable<Language>>;
 
-    abstract updateLanguage(id: number, input: LanguageInput): Nullable<Language> | Promise<Nullable<Language>>;
+    abstract updateLanguage(id: string, input: LanguageInput): Nullable<Language> | Promise<Nullable<Language>>;
 
     abstract login(input?: Nullable<LoginInput>): Nullable<string> | Promise<Nullable<string>>;
 
@@ -464,131 +476,129 @@ export abstract class IMutation {
 
     abstract createClient(input: ClientInput): Nullable<Client> | Promise<Nullable<Client>>;
 
-    abstract updateClient(id: number, input: ClientInput): Nullable<Client> | Promise<Nullable<Client>>;
+    abstract updateClient(id: string, input: ClientInput): Nullable<Client> | Promise<Nullable<Client>>;
 
-    abstract removeClient(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeClient(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreClient(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreClient(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createClientContact(input: ClientContactInput): Nullable<ClientContact> | Promise<Nullable<ClientContact>>;
 
-    abstract updateClientContact(id: number, input: ClientContactInput): Nullable<ClientContact> | Promise<Nullable<ClientContact>>;
+    abstract updateClientContact(id: string, input: ClientContactInput): Nullable<ClientContact> | Promise<Nullable<ClientContact>>;
 
-    abstract removeClientContact(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeClientContact(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreClientContact(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreClientContact(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createClientDiscount(input: ClientDiscountInput): Nullable<ClientDiscount> | Promise<Nullable<ClientDiscount>>;
 
-    abstract updateClientDiscount(id: number, input: ClientDiscountInput): Nullable<ClientDiscount> | Promise<Nullable<ClientDiscount>>;
+    abstract updateClientDiscount(id: string, input: ClientDiscountInput): Nullable<ClientDiscount> | Promise<Nullable<ClientDiscount>>;
 
-    abstract removeClientDiscount(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeClientDiscount(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreClientDiscount(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreClientDiscount(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createClientRole(input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
 
-    abstract updateClientRole(id: number, input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
+    abstract updateClientRole(id: string, input: ClientRoleInput): Nullable<ClientRole> | Promise<Nullable<ClientRole>>;
 
-    abstract deleteClientRole(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract deleteClientRole(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreClientRole(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreClientRole(id: string): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract updateCompany(id: number, input: CompanyInput): Nullable<Company> | Promise<Nullable<Company>>;
+    abstract updateCompany(id: string, input: CompanyInput): Nullable<Company> | Promise<Nullable<Company>>;
 
-    abstract deleteCompany(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract deleteCompany(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createCompanyLanguages(input: CompanyLanguagesInput): Nullable<CompanyLanguages> | Promise<Nullable<CompanyLanguages>>;
 
-    abstract updateCompanyLanguages(id: number, input: UpdateCompanyLanguagesInput): Nullable<CompanyLanguages> | Promise<Nullable<CompanyLanguages>>;
+    abstract updateCompanyLanguages(id: string, input: UpdateCompanyLanguagesInput): Nullable<CompanyLanguages> | Promise<Nullable<CompanyLanguages>>;
 
-    abstract deleteCompanyLanguages(id: number): Nullable<string> | Promise<Nullable<string>>;
-
-    abstract createPermissions(input: CompanyPermissionInput): Nullable<Nullable<CompanyPermission>[]> | Promise<Nullable<Nullable<CompanyPermission>[]>>;
+    abstract deleteCompanyLanguages(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract updatePermissions(input: Nullable<UpdateCompanyPermissions>[]): Nullable<Nullable<CompanyPermission>[]> | Promise<Nullable<Nullable<CompanyPermission>[]>>;
 
-    abstract removePermissions(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removePermissions(roleId?: Nullable<string>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createCompanyRole(input: CompanyRoleInput): Nullable<CompanyRole> | Promise<Nullable<CompanyRole>>;
 
-    abstract updateCompanyRole(id: number, input: UpdateCompanyRoleInput): Nullable<CompanyRole> | Promise<Nullable<CompanyRole>>;
+    abstract updateCompanyRole(id: string, input: UpdateCompanyRoleInput): Nullable<CompanyRole> | Promise<Nullable<CompanyRole>>;
 
-    abstract deleteCompanyRole(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract deleteCompanyRole(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createOffice(input?: Nullable<OfficeInput>): Nullable<OfficeResponse> | Promise<Nullable<OfficeResponse>>;
 
-    abstract updateOffice(id?: Nullable<number>, input?: Nullable<OfficeInput>): Nullable<OfficeResponse> | Promise<Nullable<OfficeResponse>>;
+    abstract updateOffice(id?: Nullable<string>, input?: Nullable<OfficeInput>): Nullable<OfficeResponse> | Promise<Nullable<OfficeResponse>>;
 
-    abstract deleteOffice(id?: Nullable<number>, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract deleteOffice(id?: Nullable<string>, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreOffice(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreOffice(id?: Nullable<string>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createCategory(input: CategoryInput): Nullable<Category> | Promise<Nullable<Category>>;
 
-    abstract updateCategory(id: number, input: CategoryInput): Nullable<Category> | Promise<Nullable<Category>>;
+    abstract updateCategory(id: string, input: CategoryInput): Nullable<Category> | Promise<Nullable<Category>>;
 
-    abstract removeCategory(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeCategory(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreCategory(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreCategory(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createProduct(input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
 
-    abstract updateProduct(id: number, input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
+    abstract updateProduct(id: string, input: ProductInput): Nullable<Product> | Promise<Nullable<Product>>;
 
-    abstract removeProduct(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeProduct(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreProduct(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreProduct(id: string): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract updateProductPrice(id: number, price: number): Nullable<ProductPrice> | Promise<Nullable<ProductPrice>>;
+    abstract updateProductPrice(id: string, price: number): Nullable<ProductPrice> | Promise<Nullable<ProductPrice>>;
 
-    abstract createOrRestoreProductProvider(id?: Nullable<number>, input?: Nullable<ProductProvidersInput>): Nullable<Nullable<ProductProvider>[]> | Promise<Nullable<Nullable<ProductProvider>[]>>;
+    abstract createOrRestoreProductProvider(id?: Nullable<string>, input?: Nullable<ProductProvidersInput>): Nullable<Nullable<ProductProvider>[]> | Promise<Nullable<Nullable<ProductProvider>[]>>;
 
     abstract updateProductProviderPrice(input?: Nullable<UpdateProductProvidersPricesInput>): Nullable<ProductProvider> | Promise<Nullable<ProductProvider>>;
 
     abstract createProductType(input: ProductTypeInput): Nullable<ProductType> | Promise<Nullable<ProductType>>;
 
-    abstract updateProductType(id: number, input: ProductTypeInput): Nullable<ProductType> | Promise<Nullable<ProductType>>;
+    abstract updateProductType(id: string, input: ProductTypeInput): Nullable<ProductType> | Promise<Nullable<ProductType>>;
 
-    abstract removeProductType(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeProductType(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreProductType(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreProductType(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createProvider(input: ProviderInput): Nullable<Provider> | Promise<Nullable<Provider>>;
 
-    abstract updateProvider(id: number, input: ProviderInput): Nullable<Provider> | Promise<Nullable<Provider>>;
+    abstract updateProvider(id: string, input: ProviderInput): Nullable<Provider> | Promise<Nullable<Provider>>;
 
-    abstract removeProvider(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeProvider(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreProvider(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreProvider(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createProviderContact(input?: Nullable<ProviderContactInput>): Nullable<ProviderContact> | Promise<Nullable<ProviderContact>>;
 
-    abstract updateProviderContact(id?: Nullable<number>, input?: Nullable<ProviderContactInput>): Nullable<ProviderContact> | Promise<Nullable<ProviderContact>>;
+    abstract updateProviderContact(id?: Nullable<string>, input?: Nullable<ProviderContactInput>): Nullable<ProviderContact> | Promise<Nullable<ProviderContact>>;
 
-    abstract removeProviderContact(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeProviderContact(id?: Nullable<string>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreProviderContact(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreProviderContact(id?: Nullable<string>): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createUser(input: UserInput): UserResponse | Promise<UserResponse>;
 
-    abstract updateUser(id: number, input?: Nullable<UserInput>): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
+    abstract updateUser(id: string, input?: Nullable<UserInput>): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
 
-    abstract removeUser(id: number, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeUser(id: string, forceDelete?: Nullable<boolean>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract restoreUser(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract restoreUser(id: string): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract changeUserActiveStatus(id: number, status: boolean): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
+    abstract changeUserActiveStatus(id: string, status: boolean): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
 
     abstract createUserContact(input: UserContactInput): Nullable<UserContact> | Promise<Nullable<UserContact>>;
 
-    abstract updateUserContact(id: number, input: UserContactInput): Nullable<UserContact> | Promise<Nullable<UserContact>>;
+    abstract updateUserContact(id: string, input: UserContactInput): Nullable<UserContact> | Promise<Nullable<UserContact>>;
 
-    abstract removeUserContact(id: number): Nullable<string> | Promise<Nullable<string>>;
+    abstract removeUserContact(id: string): Nullable<string> | Promise<Nullable<string>>;
 
     abstract createUserRole(input: NewUserRole): UserRole | Promise<UserRole>;
 
-    abstract changeUserRole(userId: number, companyRoleId: number): UserRole | Promise<UserRole>;
+    abstract changeUserRole(userCompanyId: string, roleId: string): UserRole | Promise<UserRole>;
 }
 
 export abstract class ISubscription {
@@ -598,11 +608,11 @@ export abstract class ISubscription {
 
     abstract userStatusChanged(): Nullable<UserResponse> | Promise<Nullable<UserResponse>>;
 
-    abstract userRoleChanged(userId: number): Nullable<UserRole> | Promise<Nullable<UserRole>>;
+    abstract userRoleChanged(userCompanyId: string): Nullable<UserRole> | Promise<Nullable<UserRole>>;
 }
 
 export class Client {
-    id: number;
+    id: string;
     name: string;
     address: string;
     type: ClientType;
@@ -612,7 +622,7 @@ export class Client {
     zipCode?: Nullable<string>;
     clientNr: number;
     contacts?: Nullable<Nullable<ClientContact>[]>;
-    companyClientRoleId: number;
+    companyClientRoleId: string;
     role?: Nullable<ClientRole>;
 }
 
@@ -622,7 +632,7 @@ export class ClientResponsePaginated {
 }
 
 export class ClientContact {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     contact?: Nullable<string>;
     type?: Nullable<ContactType>;
     name?: Nullable<string>;
@@ -630,11 +640,11 @@ export class ClientContact {
 }
 
 export class ClientDiscount {
-    id?: Nullable<number>;
-    companyClientRoleId?: Nullable<number>;
+    id?: Nullable<string>;
+    companyClientRoleId?: Nullable<string>;
     percentage?: Nullable<number>;
-    categoryId?: Nullable<number>;
-    productTypeId?: Nullable<number>;
+    categoryId?: Nullable<string>;
+    productTypeId?: Nullable<string>;
 }
 
 export class ClientDiscountPaginated {
@@ -643,7 +653,7 @@ export class ClientDiscountPaginated {
 }
 
 export class ClientRole {
-    id: number;
+    id: string;
     name?: Nullable<string>;
     company?: Nullable<Company>;
     clients?: Nullable<Nullable<Client>[]>;
@@ -656,7 +666,7 @@ export class ClientRolesPaginated {
 }
 
 export class Company {
-    id: number;
+    id: string;
     name: string;
     website: string;
     offices?: Nullable<Nullable<Office>[]>;
@@ -670,9 +680,9 @@ export class CompanyResponsePaginated {
 }
 
 export class CompanyLanguages {
-    id: number;
-    companyId: number;
-    languageId: number;
+    id: string;
+    companyId: string;
+    languageId: string;
     isDefault?: Nullable<boolean>;
     name?: Nullable<string>;
 }
@@ -683,17 +693,18 @@ export class CompanyLanguagesResponsePaginated {
 }
 
 export class CompanyPermission {
-    id: number;
+    id: string;
     read: boolean;
-    createUpdate: boolean;
+    create: boolean;
+    update: boolean;
     delete: boolean;
-    companyRoleId: number;
-    menuId: number;
+    roleId: string;
+    menuId: string;
     menu?: Nullable<Menu>;
 }
 
 export class CompanyRole {
-    id: number;
+    id: string;
     name: string;
     minWages?: Nullable<number>;
     maxWages?: Nullable<number>;
@@ -707,7 +718,7 @@ export class CompanyRolesResponsePaginated {
 }
 
 export class Office {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     name?: Nullable<string>;
     address?: Nullable<string>;
     city?: Nullable<string>;
@@ -728,16 +739,16 @@ export class OfficeResponsePaginated {
 }
 
 export class Category {
-    id: number;
+    id: string;
     names?: Nullable<Nullable<CategoryName>[]>;
     products?: Nullable<Nullable<Product>[]>;
 }
 
 export class CategoryName {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     ref?: Nullable<string>;
     name?: Nullable<string>;
-    companyLanguageId?: Nullable<number>;
+    companyLanguageId?: Nullable<string>;
     language?: Nullable<Language>;
 }
 
@@ -747,12 +758,12 @@ export class CategoryResponsePaginated {
 }
 
 export class Product {
-    id: number;
+    id: string;
     ref?: Nullable<string>;
     languages?: Nullable<Nullable<ProductLanguage>[]>;
     providers?: Nullable<Nullable<Provider>[]>;
     categories?: Nullable<Nullable<Category>[]>;
-    productTypeId: number;
+    productTypeId: string;
     type?: Nullable<ProductType>;
     price?: Nullable<number>;
     prices?: Nullable<Nullable<ProductPrice>[]>;
@@ -761,21 +772,21 @@ export class Product {
 }
 
 export class ProductLanguage {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     title?: Nullable<string>;
     description?: Nullable<string>;
-    companyLanguageId?: Nullable<number>;
+    companyLanguageId?: Nullable<string>;
 }
 
 export class ProductPrice {
-    id?: Nullable<number>;
-    productId?: Nullable<number>;
+    id?: Nullable<string>;
+    productId?: Nullable<string>;
     price?: Nullable<number>;
     curency?: Nullable<CurrencyEnum>;
 }
 
 export class ProductStock {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     product?: Nullable<Product>;
     office?: Nullable<Office>;
     quantity?: Nullable<number>;
@@ -787,29 +798,29 @@ export class ProductResponsePaginated {
 }
 
 export class ProductProvider {
-    id: number;
+    id: string;
     products?: Nullable<Nullable<Product>[]>;
     providers?: Nullable<Nullable<ProductProviderPrice>[]>;
     prices?: Nullable<Nullable<ProductProviderPrice>[]>;
 }
 
 export class ProductProviderPrice {
-    id?: Nullable<number>;
-    providerId?: Nullable<number>;
+    id?: Nullable<string>;
+    providerId?: Nullable<string>;
     lastPrice?: Nullable<number>;
     prices?: Nullable<number>;
 }
 
 export class ProductType {
-    id: number;
+    id: string;
     names?: Nullable<Nullable<ProductTypeName>[]>;
     products?: Nullable<Nullable<Product>[]>;
 }
 
 export class ProductTypeName {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     name?: Nullable<string>;
-    companyLanguageId?: Nullable<number>;
+    companyLanguageId?: Nullable<string>;
 }
 
 export class ProductTypeResponsePaginated {
@@ -818,7 +829,7 @@ export class ProductTypeResponsePaginated {
 }
 
 export class Provider {
-    id: number;
+    id: string;
     name?: Nullable<string>;
     address?: Nullable<string>;
     city?: Nullable<string>;
@@ -836,7 +847,7 @@ export class ProviderListPaginated {
 }
 
 export class ProviderContact {
-    id?: Nullable<number>;
+    id?: Nullable<string>;
     name?: Nullable<string>;
     contact?: Nullable<string>;
     type?: Nullable<ContactType>;
@@ -844,7 +855,7 @@ export class ProviderContact {
 }
 
 export class User {
-    id: number;
+    id: string;
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
     userName?: Nullable<string>;
@@ -856,11 +867,16 @@ export class User {
     state?: Nullable<string>;
     country?: Nullable<string>;
     zipCode?: Nullable<string>;
-    employeeNr?: Nullable<number>;
-    companyId: number;
     company?: Nullable<Company>;
     contacts?: Nullable<Nullable<UserContact>[]>;
-    role?: Nullable<UserRole>;
+    userCompanies?: Nullable<Nullable<UserCompany>[]>;
+}
+
+export class UserCompany {
+    id: string;
+    employeeNr?: Nullable<number>;
+    userId: string;
+    companyId: string;
 }
 
 export class UserResponsePaginated {
@@ -874,7 +890,7 @@ export class UserResponse {
 }
 
 export class UserContact {
-    id: number;
+    id: string;
     contact: string;
     user?: Nullable<User>;
     type: ContactType;
@@ -885,9 +901,9 @@ export class UserPermissionsResponse {
 }
 
 export class UserRole {
-    id: number;
-    userId?: Nullable<number>;
-    companyRoleId?: Nullable<number>;
+    id: string;
+    userCompanyId?: Nullable<string>;
+    roleId?: Nullable<string>;
     name?: Nullable<string>;
 }
 

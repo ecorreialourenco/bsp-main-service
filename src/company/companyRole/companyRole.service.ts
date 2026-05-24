@@ -2,6 +2,7 @@ import {
   CompanyRole,
   CompanyRoleInput,
   CompanyRolesResponsePaginated,
+  ListCompanyRolesInput,
   UpdateCompanyRoleInput,
 } from 'src/graphql.schema';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -17,27 +18,59 @@ export class CompanyRoleService {
     private companyPermissionsService: CompanyPermissionsService,
   ) {}
 
-  async findById(id: number) {
-    return await this.prisma.companyRoles.findUnique({ where: { id } });
+  async findById(id: string) {
+    return await this.prisma.roles.findUnique({ where: { id } });
   }
 
   async findAll({
-    companyId,
+    input: { companyId, search, offset, limit, sortBy, sortOrder },
   }: {
-    companyId: number;
+    input: ListCompanyRolesInput;
   }): Promise<CompanyRolesResponsePaginated> {
-    const roles = await this.prisma.companyRoles.findMany({
-      where: { companyId },
-    });
-    const totalCount = await this.prisma.companyRoles.count({
-      where: { companyId },
+    let filters: {
+      where: {
+        companyId: string;
+        deletedAt: null;
+        name?: {
+          contains: string;
+        };
+      };
+      take?: number;
+      skip?: number;
+      orderBy: Record<string, string>;
+    } = {
+      where: { companyId, deletedAt: null },
+      orderBy: sortBy
+        ? {
+            [sortBy]: sortOrder || 'asc',
+          }
+        : { id: 'asc' },
+    };
+
+    if (search) {
+      filters.where.name = {
+        contains: search,
+      };
+    }
+
+    if (limit || offset) {
+      filters = {
+        ...filters,
+        take: limit ?? 10,
+        skip: offset ?? 0,
+      };
+    }
+
+    const roles = await this.prisma.roles.findMany(filters);
+    const totalCount = await this.prisma.roles.count({
+      where: filters.where,
     });
 
     return { roles, totalCount };
   }
 
   async create({ input }: { input: CompanyRoleInput }): Promise<CompanyRole> {
-    const newRole = await this.prisma.companyRoles.create({
+    const newRole = await this.prisma.roles.create({
       data: input,
     });
 
@@ -52,23 +85,23 @@ export class CompanyRoleService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: UpdateCompanyRoleInput;
   }): Promise<CompanyRole> {
-    return await this.prisma.companyRoles.update({
+    return await this.prisma.roles.update({
       where: { id },
       data: input,
     });
   }
 
-  async delete(id: number): Promise<string> {
-    await this.prisma.companyRoles.delete({ where: { id } });
+  async delete(id: string): Promise<string> {
+    await this.prisma.roles.delete({ where: { id } });
 
     return 'Company role deleted';
   }
 
-  async findByCompanyId(companyId: number): Promise<CompanyRole[]> {
-    return await this.prisma.companyRoles.findMany({
+  async findByCompanyId(companyId: string): Promise<CompanyRole[]> {
+    return await this.prisma.roles.findMany({
       where: { companyId },
     });
   }

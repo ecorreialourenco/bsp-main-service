@@ -24,6 +24,7 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
       context.getHandler(),
       context.getClass(),
     ]);
+    console.log('🚀 ~ GqlAuthGuard ~ canActivate ~ isPublic:', isPublic);
 
     if (isPublic) {
       return true;
@@ -33,6 +34,7 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
     const { req } = ctx.getContext();
 
     const token = this.extractTokenFromHeader(req);
+    console.log('🚀 ~ GqlAuthGuard ~ canActivate ~ token:', token);
     if (!token) throw new UnauthorizedException();
 
     try {
@@ -46,6 +48,8 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
 
   private extractTokenFromHeader(request: any): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    console.log('🚀 ~ GqlAuthGuard ~ extractTokenFromHeader ~ type:', type);
+    console.log('🚀 ~ GqlAuthGuard ~ extractTokenFromHeader ~ token:', token);
     return type === 'Bearer' ? token : undefined;
   }
 }

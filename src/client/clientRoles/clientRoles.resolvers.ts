@@ -27,7 +27,7 @@ export class ClientRolesResolvers {
 
   @CheckPermission('clients', 'createUpdate')
   @Query('getClientRole')
-  async getClientRole(@Args('id') id: number): Promise<ClientRole | null> {
+  async getClientRole(@Args('id') id: string): Promise<ClientRole | null> {
     return await this.clientRolesService.findOne({ id });
   }
 
@@ -50,7 +50,7 @@ export class ClientRolesResolvers {
   @CheckPermission('clients', 'createUpdate')
   @Mutation('updateClientRole')
   async updateClientRole(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ClientRoleInput,
   ): Promise<ClientRole> {
     return await this.clientRolesService.update({ id, input });
@@ -59,7 +59,7 @@ export class ClientRolesResolvers {
   @CheckPermission('clients', 'delete')
   @Mutation('deleteClientRole')
   async deleteClientRole(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete?: boolean,
   ): Promise<string> {
     return await this.clientRolesService.delete({ id, forceDelete });
@@ -67,7 +67,7 @@ export class ClientRolesResolvers {
 
   @CheckPermission('clients', 'delete')
   @Mutation('restoreClientRole')
-  async restoreClientRole(@Args('id') id: number): Promise<string> {
+  async restoreClientRole(@Args('id') id: string): Promise<string> {
     return await this.clientRolesService.delete({ id });
   }
 

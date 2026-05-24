@@ -5,7 +5,7 @@ import {
   UserResponsePaginated,
 } from 'src/graphql.schema';
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { User, UserCompanies } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -13,7 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id: number): Promise<User | null> {
+  async findOne(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
@@ -23,8 +23,7 @@ export class UserService {
     input: ListUsers;
   }): Promise<UserResponsePaginated> {
     const filters: {
-      companyId: number;
-      id?: { in: number[] };
+      id?: { in: string[] };
       deletedAt: null;
       OR?: [
         { firstName: { contains: string } },
@@ -32,7 +31,6 @@ export class UserService {
         { userName: { contains: string } },
       ];
     } = {
-      companyId,
       deletedAt: null,
     };
 
@@ -44,12 +42,24 @@ export class UserService {
       ];
     }
 
+    const userComanyFilters: { companyId: string; id?: { in: string[] } } = {
+      companyId,
+    };
     if (userRoleId) {
       const filterUserByRole = await this.prisma.userRoles.findMany({
-        where: { companyRoleId: userRoleId },
+        where: {
+          roleId: userRoleId,
+        },
       });
-      filters.id = { in: filterUserByRole.map((ur) => ur.userId) };
+      userComanyFilters.id = {
+        in: filterUserByRole.map((ur) => ur.userCompanyId),
+      };
     }
+
+    const filterUserByCompany = await this.prisma.userCompanies.findMany({
+      where: userComanyFilters,
+    });
+    filters.id = { in: filterUserByCompany.map((ur) => ur.userId) };
 
     const users = await this.prisma.user.findMany({
       where: filters,
@@ -75,7 +85,7 @@ export class UserService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: UserInput;
   }): Promise<UserResponse> {
     const user = await this.prisma.user.update({
@@ -90,7 +100,7 @@ export class UserService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -105,7 +115,7 @@ export class UserService {
     return 'User deleted';
   }
 
-  async restore(id: number): Promise<string> {
+  async restore(id: string): Promise<string> {
     await this.prisma.user.delete({ where: { id } });
 
     return 'User restored';
@@ -115,7 +125,7 @@ export class UserService {
     id,
     status,
   }: {
-    id: number;
+    id: string;
     status: boolean;
   }): Promise<UserResponse> {
     const user = await this.prisma.user.update({
@@ -128,9 +138,23 @@ export class UserService {
     return { user, status: 200 };
   }
 
-  async findByCompanyId({ companyId }: { companyId: number }): Promise<User[]> {
-    return await this.prisma.user.findMany({
+  async findByCompanyId({ companyId }: { companyId: string }): Promise<User[]> {
+    const usersList = await this.prisma.userCompanies.findMany({
       where: { companyId },
+    });
+
+    return await this.prisma.user.findMany({
+      where: { id: { in: usersList.map((ul) => ul.userId) } },
+    });
+  }
+
+  async getUserCompanies({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<UserCompanies[]> {
+    return await this.prisma.userCompanies.findMany({
+      where: { userId },
     });
   }
 }

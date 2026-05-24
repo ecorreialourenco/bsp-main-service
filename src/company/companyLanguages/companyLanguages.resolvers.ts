@@ -26,7 +26,7 @@ export class CompanyLanguagesResolvers {
   @CheckPermission('company-languages', 'read')
   @Query('listCompanyLanguages')
   async listCompanyLanguagess(
-    @Args('companyId') companyId: number,
+    @Args('companyId') companyId: string,
   ): Promise<CompanyLanguagesResponsePaginated> {
     return await this.companyLanguagesService.findAll({ companyId });
   }
@@ -42,7 +42,7 @@ export class CompanyLanguagesResolvers {
   @CheckPermission('company-languages', 'createUpdate')
   @Mutation('updateCompanyLanguages')
   async updateCompanyLanguages(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: CompanyLanguagesInput,
   ): Promise<CompanyLanguages> {
     return await this.companyLanguagesService.update({ id, input });
@@ -50,7 +50,7 @@ export class CompanyLanguagesResolvers {
 
   @CheckPermission('company-languages', 'delete')
   @Mutation('deleteCompanyLanguages')
-  async deleteCompanyLanguages(@Args('id') id: number): Promise<string> {
+  async deleteCompanyLanguages(@Args('id') id: string): Promise<string> {
     return await this.companyLanguagesService.delete(id);
   }
 

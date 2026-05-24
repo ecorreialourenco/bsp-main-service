@@ -1,5 +1,5 @@
 type UserContact {
-  id: Int!
+  id: String!
   contact: String!
   user: User
   type: ContactType!
@@ -8,7 +8,7 @@ type UserContact {
 input UserContactInput {
   contact: String!
   type: ContactType!
-  userId: Int!
+  userId: String!
 }
 
 enum ContactType {
@@ -24,6 +24,6 @@ type Query {
 
 type Mutation {
   createUserContact(input: UserContactInput!): UserContact
-  updateUserContact(id: Int!, input: UserContactInput!): UserContact
-  removeUserContact(id: Int!): String
+  updateUserContact(id: String!, input: UserContactInput!): UserContact
+  removeUserContact(id: String!): String
 }

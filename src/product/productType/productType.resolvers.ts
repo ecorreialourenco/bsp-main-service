@@ -42,7 +42,7 @@ export class ProductTypeResolvers {
   @CheckPermission('products', 'createUpdate')
   @Mutation('updateProductType')
   async updateProductType(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: ProductTypeInput,
   ): Promise<ProductType | null> {
     return await this.productTypeService.update({ id, input });
@@ -51,7 +51,7 @@ export class ProductTypeResolvers {
   @CheckPermission('products', 'delete')
   @Mutation('removeProductType')
   async removeProductType(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete?: boolean,
   ): Promise<string> {
     return await this.productTypeService.delete({ id, forceDelete });
@@ -59,7 +59,7 @@ export class ProductTypeResolvers {
 
   @CheckPermission('products', 'delete')
   @Mutation('restoreProductType')
-  async restoreProductType(@Args('id') id: number): Promise<string> {
+  async restoreProductType(@Args('id') id: string): Promise<string> {
     return await this.productTypeService.delete({ id });
   }
 

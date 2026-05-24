@@ -24,8 +24,10 @@ export class UserRoleResolvers {
 
   @CheckPermission('users', 'read')
   @Query('getUserRole')
-  getUserRole(@Args('userId') userId: number): Promise<UserRole | null> {
-    return this.userRoleService.findByUserId({ userId });
+  getUserRole(
+    @Args('userCompanyId') userCompanyId: string,
+  ): Promise<UserRole | null> {
+    return this.userRoleService.findByUserId({ userCompanyId });
   }
 
   @CheckPermission('users', 'createUpdate')
@@ -37,12 +39,12 @@ export class UserRoleResolvers {
   @CheckPermission('users', 'createUpdate')
   @Mutation('createUserRole')
   async changeUserRole(
-    @Args('userId') userId: number,
-    @Args('companyRoleId') companyRoleId: number,
+    @Args('userCompanyId') userCompanyId: string,
+    @Args('roleId') roleId: string,
   ): Promise<UserRole> {
     const newRole = await this.userRoleService.updateRole({
-      userId,
-      companyRoleId,
+      userCompanyId,
+      roleId,
     });
 
     await this.pubSub.publish('userRoleChanged', { userRole: newRole });

@@ -14,7 +14,7 @@ export class CompanyLanguagesService {
   async findAll({
     companyId,
   }: {
-    companyId: number;
+    companyId: string;
   }): Promise<CompanyLanguagesResponsePaginated> {
     const languages = await this.prisma.companyLanguages.findMany({
       where: { companyId },
@@ -49,7 +49,7 @@ export class CompanyLanguagesService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: UpdateCompanyLanguagesInput;
   }): Promise<CompanyLanguages> {
     if (input.isDefault) {
@@ -69,7 +69,7 @@ export class CompanyLanguagesService {
     });
   }
 
-  async delete(id: number): Promise<string> {
+  async delete(id: string): Promise<string> {
     await this.prisma.companyLanguages.delete({ where: { id } });
 
     return 'Company language deleted';

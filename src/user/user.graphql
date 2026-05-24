@@ -1,5 +1,5 @@
 type User {
-  id: Int!
+  id: String!
   firstName: String
   lastName: String
   userName: String
@@ -11,11 +11,19 @@ type User {
   state: String
   country: String
   zipCode: String
-  employeeNr: Int
-  companyId: Int!
   company: Company
   contacts: [UserContact]
+  """
   role: UserRole
+  """
+  userCompanies: [UserCompany]
+}
+
+type UserCompany {
+  id: String!
+  employeeNr: Int
+  userId: String!
+  companyId: String!
 }
 
 input UserInput {
@@ -28,13 +36,13 @@ input UserInput {
   state: String
   country: String
   zipCode: String
-  companyId: Int!
+  companyId: String!
 }
 
 input ListUsers {
-  companyId: Int!
+  companyId: String!
   search: String
-  userRoleId: Int
+  userRoleId: String
   limit: Int
   offset: Int
   sortBy: String
@@ -52,16 +60,16 @@ type UserResponse {
 }
 
 type Query {
-  getUser(id: Int!): User
+  getUser(id: String!): User
   listUsers(input: ListUsers): UserResponsePaginated
 }
 
 type Mutation {
   createUser(input: UserInput!): UserResponse!
-  updateUser(id: Int!, input: UserInput): UserResponse
-  removeUser(id: Int!, forceDelete: Boolean): String
-  restoreUser(id: Int!): String
-  changeUserActiveStatus(id: Int!, status: Boolean!): UserResponse
+  updateUser(id: String!, input: UserInput): UserResponse
+  removeUser(id: String!, forceDelete: Boolean): String
+  restoreUser(id: String!): String
+  changeUserActiveStatus(id: String!, status: Boolean!): UserResponse
 }
 
 type Subscription {

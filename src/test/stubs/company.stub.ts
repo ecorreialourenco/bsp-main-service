@@ -1,9 +1,9 @@
-import { CompanyPermissions, CompanyRoles } from '@prisma/client';
+import { Permissions, Roles } from '@prisma/client';
 
-export const companyRoleStub = (): CompanyRoles => ({
-  id: 1,
+export const companyRoleStub = (): Roles => ({
+  id: '1',
   name: 'Admin',
-  companyId: 1,
+  companyId: '1',
   minWages: 920,
   maxWages: 2000,
   isProtected: true,
@@ -12,25 +12,27 @@ export const companyRoleStub = (): CompanyRoles => ({
   deletedAt: null,
 });
 
-export const companyPermissionsStub = (): CompanyPermissions[] => [
+export const companyPermissionsStub = (): Permissions[] => [
   {
-    id: 1,
+    id: '1',
     read: true,
-    createUpdate: true,
+    create: true,
+    update: true,
     delete: true,
-    companyRoleId: 1,
-    menuId: 1,
+    roleId: '1',
+    menuId: '1',
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: null,
   },
   {
-    id: 2,
+    id: '2',
     read: true,
-    createUpdate: false,
+    create: false,
+    update: false,
     delete: false,
-    companyRoleId: 1,
-    menuId: 2,
+    roleId: '1',
+    menuId: '2',
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: null,

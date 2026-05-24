@@ -1,5 +1,5 @@
 type Company {
-  id: Int!
+  id: String!
   name: String!
   website: String!
   offices: [Office]
@@ -45,11 +45,11 @@ enum CurrencyEnum {
 }
 
 type Query {
-  getCompany(id: Int!): Company
+  getCompany(id: String!): Company
   listCompanies(input: CompaniesListInput): CompanyResponsePaginated
 }
 
 type Mutation {
-  updateCompany(id: Int!, input: CompanyInput!): Company
-  deleteCompany(id: Int!): String
+  updateCompany(id: String!, input: CompanyInput!): Company
+  deleteCompany(id: String!): String
 }

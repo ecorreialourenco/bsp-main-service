@@ -34,7 +34,7 @@ export class UserResolvers {
 
   @CheckPermission('users', 'read')
   @Query('getUser')
-  async getUser(@Args('id') id: number): Promise<User | null> {
+  async getUser(@Args('id') id: string): Promise<User | null> {
     return await this.userService.findOne(id);
   }
 
@@ -55,7 +55,7 @@ export class UserResolvers {
   @CheckPermission('users', 'createUpdate')
   @Mutation('updateUser')
   async updateUser(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: UserInput,
   ): Promise<UserResponse> {
     return await this.userService.update({ id, input });
@@ -64,7 +64,7 @@ export class UserResolvers {
   @CheckPermission('users', 'delete')
   @Mutation('removeUser')
   async removeUser(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('forceDelete') forceDelete: boolean,
   ): Promise<string> {
     return await this.userService.delete({ id, forceDelete });
@@ -72,14 +72,14 @@ export class UserResolvers {
 
   @CheckPermission('users', 'delete')
   @Mutation('restoreUser')
-  async restoreUser(@Args('id') id: number): Promise<string> {
+  async restoreUser(@Args('id') id: string): Promise<string> {
     return await this.userService.restore(id);
   }
 
   @CheckPermission('users', 'createUpdate')
   @Mutation('changeUserActiveStatus')
   async changeUserActiveStatus(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('status') status: boolean,
   ): Promise<UserResponse> {
     const newStatus = await this.userService.changeActiveStatus({ id, status });
@@ -94,18 +94,23 @@ export class UserResolvers {
     return this.pubSub.asyncIterableIterator('userStatusChanged');
   }
 
-  @ResolveField('company')
+  /* @ResolveField('company')
   async getCompany(@Parent() user: User) {
-    return await this.companyService.findOne(user.companyId);
-  }
+    return await this.companyService.findOne(user.company.companyId);
+  } */
 
   @ResolveField('contacts')
   async getContacts(@Parent() user: User) {
     return await this.userContactsService.findByUserId({ userId: user.id });
   }
 
-  @ResolveField('role')
+  @ResolveField('userCompanies')
+  async getUserCompanies(@Parent() user: User) {
+    return await this.userService.getUserCompanies({ userId: user.id });
+  }
+
+  /* @ResolveField('role')
   async getRole(@Parent() user: User) {
     return await this.userRoleService.findByUserId({ userId: user.id });
-  }
+  } */
 }

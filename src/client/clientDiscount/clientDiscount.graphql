@@ -1,9 +1,9 @@
 type ClientDiscount {
-  id: Int
-  companyClientRoleId: Int
+  id: String
+  companyClientRoleId: String
   percentage: Float
-  categoryId: Int
-  productTypeId: Int
+  categoryId: String
+  productTypeId: String
 }
 
 type ClientDiscountPaginated {
@@ -12,9 +12,9 @@ type ClientDiscountPaginated {
 }
 
 input ListClientDiscountInput {
-  companyClientRoleId: Int!
-  categoryId: Int
-  productTypeId: Int
+  companyClientRoleId: String!
+  categoryId: String
+  productTypeId: String
   limit: Int
   offset: Int
   cursor: Int
@@ -23,10 +23,10 @@ input ListClientDiscountInput {
 }
 
 input ClientDiscountInput {
-  companyClientRoleId: Int!
+  companyClientRoleId: String!
   percentage: Float!
-  categoryId: Int!
-  productTypeId: Int!
+  categoryId: String!
+  productTypeId: String!
 }
 
 type Query {
@@ -35,7 +35,7 @@ type Query {
 
 type Mutation {
   createClientDiscount(input: ClientDiscountInput!): ClientDiscount
-  updateClientDiscount(id: Int!, input: ClientDiscountInput!): ClientDiscount
-  removeClientDiscount(id: Int!, forceDelete: Boolean): String
-  restoreClientDiscount(id: Int!): String
+  updateClientDiscount(id: String!, input: ClientDiscountInput!): ClientDiscount
+  removeClientDiscount(id: String!, forceDelete: Boolean): String
+  restoreClientDiscount(id: String!): String
 }

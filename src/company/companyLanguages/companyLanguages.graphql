@@ -1,14 +1,14 @@
 type CompanyLanguages {
-  id: Int!
-  companyId: Int!
-  languageId: Int!
+  id: String!
+  companyId: String!
+  languageId: String!
   isDefault: Boolean
   name: String
 }
 
 input CompanyLanguagesInput {
-  companyId: Int!
-  languageId: Int!
+  companyId: String!
+  languageId: String!
   isDefault: Boolean!
 }
 
@@ -22,14 +22,14 @@ type CompanyLanguagesResponsePaginated {
 }
 
 type Query {
-  listCompanyLanguages(companyId: Int!): CompanyLanguagesResponsePaginated
+  listCompanyLanguages(companyId: String!): CompanyLanguagesResponsePaginated
 }
 
 type Mutation {
   createCompanyLanguages(input: CompanyLanguagesInput!): CompanyLanguages
   updateCompanyLanguages(
-    id: Int!
+    id: String!
     input: UpdateCompanyLanguagesInput!
   ): CompanyLanguages
-  deleteCompanyLanguages(id: Int!): String
+  deleteCompanyLanguages(id: String!): String
 }

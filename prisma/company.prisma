@@ -1,17 +1,22 @@
 model Company {
-  id        Int       @id @default(autoincrement())
+  id        String       @id @default(uuid(7))
   name      String
   website   String
+  groupId   String
+  planId              String   
   currency  String    @default("EUR")
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   deletedAt DateTime?
 
+  group  Group  @relation(fields: [groupId], references: [id])
+  plan     CompanyPlan @relation(fields: [planId], references: [id])
+
   categories   Category[]
   productTypes ProductType[]
   offices      Office[]
-  roles        CompanyRoles[]
-  users        User[]
+  roles        Roles[]
+  userCompanies        UserCompanies[]
   clients      Client[]
   provider     Provider[]
   products     Products[]
@@ -20,9 +25,10 @@ model Company {
 }
 
 model CompanyLanguages {
-  id         Int       @id @default(autoincrement())
-  companyId  Int
-  languageId Int
+  id         String       @id @default(uuid(7))
+  companyId  String
+  languageId String
+     
   isDefault  Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt

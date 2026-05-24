@@ -15,7 +15,7 @@ export class ClientContactsService {
   async findByClientId({
     clientId,
   }: {
-    clientId: number;
+    clientId: string;
   }): Promise<ClientContact[]> {
     return await this.prisma.clientContacts.findMany({
       where: { clientId },
@@ -34,7 +34,7 @@ export class ClientContactsService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ClientContactInput;
   }): Promise<ClientContact> {
     return await this.prisma.clientContacts.update({
@@ -47,7 +47,7 @@ export class ClientContactsService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -62,7 +62,7 @@ export class ClientContactsService {
     return 'Client contact deleted';
   }
 
-  async restore({ id }: { id: number }): Promise<string> {
+  async restore({ id }: { id: string }): Promise<string> {
     await this.prisma.clientContacts.update({
       where: { id },
       data: { deletedAt: null },

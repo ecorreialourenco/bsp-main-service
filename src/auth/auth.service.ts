@@ -42,7 +42,7 @@ export class AuthService {
         firstName: true,
         lastName: true,
         userName: true,
-        companyId: true,
+        userCompanies: true,
         isAdmin: true,
       },
     });
@@ -53,12 +53,20 @@ export class AuthService {
   async signup(input: SignupInput): Promise<User | null> {
     const { company, office, user } = input;
 
-    const newCompany = await this.prisma.company.create({ data: company });
+    const newGroup = await this.prisma.group.create({
+      data: {
+        name: company.name,
+      },
+    });
+
+    const newCompany = await this.prisma.company.create({
+      data: { ...company, groupId: newGroup.id },
+    });
     await this.prisma.office.create({
       data: { ...office, companyId: newCompany.id },
     });
 
-    const companyRole = await this.prisma.companyRoles.create({
+    const companyRole = await this.prisma.roles.create({
       data: {
         name: 'Admin',
         companyId: newCompany.id,
@@ -67,9 +75,9 @@ export class AuthService {
     });
 
     const menus = await this.prisma.menu.findMany();
-    await this.prisma.companyPermissions.createMany({
+    await this.prisma.permissions.createMany({
       data: menus.map((menu) => ({
-        companyRoleId: companyRole.id,
+        roleId: companyRole.id,
         menuId: menu.id,
         read: true,
         createUpdate: true,
@@ -86,16 +94,23 @@ export class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
+
+        password,
+      },
+    });
+
+    const userCompanies = await this.prisma.userCompanies.create({
+      data: {
+        userId: newUser.id,
         companyId: newCompany.id,
         employeeNr: 1,
-        password,
       },
     });
 
     const userRole = await this.prisma.userRoles.create({
       data: {
-        companyRoleId: companyRole.id,
-        userId: newUser.id,
+        roleId: companyRole.id,
+        userCompanyId: userCompanies.id,
       },
     });
 
@@ -111,8 +126,7 @@ export class AuthService {
         lastName: true,
         userName: true,
         isActive: true,
-        companyId: true,
-        employeeNr: true,
+        userCompanies: true,
       },
     });
   }

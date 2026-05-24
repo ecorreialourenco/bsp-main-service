@@ -13,7 +13,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(id: number): Promise<Products | null> {
+  async findOne(id: string): Promise<Products | null> {
     return await this.prisma.products.findUnique({ where: { id } });
   }
 
@@ -23,8 +23,8 @@ export class ProductService {
     input: ProductListInput;
   }): Promise<ProductResponsePaginated> {
     const filters: {
-      companyId: number;
-      id?: { in: number[] };
+      companyId: string;
+      id?: { in: string[] };
       deletedAt: null;
     } = {
       companyId,
@@ -73,7 +73,7 @@ export class ProductService {
     id,
     input,
   }: {
-    id: number;
+    id: string;
     input: ProductInput;
   }): Promise<Products> {
     return await this.prisma.products.update({
@@ -90,7 +90,7 @@ export class ProductService {
     id,
     forceDelete,
   }: {
-    id: number;
+    id: string;
     forceDelete?: boolean;
   }): Promise<string> {
     if (forceDelete) {
@@ -105,7 +105,7 @@ export class ProductService {
     return 'Product deleted';
   }
 
-  async restore(id: number): Promise<string> {
+  async restore(id: string): Promise<string> {
     await this.prisma.products.delete({ where: { id } });
 
     return 'Product restored';
@@ -116,7 +116,7 @@ export class ProductService {
     price,
     currency,
   }: {
-    productId: number;
+    productId: string;
     price: number;
     currency: string;
   }): Promise<ProductPrice> {
@@ -128,7 +128,7 @@ export class ProductService {
   async findByCategoryId({
     categoryId,
   }: {
-    categoryId: number;
+    categoryId: string;
   }): Promise<Products[]> {
     const productCategories = await this.prisma.productCategory.findMany({
       where: { categoryId },
@@ -142,12 +142,12 @@ export class ProductService {
   async findByProductTypeId({
     productTypeId,
   }: {
-    productTypeId: number;
+    productTypeId: string;
   }): Promise<Products[]> {
     return await this.prisma.products.findMany({ where: { productTypeId } });
   }
 
-  async getPrice({ productId }: { productId: number }): Promise<number> {
+  async getPrice({ productId }: { productId: string }): Promise<number> {
     const productPrice = await this.prisma.productPrice.findFirst({
       where: { productId },
       orderBy: { createdAt: 'desc' },
@@ -159,7 +159,7 @@ export class ProductService {
   async getPrices({
     productId,
   }: {
-    productId: number;
+    productId: string;
   }): Promise<ProductPrice[]> {
     return await this.prisma.productPrice.findMany({
       where: { productId },
@@ -169,7 +169,7 @@ export class ProductService {
   async countProductsByProviderId({
     providerId,
   }: {
-    providerId: number;
+    providerId: string;
   }): Promise<number> {
     const products = await this.prisma.productProvider.groupBy({
       by: ['productId'],
@@ -181,7 +181,7 @@ export class ProductService {
   async getProductLanguages({
     productId,
   }: {
-    productId: number;
+    productId: string;
   }): Promise<ProductLanguage[]> {
     return await this.prisma.productLanguage.findMany({
       where: { productId },

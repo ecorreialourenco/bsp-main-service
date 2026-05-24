@@ -1,31 +1,39 @@
 model User {
-  id         Int       @id @default(autoincrement())
+  id         String     @id @default(uuid(7))
   firstName  String
   lastName   String
-  userName   String    @unique
+  userName   String     @unique
   password   String
   address    String?
   city       String?
   state      String?
   country    String?
   zipCode    String?
-  companyId  Int
-  employeeNr Int       @default(1)
-  isAdmin    Boolean   @default(false)
-  isActive   Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now()) @updatedAt
+  
+  isAdmin    Boolean    @default(false)
+  isActive   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
   deletedAt  DateTime?
 
-  company Company @relation(fields: [companyId], references: [id])
+  userContacts UserContacts[]
+  userCompanies UserCompanies[]
+}
 
-  UserContacts UserContacts[]
-  userHistory  UserRoles[]
+model UserCompanies {
+  id          String    @id @default(uuid(7))
+  userId      String
+  companyId   String
+  employeeNr  Int       @default(1)
+
+  user        User @relation(fields: [userId], references: [id])
+  company     Company @relation(fields: [companyId], references: [id])
+roles UserRoles[]
 }
 
 model UserContacts {
-  id        Int         @id @default(autoincrement())
-  userId    Int
+  id        String         @id @default(uuid(7))
+  userId    String
   type      ContactType
   contact   String
   createdAt DateTime    @default(now())

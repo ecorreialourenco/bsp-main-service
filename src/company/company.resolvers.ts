@@ -30,7 +30,7 @@ export class CompanyResolvers {
 
   @CheckPermission('company', 'read')
   @Query('getCompany')
-  async getCompany(@Args('id') id: number): Promise<Company | null> {
+  async getCompany(@Args('id') id: string): Promise<Company | null> {
     return await this.companyService.findOne(id);
   }
 
@@ -45,7 +45,7 @@ export class CompanyResolvers {
   @CheckPermission('company', 'createUpdate')
   @Mutation('updateCompany')
   async updateCompany(
-    @Args('id') id: number,
+    @Args('id') id: string,
     @Args('input') input: CompanyInput,
   ): Promise<Company> {
     return await this.companyService.update({ id, input });
@@ -53,7 +53,7 @@ export class CompanyResolvers {
 
   @CheckPermission('company', 'delete')
   @Mutation('deleteCompany')
-  async deleteCompany(@Args('id') id: number): Promise<string> {
+  async deleteCompany(@Args('id') id: string): Promise<string> {
     return await this.companyService.delete(id);
   }
 

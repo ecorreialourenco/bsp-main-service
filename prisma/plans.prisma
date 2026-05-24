@@ -1,0 +1,16 @@
+model GroupPlan {
+  id                  String    @id @default(uuid(7))
+  name                String   
+  includedCompanies   Int       
+  extraCompanyPrice   Decimal   @default(0.0) 
+
+  groups              Group[]
+}
+
+model CompanyPlan {
+  id                  String    @id @default(uuid(7))
+  name                String    
+  maxUsers            Int       
+  
+  companies           Company[]
+}
